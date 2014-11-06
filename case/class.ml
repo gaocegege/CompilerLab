@@ -1,6 +1,5 @@
 program test()
 	type MyClass is class
-
 		var x is integer;
 		var y is integer;
 		function returnX()
