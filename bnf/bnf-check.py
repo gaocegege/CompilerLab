@@ -6,7 +6,7 @@ data2 = []
 re1 = re.compile(r"^[a-z ]+(?=\:)")
 re2 = re.compile(r"(?<=\<)[a-z ]+(?=\>)")
 
-for line in open("bnf-another-draft.txt", "r").readlines():
+for line in open("bnf-another-draft.md", "r").readlines():
     data1 += re1.findall(line)
     data2 += re2.findall(line)
 

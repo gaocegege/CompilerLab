@@ -1,12 +1,11 @@
-MyLanguage - Syntax in BNF Notation
+MyLang - Syntax Definition
 ===
-
-BNF (Backus Naur Form).
 
 File
 ---
 
     <program>
+    <program>;
 
 Main Structure
 ---
@@ -67,10 +66,10 @@ argument list:
 
 definition:
 
-    <type definition>
-    <value definition>
-    <return definition>
-    <function>
+    <type definition>;
+    <value definition>;
+    <return definition>;
+    <function>;
 
 type definition:
 
@@ -99,15 +98,12 @@ Statement
 
 statement:
 
-    <snippet>
-    <assignment>
-    <return>
-    <structure>
-
-snippet:
-
     ;
     <expression>;
+    <assignment>;
+    <return>;
+    <structure>
+    <repeat>;
 
 assignment:
 
@@ -115,7 +111,7 @@ assignment:
 
 return:
 
-    return <expression>;
+    return <expression>
 
 structure:
 
@@ -123,7 +119,6 @@ structure:
     for <variable> := <for range> do <code block> <structure end>
     foreach <variable> in <expression> do <code block> <structure end>
     while <expression> do <code block> <structure end>
-    repeat <code block> until <expression>;
 
 condition chain:
 
@@ -144,6 +139,11 @@ structure end:
     end while
     // should match the structure
 
+repeat:
+
+    repeat <code block> until <expression>
+    // special structure
+
 Expression
 ---
 
@@ -155,7 +155,34 @@ variable:
 
 expression:
 
-    // TODO
+    <expression> <relation> <additive expression>
+    <additive expression>
+    // warning: has left-recursion
+    // may skipped by LL(k) parser and parsed by shunting yard algorithm or level counting
+
+additive expression:
+
+    <additive expression> <addition> <multiplicative expression>
+    <multiplicative expression>
+
+multiplicative expression:
+
+    <multiplicative expression> <multiplication> <unary expression>
+    <unary expression>
+
+unary expression:
+
+    <unary operator> <unary expression>
+    <literal>
+    <variable>
+    <variable> <unary expression>
+    <variable> (<expression list>)
+    [<expression list>]
+    // distinguish variable by callability
+
+expression list:
+
+    <expression>, <expression list>
 
 Identifier
 ---
@@ -197,8 +224,52 @@ native type:
     real
     string
 
+Operator
+---
+
+relation:
+
+    <
+    =
+    >
+    <=
+    =<
+    <>
+    ><
+    >=
+    =>
+    in
+
+addition:
+
+    +
+    -
+    or
+    xor
+
+multiplication:
+
+    *
+    /
+    div
+    mod
+    and
+
+unary operator:
+
+    +
+    -
+    not
+
 Literal
 ---
+
+literal:
+
+    <boolean>
+    <integer>
+    <real>
+    <string>
 
 boolean:
 
@@ -221,3 +292,11 @@ real:
 string:
 
     \"([^\\]|\\.)*\"
+
+Special
+---
+
+comment:
+
+    \/\/.*$
+    // anywhere except in a string
