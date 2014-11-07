@@ -6,8 +6,8 @@ File
 
 **root**:
 
-     <program> 
-     <program> ; 
+    <> <program> ; <>
+    <> <program> <>
     // allow spaces before and after
 
 Main Structure
@@ -23,8 +23,12 @@ function:
 
 class:
 
-    class <interface block> <main end>
-    class extends <typename id> <interface block> <main end>
+    class <extend> <interface block> <main end>
+
+extend:
+
+    extends <typename id>
+    <>
 
 Block
 ---
@@ -32,26 +36,33 @@ Block
 function body:
 
     <interface block> begin <code block> <main end>
-    <interface block> is <value block> begin <code block> <main end>
 
 interface block:
 
     <definition> <interface block>
+    <>
+
+is block:
+
+    is <value block>
+    <>
 
 value block:
 
-    <value definition> <interface block>
+    <value definition> <value block>
+    <>
 
 code block:
 
     <statement> <code block>
+    <>
 
 main end:
 
-    end
     end program <function id>
     end function <function id>
     end class
+    end
     // should match the body
 
 Definition
@@ -59,13 +70,13 @@ Definition
 
 function proto:
 
-    <function id> ( )
     <function id> ( <argument list> )
 
 argument list:
 
-    <value id>
     <value id> , <argument list>
+    <value id>
+    <>
 
 definition:
 
@@ -73,6 +84,7 @@ definition:
     <value definition> ;
     <return definition> ;
     <function> ;
+    ;
 
 type definition:
 
@@ -101,12 +113,12 @@ Statement
 
 statement:
 
-    ;
     <expression> ;
     <assignment> ;
     <return> ;
     <structure>
     <repeat> ;
+    ;
 
 assignment:
 
@@ -115,6 +127,9 @@ assignment:
 return:
 
     return <expression>
+
+Code Structure
+---
 
 structure:
 
@@ -127,6 +142,7 @@ condition chain:
 
     elif <expression> then <code block> <condition chain>
     else <code block>
+    <>
 
 for range:
 
@@ -135,11 +151,11 @@ for range:
 
 structure end:
 
-    end
     end if
     end for
     end foreach
     end while
+    end
     // should match the structure
 
 repeat:
@@ -152,40 +168,66 @@ Expression
 
 variable:
 
-    <value id>
     <value id> . <variable>
     <value id> [ <expression> ]
+    <value id>
+
+
+    <expression>
+
+    <relation> <additive expression>
+    <additive expression>
+
 
 expression:
 
-    <expression> <relation> <additive expression>
-    <additive expression>
-    // warning: has left-recursion
-    // may skipped by LL(k) parser and parsed by shunting yard algorithm or level counting
+    <relative expression>
+
+relative expression:
+
+    <additive expression> <relation operation>
+
+relative operation:
+
+    <relation> <relative expression>
+    <>
 
 additive expression:
 
-    <additive expression> <addition> <multiplicative expression>
-    <multiplicative expression>
+    <multiplicative expression> <additive operation>
+
+additive operation:
+
+    <addition> <additive expression>
+    <>
 
 multiplicative expression:
 
-    <multiplicative expression> <multiplication> <unary expression>
-    <unary expression>
+    <unary expression> <multiplicative operation>
+
+multiplicative operation:
+
+    <multiplication> <multiplicative expression>
+    <>
 
 unary expression:
 
     <unary operator> <unary expression>
     <literal>
+    <variable> <argument expression>
     <variable>
-    <variable> <unary expression>
-    <variable> ( <expression list> )
     [ <expression list> ]
-    // distinguish variable by callability
+
+argument expression:
+
+    <unary expression>
+    ( <expression list> )
 
 expression list:
 
     <expression> , <expression list>
+    <expression>
+    <>
 
 Identifier
 ---
