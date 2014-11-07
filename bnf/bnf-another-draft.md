@@ -4,8 +4,11 @@ MyLang - Syntax Definition
 File
 ---
 
-    <program>
-    <program>;
+**root**:
+
+     <program> 
+     <program> ; 
+    // allow spaces before and after
 
 Main Structure
 ---
@@ -56,20 +59,20 @@ Definition
 
 function proto:
 
-    <function id> ()
-    <function id> (<argument list>)
+    <function id> ( )
+    <function id> ( <argument list> )
 
 argument list:
 
     <value id>
-    <value id>, <argument list>
+    <value id> , <argument list>
 
 definition:
 
-    <type definition>;
-    <value definition>;
-    <return definition>;
-    <function>;
+    <type definition> ;
+    <value definition> ;
+    <return definition> ;
+    <function> ;
 
 type definition:
 
@@ -99,11 +102,11 @@ Statement
 statement:
 
     ;
-    <expression>;
-    <assignment>;
-    <return>;
+    <expression> ;
+    <assignment> ;
+    <return> ;
     <structure>
-    <repeat>;
+    <repeat> ;
 
 assignment:
 
@@ -150,8 +153,8 @@ Expression
 variable:
 
     <value id>
-    <value id>.<variable>
-    <value id>[<expression>]
+    <value id> . <variable>
+    <value id> [ <expression> ]
 
 expression:
 
@@ -176,13 +179,13 @@ unary expression:
     <literal>
     <variable>
     <variable> <unary expression>
-    <variable> (<expression list>)
-    [<expression list>]
+    <variable> ( <expression list> )
+    [ <expression list> ]
     // distinguish variable by callability
 
 expression list:
 
-    <expression>, <expression list>
+    <expression> , <expression list>
 
 Identifier
 ---
@@ -206,7 +209,7 @@ value id:
 
     <id>
 
-id:
+*id*:
 
     [a-z_][a-z0-9_]*
 
@@ -229,16 +232,12 @@ Operator
 
 relation:
 
-    <
-    =
-    >
-    <=
-    =<
-    <>
-    ><
-    >=
-    =>
     in
+    <comparison>
+
+*comparison*:
+
+    <|=|>|<=|=<|<>|><|>=|=>
 
 addition:
 
@@ -276,27 +275,35 @@ boolean:
     yes
     no
 
-integer:
+*integer*:
 
-    [0-9][0-9]*
-    // [0-9]+
+    [0-9]+
 
-real:
+*real*:
 
-    [0-9]*\.[0-9][0-9]*
-    [0-9]*\.[0-9][0-9]*[eE][0-9][0-9]*
-    [0-9]*\.[0-9][0-9]*[eE]\+[0-9][0-9]*
-    [0-9]*\.[0-9][0-9]*[eE]\-[0-9][0-9]*
-    // [0-9]*\.[0-9]+[eE][\+\-]?[0-9]+
+    [0-9]*\.[0-9]+([eE][\+-]?[0-9]+)?
 
-string:
+*string*:
 
-    \"([^\\]|\\.)*\"
+    "([^\\]|\\.)*"
 
 Special
 ---
 
-comment:
+**space**:
 
-    \/\/.*$
-    // anywhere except in a string
+    <ignored>
+
+**keyword**:
+
+    <id>
+    <sign>
+
+*sign*:
+
+    [\(\)\[\],.+\-*\/;]|:=
+
+*ignored*:
+
+    ([ \t\n]|\/\/.*$)*
+    // including comments
