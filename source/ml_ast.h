@@ -1,3 +1,6 @@
+#ifndef ML_AST_H
+#define ML_AST_H
+
 #include <vector>
 #include <string>
 
@@ -72,3 +75,5 @@ template <ASTNodeType NT>
 using ASTNodeDataTyped = ASTNodeTyped<NT, ASTNodeData>;
 
 }
+
+#endif
