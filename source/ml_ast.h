@@ -8,8 +8,6 @@ namespace mylang {
 
 using NodeType = char *;
 
-char node_root[] = "root";
-
 class Node {
 public:
     virtual NodeType getType() = 0;
