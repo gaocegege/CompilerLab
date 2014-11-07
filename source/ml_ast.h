@@ -6,37 +6,31 @@
 
 namespace mylang {
 
-using ASTNodeType = char *;
+using NodeType = char *;
 
 char node_root[] = "root";
 
-class ASTNodeList;
-class ASTNodeText;
-
-class ASTNode {
+class Node {
 public:
-    virtual ASTNodeType getType() {}
+    virtual NodeType getType() = 0;
 
-    inline ASTNodeList *castAsList() {
-        dynamic_cast<ASTNodeList *>(this);
-    }
-
-    inline ASTNodeText *castAsText() {
-        dynamic_cast<ASTNodeText *>(this);
+    template <class T>
+    inline T *cast() {
+        dynamic_cast<T *>(this);
     }
 };
 
-class ASTNodeList: public ASTNode {
+class NodeList: public Node {
 private:
-    std::vector<ASTNode *> children;
+    std::vector<Node *> children;
 
 public:
-    inline std::vector<ASTNode *> &getChildren() {
+    inline std::vector<Node *> &getChildren() {
         return children;
     }
 };
 
-class ASTNodeText: public ASTNode {
+class NodeText: public Node {
 private:
     std::string text;
 
@@ -47,7 +41,7 @@ public:
 };
 
 template <class T>
-class ASTNodeData: public ASTNodeText {
+class NodeData: public NodeText {
 private:
     T value;
 
@@ -57,22 +51,22 @@ public:
     }
 };
 
-template <ASTNodeType NT, class T>
-class ASTNodeTyped: public T {
+template <NodeType NT, class T>
+class NodeTyped: public T {
 public:
-    virtual ASTNodeType getType() {
+    virtual NodeType getType() {
         return NT;
     }
 };
 
-template <ASTNodeType NT>
-using ASTNodeListTyped = ASTNodeTyped<NT, ASTNodeList>;
+template <NodeType NT>
+using NodeListTyped = NodeTyped<NT, NodeList>;
 
-template <ASTNodeType NT>
-using ASTNodeTextTyped = ASTNodeTyped<NT, ASTNodeText>;
+template <NodeType NT>
+using NodeTextTyped = NodeTyped<NT, NodeText>;
 
-template <ASTNodeType NT>
-using ASTNodeDataTyped = ASTNodeTyped<NT, ASTNodeData>;
+template <NodeType NT, class T>
+using NodeDataTyped = NodeTyped<NT, NodeData<T> >;
 
 }
 

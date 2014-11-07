@@ -3,7 +3,7 @@
 
 namespace mylang {
 
-class SyntaxRuleRoot {
+class RuleRoot {
 public:
     // parse() // TODO
 };
