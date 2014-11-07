@@ -14,11 +14,11 @@ class ASTNode {
 public:
     virtual ASTNodeType getType() {}
 
-    ASTNodeList *castAsList() {
+    inline ASTNodeList *castAsList() {
         dynamic_cast<ASTNodeList *>(this);
     }
 
-    ASTNodeText *castAsText() {
+    inline ASTNodeText *castAsText() {
         dynamic_cast<ASTNodeText *>(this);
     }
 };
@@ -28,7 +28,7 @@ private:
     std::vector<ASTNode *> children;
 
 public:
-    std::vector<ASTNode *> &getChildren() {
+    inline std::vector<ASTNode *> &getChildren() {
         return children;
     }
 };
@@ -38,8 +38,19 @@ private:
     std::string text;
 
 public:
-    std::string &getText() {
+    inline std::string &getText() {
         return text;
+    }
+};
+
+template <class T>
+class ASTNodeData: public ASTNodeText {
+private:
+    T value;
+
+public:
+    inline T &getValue() {
+        return value;
     }
 };
 
@@ -57,21 +68,7 @@ using ASTNodeListTyped = ASTNodeTyped<NT, ASTNodeList>;
 template <ASTNodeType NT>
 using ASTNodeTextTyped = ASTNodeTyped<NT, ASTNodeText>;
 
-// TODO: generalize ASTNode???Typed with value
-
-template <>
-class ASTNodeTextTyped<node_int>: public ASTNodeText {
-private:
-    int value;
-
-public:
-    virtual ASTNodeType getType() {
-        return node_int;
-    }
-
-    int getValue() {
-        return value;
-    }
-};
+template <ASTNodeType NT>
+using ASTNodeDataTyped = ASTNodeTyped<NT, ASTNodeData>;
 
 }
