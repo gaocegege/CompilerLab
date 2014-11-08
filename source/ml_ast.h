@@ -6,7 +6,9 @@
 
 namespace mylang {
 
-using NodeType = char *;
+class Rule;
+
+using NodeType = Rule *;
 
 class Node {
 public:
@@ -23,6 +25,12 @@ private:
     std::vector<Node *> children;
 
 public:
+    inline NodeList(): children() {}
+
+    inline putChildren(Node *value) {
+        children.push_back(value);
+    }
+
     inline std::vector<Node *> &getChildren() {
         return children;
     }
@@ -33,20 +41,14 @@ private:
     std::string text;
 
 public:
+    inline NodeText(std::string value): text() {}
+
     inline std::string &getText() {
         return text;
     }
-};
 
-template <class T>
-class NodeData: public NodeText {
-private:
-    T value;
-
-public:
-    inline T &getValue() {
-        return value;
-    }
+    template <class T>
+    inline T &getValue() = delete;
 };
 
 template <NodeType NT, class T>
@@ -62,9 +64,6 @@ using NodeListTyped = NodeTyped<NT, NodeList>;
 
 template <NodeType NT>
 using NodeTextTyped = NodeTyped<NT, NodeText>;
-
-template <NodeType NT, class T>
-using NodeDataTyped = NodeTyped<NT, NodeData<T> >;
 
 }
 
