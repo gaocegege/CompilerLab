@@ -10,59 +10,31 @@ namespace mylang {
 class Node;
 
 class Rule {
-public:
-    virtual std::string &getName() = delete;
+protected:
+    inline Rule() {} // force singleton
 
-    virtual Node *parse(std::string::iterator &input) = delete;
+public:
+    virtual std::string &getName() = 0;
 };
+
+//////// Named ////////
 
 template <char *N>
 class RuleNamed: public Rule {
-private:
-    static std::string name = N;
-
 public:
     virtual std::string &getName() {
+        static std::string name(N);
+
         return name;
     }
 };
 
-template <char *KW>
-class RuleKeyword: public Rule {
-public:
-    virtual Node *parse(std::string::iterator &input) {
-        //
-    }
-};
-
-/*template <Rule *R>
-class RuleRef: public Rule {
-public:
-    virtual Node *parse(std::string::iterator &input) {
-        //
-    }
-};*/
-
-template <char *E>
-class RuleError: public Rule {
-public:
-    virtual Node *parse(std::string::iterator &input) {
-        //
-    }
-};
-
-template <Rule... *R>
-class RuleLine: public Rule {
-public:
-    virtual Node *parse(std::string::iterator &input) {
-        //
-    }
-};
-
-template <char *N, RuleLine... *RL>
+template <char *N, class... RL>
 class RuleList: public RuleNamed<N> {
 public:
-    virtual Node *parse(std::string::iterator &input) {
+    static RuleList<N, RL...> instance;
+
+    Node *parse(std::string::iterator &input) {
         //
     }
 };
@@ -70,7 +42,44 @@ public:
 template <char *N, char *RX>
 class RuleRegex: public RuleNamed<N> {
 public:
-    virtual Node *parse(std::string::iterator &input) {
+    static RuleRegex<N, RX> instance;
+
+    Node *parse(std::string::iterator &input) {
+        //
+    }
+};
+
+//////// Cell ////////
+
+template <char *KW>
+class RuleKeyword: public Rule {
+public:
+    static RuleKeyword<KW> instance;
+
+    Node *parse(std::string::iterator &input) {
+        //
+    }
+};
+
+template <class R>
+using RuleRef = R;
+
+template <char *E>
+class RuleError: public Rule {
+public:
+    static RuleError<E> instance;
+
+    Node *parse(std::string::iterator &input) {
+        //
+    }
+};
+
+template <class... R>
+class RuleLine: public Rule {
+public:
+    static RuleLine<R...> instance;
+
+    Node *parse(std::string::iterator &input) {
         //
     }
 };

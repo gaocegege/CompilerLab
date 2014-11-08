@@ -27,7 +27,7 @@ private:
 public:
     inline NodeList(): children() {}
 
-    inline putChildren(Node *value) {
+    inline void putChildren(Node *value) {
         children.push_back(value);
     }
 
