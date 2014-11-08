@@ -20,6 +20,8 @@ class Rule {
 protected:
     inline Rule() {} // force singleton
 
+    // virtual ~Rule() {}
+
 public:
     virtual const std::string &getName() const = 0;
 };
@@ -35,11 +37,11 @@ public:
 };
 
 // need specialization
-template <const char *N, class T = void>
+template <const char *N, class TX = void>
 class GetRule: public RuleNamed<N> {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        return T::need_specialization();
+        return TX::need_specialization();
     }
 };
 
@@ -72,7 +74,7 @@ private:
         }
     }
 
-    template <class T = void> // iteration finished
+    template <class TX = void> // iteration finished
     static inline const Node *runRule(
         InputType &input, const InputType &end
     ) {
@@ -129,10 +131,10 @@ public:
 
 //////// Cell ////////
 
-template <class T = void> // actually not a template
+template <class TX = void> // actually not a template
 class RuleSpace: public Rule {
 public:
-    static const RuleSpace<T> instance;
+    static const RuleSpace<TX> instance;
 
     static const Node *parse(InputType &input, const InputType &end) {
         return GetRule<rule_space>::parse(input, end);
@@ -147,7 +149,15 @@ public:
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string keyword = KW;
 
-        return GetRule<rule_keyword>::parse(input, end);
+        const Node *result = GetRule<rule_keyword>::parse(input, end);
+
+        if (result->getFullText() == keyword) {
+            return result;
+        } else {
+            delete result;
+
+            return nullptr;
+        }
     }
 };
 
@@ -195,7 +205,7 @@ public:
             return current && runRule<Rx...>(result, input, end);
         }
 
-        template <class T = void> // iteration finished
+        template <class TX = void> // iteration finished
         static inline bool runRule(
             ResultType *&result, InputType &input, const InputType &end
         ) {

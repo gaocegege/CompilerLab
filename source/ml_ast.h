@@ -12,7 +12,13 @@ using NodeType = const Rule *;
 
 class Node {
 public:
+    inline Node() {}
+
+    virtual ~Node() {}
+
     virtual NodeType getType() const = 0;
+
+    virtual const std::string getFullText() const = 0;
 
     template <class T>
     inline const T *cast() const {
@@ -20,15 +26,32 @@ public:
     }
 };
 
+template <class TX = void> // actually not a template
 class NodeList: public Node {
 private:
     std::vector<Node *> children;
 
 public:
-    inline NodeList(): children() {}
+    inline NodeList(): Node(), children() {}
+
+    virtual ~NodeList() {
+        for (Node *child: children) {
+            delete child;
+        }
+    }
 
     inline void putChild(Node *value) {
         children.push_back(value);
+    }
+
+    virtual const std::string getFullText() const {
+        std::string result = "";
+
+        for (Node *child: children) {
+            result += child->getFullText();
+        }
+
+        return result;
     }
 
     inline const std::vector<Node *> &getChildren() const {
@@ -36,12 +59,19 @@ public:
     }
 };
 
+template <class TX = void> // actually not a template
 class NodeText: public Node {
 private:
     std::string text;
 
 public:
-    inline NodeText(std::string value): text() {}
+    inline NodeText(std::string value): Node(), text() {}
+
+    virtual ~NodeText() {}
+
+    virtual const std::string getFullText() const {
+        return text;
+    }
 
     inline const std::string &getText() const {
         return text;
@@ -60,10 +90,10 @@ public:
 };
 
 template <NodeType NT>
-using NodeListTyped = NodeTyped<NT, NodeList>;
+using NodeListTyped = NodeTyped<NT, NodeList<>>;
 
 template <NodeType NT>
-using NodeTextTyped = NodeTyped<NT, NodeText>;
+using NodeTextTyped = NodeTyped<NT, NodeText<>>;
 
 }
 
