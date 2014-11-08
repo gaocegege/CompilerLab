@@ -6,7 +6,17 @@
 
 namespace mylang {
 
+// forward declaration
+
 class Rule;
+
+template <class TX>
+class NodeList;
+
+template <class TX>
+class NodeText;
+
+// forward declaration finished
 
 using NodeType = const Rule *;
 
@@ -20,9 +30,14 @@ public:
 
     virtual const std::string getFullText() const = 0;
 
-    template <class T>
-    inline const T *cast() const {
-        dynamic_cast<T *>(this);
+    template <class TX = void> // decide type later
+    inline const NodeList<TX> *castList() const {
+        dynamic_cast<NodeList<TX> *>(this);
+    }
+
+    template <class TX = void> // decide type later
+    inline const NodeText<TX> *castText() const {
+        dynamic_cast<NodeText<TX> *>(this);
     }
 };
 

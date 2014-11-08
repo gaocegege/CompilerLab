@@ -14,8 +14,6 @@ const char rule_root[] = "root";
 const char rule_space[] = "space";
 const char rule_keyword[] = "keyword";
 
-class Node;
-
 class Rule {
 protected:
     inline Rule() {} // force singleton
