@@ -93,7 +93,7 @@ class RuleRegex: public RuleNamed<N> {
 public:
     static const RuleRegex<N, RX> instance;
 
-    using ResultType = NodeTextTyped<instance>;
+    using ResultType = NodeTextTyped<RuleRegex<N, RX>>;
 
 private:
     static inline const ResultType *runRegex(
@@ -132,8 +132,6 @@ public:
 template <class TX = void> // actually not a template
 class RuleSpace: public Rule {
 public:
-    static const RuleSpace<TX> instance;
-
     static const Node *parse(InputType &input, const InputType &end) {
         return GetRule<rule_space>::parse(input, end);
     }
@@ -142,8 +140,6 @@ public:
 template <const char *KW>
 class RuleKeyword: public Rule {
 public:
-    static const RuleKeyword<KW> instance;
-
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string keyword = KW;
 
@@ -162,8 +158,6 @@ public:
 template <const char *N>
 class RuleRef: public Rule {
 public:
-    static const RuleRef<N> instance;
-
     static const Node *parse(InputType &input, const InputType &end) {
         return GetRule<N>::parse(input, end);
     }
@@ -172,8 +166,6 @@ public:
 template <const char *E>
 class RuleError: public Rule {
 public:
-    static const RuleError<E> instance;
-
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string error = E;
 
@@ -187,16 +179,14 @@ public:
     template <class LST>
     class Helper: public Rule {
     public:
-        static const Helper<RL...> instance;
-
-        using ResultType = NodeListTyped<LST::instance>;
+        using ResultType = NodeListTyped<LST>;
 
     private:
         template <class R, class... Rx>
         static inline bool runRule(
             ResultType *&result, InputType &input, const InputType &end
         ) {
-            Node *current = R::instance::parse(input, end);
+            Node *current = R::parse(input, end);
 
             result->putChild(current);
 

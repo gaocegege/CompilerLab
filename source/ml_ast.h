@@ -90,7 +90,6 @@ public:
     inline const T &getValue() const = delete;
 };
 
-template <NodeType NT, class T>
 inline const NodeList<> *Node::castList() const {
     return dynamic_cast<const NodeList<> *>(this);
 }
@@ -99,17 +98,18 @@ inline const NodeText<> *Node::castText() const {
     return dynamic_cast<const NodeText<> *>(this);
 }
 
+template <class NT, class T>
 class NodeTyped: public T {
 public:
     virtual NodeType getType() const {
-        return NT;
+        return NT::instance;
     }
 };
 
-template <NodeType NT>
+template <class NT>
 using NodeListTyped = NodeTyped<NT, NodeList<>>;
 
-template <NodeType NT>
+template <class NT>
 using NodeTextTyped = NodeTyped<NT, NodeText<>>;
 
 }
