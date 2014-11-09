@@ -10,10 +10,10 @@ namespace mylang {
 
 class Rule;
 
-template <class TX>
+template <class TX = void>
 class NodeList;
 
-template <class TX>
+template <class TX = void>
 class NodeText;
 
 // forward declaration finished
@@ -30,18 +30,12 @@ public:
 
     virtual const std::string getFullText() const = 0;
 
-    template <class TX = void> // decide type later
-    inline const NodeList<TX> *castList() const {
-        dynamic_cast<NodeList<TX> *>(this);
-    }
+    inline const NodeList<> *castList() const;
 
-    template <class TX = void> // decide type later
-    inline const NodeText<TX> *castText() const {
-        dynamic_cast<NodeText<TX> *>(this);
-    }
+    inline const NodeText<> *castText() const;
 };
 
-template <class TX = void> // actually not a template
+template <class TX> // actually not a template
 class NodeList: public Node {
 private:
     std::vector<Node *> children;
@@ -74,13 +68,13 @@ public:
     }
 };
 
-template <class TX = void> // actually not a template
+template <class TX> // actually not a template
 class NodeText: public Node {
 private:
     std::string text;
 
 public:
-    inline NodeText(std::string value): Node(), text() {}
+    inline NodeText(const std::string &value): Node(), text(value) {}
 
     virtual ~NodeText() {}
 
@@ -97,6 +91,14 @@ public:
 };
 
 template <NodeType NT, class T>
+inline const NodeList<> *Node::castList() const {
+    return dynamic_cast<const NodeList<> *>(this);
+}
+
+inline const NodeText<> *Node::castText() const {
+    return dynamic_cast<const NodeText<> *>(this);
+}
+
 class NodeTyped: public T {
 public:
     virtual NodeType getType() const {
