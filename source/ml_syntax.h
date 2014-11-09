@@ -1,6 +1,7 @@
 #ifndef ML_SYNTAX_H
 #define ML_SYNTAX_H
 
+#include <limits>
 #include <string>
 #include <regex>
 
@@ -14,6 +15,17 @@ using InputType = std::string::iterator;
 using BuiltinRoot = ML_STR("root", 4);
 using BuiltinSpace = ML_STR("space", 5);
 using BuiltinKeyword = ML_STR("keyword", 7);
+
+template <size_t L, size_t M>
+class Tag {
+public:
+    static const size_t least = L;
+    static const size_t most = M;
+};
+using TagNormal = Tag<1, 1>;
+using TagMaybe = Tag<0, 1>;
+using TagAny0 = Tag<0, std::numeric_limits<size_t>::max()>;
+using TagAny1 = Tag<1, std::numeric_limits<size_t>::max()>;
 
 class Rule {
 protected:
@@ -73,7 +85,7 @@ private:
         }
     }
 
-    template <class TX = void> // iteration finished
+    template <std::nullptr_t P = nullptr> // iteration finished
     static inline const Node *runRule(
         InputType &input, const InputType &end
     ) {
@@ -130,16 +142,16 @@ public:
 
 //////// Cell ////////
 
-template <class TX = void> // actually not a template
-class RuleSpace {
+template <class TAG = TagNormal>
+class RuleItemSpace: public TAG {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         return RuleDef<BuiltinSpace>::parse(input, end);
     }
 };
 
-template <class KW>
-class RuleKeyword {
+template <class KW, class TAG = TagNormal>
+class RuleItemKeyword: public TAG {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string keyword = KW::getStr();
@@ -156,16 +168,16 @@ public:
     }
 };
 
-template <class N>
-class RuleRef {
+template <class N, class TAG = TagNormal>
+class RuleItemRef: public TAG {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         return RuleDef<N>::parse(input, end);
     }
 };
 
-template <class E>
-class RuleError {
+template <class E, class TAG = TagNormal>
+class RuleItemError: public TAG {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string error = E::getStr();
@@ -189,14 +201,24 @@ public:
         static inline bool runRule(
             ResultType *&result, InputType &input, const InputType &end
         ) {
-            Node *current = R::parse(input, end);
+            for (size_t i = 0; i < R::most; ++i) {
+                Node *current = R::parse(input, end);
 
-            result->putChild(current);
+                if (current) {
+                    result->putChild(current);
+                } else {
+                    if (i < R::least) {
+                        return false;
+                    } else {
+                        break;
+                    }
+                }
+            }
 
-            return current && runRule<Rx...>(result, input, end);
+            return runRule<Rx...>(result, input, end);
         }
 
-        template <class TX = void> // iteration finished
+        template <std::nullptr_t P = nullptr> // iteration finished
         static inline bool runRule(
             ResultType *&result, InputType &input, const InputType &end
         ) {
