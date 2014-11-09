@@ -4,6 +4,7 @@
 #include <string>
 #include <regex>
 
+#include "ml_util.h"
 #include "ml_ast.h"
 
 namespace mylang {
