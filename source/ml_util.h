@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "ml_util_chain.inc"
+#define ML_STR_1(str, index) str[index]
+#define ML_STR(str, len) StaticStr<ML_STR_##len(str, 0)>
+
 namespace mylang {
 
 template <char... C>
