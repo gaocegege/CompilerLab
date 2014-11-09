@@ -11,9 +11,9 @@ namespace mylang {
 
 using InputType = std::string::iterator;
 
-const char rule_root[] = "root";
-const char rule_space[] = "space";
-const char rule_keyword[] = "keyword";
+using BuiltinRoot = ML_STR("root", 4);
+using BuiltinSpace = ML_STR("space", 5);
+using BuiltinKeyword = ML_STR("keyword", 7);
 
 class Rule {
 protected:
@@ -25,18 +25,18 @@ public:
     virtual const std::string &getName() const = 0;
 };
 
-template <const char *N>
+template <class N>
 class RuleNamed: public Rule {
 public:
     virtual const std::string &getName() const {
-        static const std::string name(N);
+        static const std::string name = N::getStr();
 
         return name;
     }
 };
 
 // need specialization
-template <const char *N, class TX = void>
+template <class N, class TX = void>
 class GetRule: public RuleNamed<N> {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
@@ -46,7 +46,7 @@ public:
 
 //////// Named ////////
 
-template <const char *N, class... RL>
+template <class N, class... RL>
 class RuleList: public RuleNamed<N> {
 public:
     static const RuleList<N, RL...> instance;
@@ -86,10 +86,10 @@ public:
     }
 };
 
-template <const char *N, class... RL>
+template <class N, class... RL>
 using RuleBuiltin = RuleList<N, RL...>;
 
-template <const char *N, const char *RX>
+template <class N, class RX>
 class RuleRegex: public RuleNamed<N> {
 public:
     static const RuleRegex<N, RX> instance;
@@ -101,7 +101,7 @@ private:
         InputType &input, const InputType &end
     ) {
         static const std::regex regex(
-            RX,
+            RX::getStr(),
             std::regex_constants::extended
         );
 
@@ -134,17 +134,17 @@ template <class TX = void> // actually not a template
 class RuleSpace: public Rule {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        return GetRule<rule_space>::parse(input, end);
+        return GetRule<BuiltinSpace>::parse(input, end);
     }
 };
 
-template <const char *KW>
+template <class KW>
 class RuleKeyword: public Rule {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        static const std::string keyword = KW;
+        static const std::string keyword = KW::getStr();
 
-        const Node *result = GetRule<rule_keyword>::parse(input, end);
+        const Node *result = GetRule<BuiltinKeyword>::parse(input, end);
 
         if (result->getFullText() == keyword) {
             return result;
@@ -156,7 +156,7 @@ public:
     }
 };
 
-template <const char *N>
+template <class N>
 class RuleRef: public Rule {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
@@ -164,13 +164,15 @@ public:
     }
 };
 
-template <const char *E>
+template <class E>
 class RuleError: public Rule {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        static const std::string error = E;
+        static const std::string error = E::getStr();
 
-        throw E; // TODO: exception class
+        // throw E; // TODO: exception class
+
+        return nullptr;
     }
 };
 
