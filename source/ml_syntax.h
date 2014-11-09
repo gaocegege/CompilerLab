@@ -37,7 +37,7 @@ public:
 
 // need specialization
 template <class N, class TX = void>
-class GetRule: public RuleNamed<N> {
+class RuleDef: public RuleNamed<N> {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         return TX::need_specialization();
@@ -131,20 +131,20 @@ public:
 //////// Cell ////////
 
 template <class TX = void> // actually not a template
-class RuleSpace: public Rule {
+class RuleSpace {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        return GetRule<BuiltinSpace>::parse(input, end);
+        return RuleDef<BuiltinSpace>::parse(input, end);
     }
 };
 
 template <class KW>
-class RuleKeyword: public Rule {
+class RuleKeyword {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string keyword = KW::getStr();
 
-        const Node *result = GetRule<BuiltinKeyword>::parse(input, end);
+        const Node *result = RuleDef<BuiltinKeyword>::parse(input, end);
 
         if (result->getFullText() == keyword) {
             return result;
@@ -157,15 +157,15 @@ public:
 };
 
 template <class N>
-class RuleRef: public Rule {
+class RuleRef {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
-        return GetRule<N>::parse(input, end);
+        return RuleDef<N>::parse(input, end);
     }
 };
 
 template <class E>
-class RuleError: public Rule {
+class RuleError {
 public:
     static const Node *parse(InputType &input, const InputType &end) {
         static const std::string error = E::getStr();
@@ -180,7 +180,7 @@ template <class... RL>
 class RuleLine {
 public:
     template <class LST>
-    class Helper: public Rule {
+    class Helper {
     public:
         using ResultType = NodeListTyped<LST>;
 

@@ -9,7 +9,7 @@ const char name[] = "id";
 const char regex[] = "[A-Za-z][A-Za-z0-9_]*";
 
 template <>
-class GetRule<ML_STR("id", 2)>: public RuleRegex<
+class RuleDef<ML_STR("id", 2)>: public RuleRegex<
     ML_STR("id", 2),
     ML_STR("[A-Za-z][A-Za-z0-9_]*", 22)
 > {};
