@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "parser/myparser_rule.hpp"
+#include "mylang_syntax.hpp"
 
 using namespace myparser;
 
