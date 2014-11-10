@@ -2,13 +2,7 @@
 
 #include "mylang_syntax.hpp"
 
-using namespace myparser;
-
-template <>
-class myparser::RuleDef<MP_STR("id", 2)>: public RuleRegex<
-    MP_STR("id", 2),
-    MP_STR("[A-Za-z][A-Za-z0-9_]*", 22)
-> {};
+using namespace mylang;
 
 void test() {
     std::cout << StaticStr<'a', 'b', 'c'>::getStr() << std::endl;
