@@ -30,12 +30,7 @@ Block
 
 main body:
 
-    <extend> <interface block> <code block> <main end>
-
-extend:
-
-    extends <typename id>
-    <>
+    <specific> <interface block> <code block> <main end>
 
 interface block:
 
@@ -44,12 +39,7 @@ interface block:
 
 is block:
 
-    is <value block>
-    <>
-
-value block:
-
-    <value definition> <value block>
+    is <interface block>
     <>
 
 code block:
@@ -78,23 +68,25 @@ argument list:
     <value id>
     <>
 
+specific:
+
+    extends <typename id>
+    <>
+
 definition:
 
+    <var definition> ;
+    <const definition> ;
     <type definition> ;
-    <value definition> ;
-    <return definition> ;
     <program> ;
     <function> ;
+    <return definition> ;
     ;
+    // return definition for function only (or cause a warning)
 
 type definition:
 
     type <typename id> is <type id>
-
-value definition:
-
-    <var definition>
-    <const definition>
 
 var definition:
 
