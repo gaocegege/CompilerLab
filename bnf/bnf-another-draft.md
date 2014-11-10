@@ -15,27 +15,27 @@ Main Structure
 
 program:
 
-    program <function proto> <function body>
+    program <function proto> <main body>
 
 function:
 
-    function <function proto> <function body>
+    function <function proto> <main body>
 
 class:
 
-    class <extend> <interface block> <main end>
+    class <main body>
+
+Block
+---
+
+main body:
+
+    <extend> <interface block> <code block> <main end>
 
 extend:
 
     extends <typename id>
     <>
-
-Block
----
-
-function body:
-
-    <interface block> begin <code block> <main end>
 
 interface block:
 
@@ -54,7 +54,7 @@ value block:
 
 code block:
 
-    <statement> <code block>
+    begin <statement list>
     <>
 
 main end:
@@ -83,6 +83,7 @@ definition:
     <type definition> ;
     <value definition> ;
     <return definition> ;
+    <program> ;
     <function> ;
     ;
 
@@ -115,6 +116,7 @@ statement:
 
     <expression> ;
     <assignment> ;
+    <inherit> ;
     <return> ;
     <structure>
     <repeat> ;
@@ -124,6 +126,10 @@ assignment:
 
     <variable> := <expression>
 
+inherit:
+
+    inherit
+
 return:
 
     return <expression>
@@ -131,17 +137,22 @@ return:
 Code Structure
 ---
 
+statement list:
+
+    <statement> <statement list>
+    <>
+
 structure:
 
-    if <expression> then <code block> <condition chain> <structure end>
-    for <variable> := <for range> do <code block> <structure end>
-    foreach <variable> in <expression> do <code block> <structure end>
-    while <expression> do <code block> <structure end>
+    if <expression> then <statement list> <condition chain> <structure end>
+    for <variable> := <for range> do <statement list> <structure end>
+    foreach <variable> in <expression> do <statement list> <structure end>
+    while <expression> do <statement list> <structure end>
 
 condition chain:
 
-    elif <expression> then <code block> <condition chain>
-    else <code block>
+    elif <expression> then <statement list> <condition chain>
+    else <statement list>
     <>
 
 for range:
@@ -160,7 +171,7 @@ structure end:
 
 repeat:
 
-    repeat <code block> until <expression>
+    repeat <statement list> until <expression>
     // special structure
 
 Expression
