@@ -6,9 +6,15 @@ File
 
 **root**:
 
-    <> <program> ; <>
-    <> <program> <>
+    <> <main structure> ; <>
+    <> <main structure> <>
     // allow spaces before and after
+
+main structure:
+
+    <program>
+    <function>
+    <class>
 
 Main Structure
 ---
@@ -70,7 +76,7 @@ argument list:
 
 specific:
 
-    extends <typename id>
+    extends <type list>
     <>
 
 definition:
@@ -86,23 +92,28 @@ definition:
 
 type definition:
 
-    type <typename id> is <type id>
+    type <type id> is <type>
 
 var definition:
 
-    var <value id> is <type id>
+    var <value id> is <type>
 
 const definition:
 
-    const <value id> is <type id>
+    const <value id> is <type>
 
 return definition:
 
-    return <type id>
+    return <type>
     // return is supported in function only
 
 Statement
 ---
+
+statement list:
+
+    <statement> <statement list>
+    <>
 
 statement:
 
@@ -128,11 +139,6 @@ return:
 
 Code Structure
 ---
-
-statement list:
-
-    <statement> <statement list>
-    <>
 
 structure:
 
@@ -169,18 +175,11 @@ repeat:
 Expression
 ---
 
-variable:
+expression list:
 
-    <value id> . <variable>
-    <value id> [ <expression> ]
-    <value id>
-
-
+    <expression> , <expression list>
     <expression>
-
-    <relation> <additive expression>
-    <additive expression>
-
+    <>
 
 expression:
 
@@ -226,23 +225,28 @@ argument expression:
     <unary expression>
     ( <expression list> )
 
-expression list:
+variable:
 
-    <expression> , <expression list>
-    <expression>
-    <>
+    <value id> . <variable>
+    <value id> [ <expression> ]
+    <value id>
 
 Identifier
 ---
 
-type id:
+type list:
+
+    <type> , <type list>
+    <type>
+
+type:
 
     <class>
     <array>
     <native type>
-    <typename id>
+    <type id>
 
-typename id:
+type id:
 
     <id>
 
@@ -263,7 +267,7 @@ Type
 
 array:
 
-    array of <integer> <type id>
+    array of <integer> <type>
 
 native type:
 
