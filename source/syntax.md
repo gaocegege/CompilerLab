@@ -8,6 +8,7 @@ File
 
     <> <main structure> ; <>
     <> <main structure> <>
+    <!Syntax error>
     // allow spaces before and after
 
 main structure:

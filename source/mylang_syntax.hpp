@@ -10,7 +10,7 @@ using namespace myparser;
 template <class N>
 class RuleDef: public RuleNamed<N> {
 public:
-    static const Node *parse(InputType &input, const InputType &end) {
+    static const Node *parse(Input &input, const Input &end) {
         return N::need_specialization();
     }
 };
@@ -40,6 +40,9 @@ public RuleList<MP_STR("root", 4),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("main structure", 14)>,
         RuleItemSpace<>
+    >,
+    RuleLine<
+        RuleItemError<MP_STR("Syntax error", 12)>
     >
 > {};
 
