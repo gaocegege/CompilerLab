@@ -56,8 +56,8 @@ code block:
 
 main end:
 
-    end program <function id>
-    end function <function id>
+    end program <id>
+    end function <id>
     end class
     end
     // should match the body
@@ -67,12 +67,12 @@ Definition
 
 function proto:
 
-    <function id> ( <argument list> )
+    <id> ( <argument list> )
 
 argument list:
 
-    <argument option> <value id> , <argument list>
-    <argument option> <value id>
+    <argument option> <id> , <argument list>
+    <argument option> <id>
     <>
 
 argument option:
@@ -100,15 +100,15 @@ definition:
 
 type definition:
 
-    type <type id> is <type>
+    type <id> is <type>
 
 var definition:
 
-    var <value id> is <type>
+    var <id> is <type>
 
 const definition:
 
-    const <value id> is <type>
+    const <id> is <type>
 
 return definition:
 
@@ -135,7 +135,7 @@ statement:
 
 assignment:
 
-    <variable> := <expression>
+    <expression> := <expression>
 
 inherit:
 
@@ -151,8 +151,8 @@ Code Structure
 structure:
 
     if <expression> then <statement list> <condition chain> <structure end>
-    for <variable> := <for range> do <statement list> <structure end>
-    foreach <variable> in <expression> do <statement list> <structure end>
+    for <expression> := <for range> do <statement list> <structure end>
+    foreach <expression> in <expression> do <statement list> <structure end>
     while <expression> do <statement list> <structure end>
 
 condition chain:
@@ -224,20 +224,29 @@ unary expression:
 
     <unary operator> <unary expression>
     <literal>
-    <variable> <argument expression>
-    <variable>
-    [ <expression list> ]
+    <access expression>
+    ( <expression> )
 
-argument expression:
+access expression:
 
-    <unary expression>
+    <value expression> <access operation>
+
+access operation:
+
+    . <access operation>
+    <>
+
+value expression:
+
+    <id> <argument apply>
+    <id>
+
+argument apply:
+
+    <literal>
+    <value expression>
     ( <expression list> )
-
-variable:
-
-    <value id> . <variable>
-    <value id> [ <expression> ]
-    <value id>
+    // x[0] is x.__call<array of 1 integer>([0])
 
 Identifier
 ---
@@ -253,18 +262,6 @@ type:
     <array>
     <reference>
     <class>
-    <type id>
-
-type id:
-
-    <id>
-
-function id:
-
-    <id>
-
-value id:
-
     <id>
 
 *id*:
@@ -331,14 +328,20 @@ Literal
 literal:
 
     <boolean>
+    <byte>
     <integer>
     <real>
     <string>
+    <instant array>
 
 boolean:
 
     yes
     no
+
+*byte*:
+
+    '([^\\]|\\.)'
 
 *integer*:
 
@@ -351,6 +354,10 @@ boolean:
 *string*:
 
     "([^\\]|\\.)*"
+
+*instant array*:
+
+    [ <expression list> ]
 
 Special
 ---
