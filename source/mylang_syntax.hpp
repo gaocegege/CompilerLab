@@ -14,6 +14,9 @@ template <class N>
 class RuleDef: public RuleNamed<N> {
 public:
     static const Node *parse(Input &input, const Input &end) {
+        (void) input;
+        (void) end;
+
         return N::need_specialization();
     }
 };
