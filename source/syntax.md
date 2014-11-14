@@ -37,7 +37,7 @@ Block
 
 main body:
 
-    <specific> <interface block> <code block> <main end>
+    <specific> <interface block> <is block> <code block> <main end>
 
 interface block:
 
@@ -71,8 +71,15 @@ function proto:
 
 argument list:
 
-    <value id> , <argument list>
-    <value id>
+    <argument option> <value id> , <argument list>
+    <argument option> <value id>
+    <>
+
+argument option:
+
+    in
+    out
+    reg
     <>
 
 specific:
@@ -188,7 +195,7 @@ expression:
 
 relative expression:
 
-    <additive expression> <relation operation>
+    <additive expression> <relative operation>
 
 relative operation:
 
@@ -242,9 +249,10 @@ type list:
 
 type:
 
-    <class>
-    <array>
     <native type>
+    <array>
+    <reference>
+    <class>
     <type id>
 
 type id:
@@ -266,16 +274,23 @@ value id:
 Type
 ---
 
+native type:
+
+    empty
+    boolean
+    byte
+    integer
+    real
+
 array:
 
     array of <integer> <type>
+    array of <type>
+    // the second version is pointer
 
-native type:
+reference:
 
-    boolean
-    integer
-    real
-    string
+    reference of <type>
 
 Operator
 ---
@@ -355,5 +370,5 @@ Special
 
 *ignored*:
 
-    ([ \t\n]|\/\/.*$)*
+    ([ \t\r\n]|\/\/.*$)*
     // including comments
