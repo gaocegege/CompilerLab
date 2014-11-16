@@ -355,7 +355,7 @@ boolean:
 
     "([^\\]|\\.)*"
 
-*instant array*:
+instant array:
 
     [ <expression list> ]
 

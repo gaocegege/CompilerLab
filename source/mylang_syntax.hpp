@@ -959,8 +959,14 @@ public RuleRegex<MP_STR("string", 6),
 
 template<>
 class RuleDef<MP_STR("instant array", 13)>:
-public RuleRegex<MP_STR("instant array", 13),
-    MP_STR("[ <expression list> ]", 21)
+public RuleList<MP_STR("instant array", 13),
+    RuleLine<
+        RuleItemKeyword<MP_STR("[", 1)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression list", 15)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("]", 1)>
+    >
 > {};
 
 template<>
