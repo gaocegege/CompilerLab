@@ -1,8 +1,14 @@
 #if 0
 python gen_parser.py
-# g++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_gcc && ./ml_gcc
-# clang++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang && ./ml_clang
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang && ./ml_clang
+# g++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_gcc $@ &&\
+#     strip ml_gcc &&\
+#     ./ml_gcc
+# clang++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang $@ &&\
+#     strip ml_clang &&\
+#     ./ml_clang
+clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang $@ &&\
+    strip ml_clang &&\
+    ./ml_clang
 exit
 #endif
 
@@ -11,7 +17,6 @@ exit
 #include "mylang_syntax.hpp"
 
 using namespace mylang;
-
 
 void test() {
     std::string s = "1 * (2 + y*-3 > sin 30)";
@@ -26,6 +31,13 @@ void test() {
 
     std::cout << x->getTree() << std::endl;
     std::cout << x1->getTree() << std::endl;
+
+    std::cout << x->getTree(2, 2) << std::endl;
+    std::cout << x1->getTree(3, 0) << std::endl;
+    std::cout << x1->getTree(0, 3) << std::endl;
+
+    delete x;
+    delete x1;
 
     std::cout << StaticStr<'a', 'b', 'c'>::getStr() << std::endl;
     std::cout << MP_STR("hello", 5)::getStr() << std::endl;

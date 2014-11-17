@@ -21,20 +21,26 @@ public:
     }
 };
 
+template <class N, class... RL>
+using RuleList = RuleList<RuleDef, N, RL...>;
+
+template <class N, class... RL>
+using RuleBuiltin = RuleBuiltin<RuleDef, N, RL...>;
+
+template <class N, class RX>
+using RuleRegex = RuleRegex<RuleDef, N, RX>;
+
 template <class TAG = TagNormal>
-using RuleItemSpace = RuleItemSpace<
-    mylang::RuleDef, TAG
->;
+using RuleItemSpace = RuleItemSpace<RuleDef, TAG>;
 
 template <class KW, class TAG = TagNormal>
-using RuleItemKeyword = RuleItemKeyword<
-    mylang::RuleDef, KW, TAG
->;
+using RuleItemKeyword = RuleItemKeyword<RuleDef, KW, TAG>;
 
 template <class N, class TAG = TagNormal>
-using RuleItemRef = RuleItemRef<
-    mylang::RuleDef, N, TAG
->;
+using RuleItemRef = RuleItemRef<RuleDef, N, TAG>;
+
+template <class E, class TAG = TagNormal>
+using RuleItemError = RuleItemError<RuleDef, E, TAG>;
 
 template<>
 class RuleDef<MP_STR("root", 4)>:
