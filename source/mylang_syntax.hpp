@@ -5,42 +5,9 @@
 
 #include "parser/myparser_rule.hpp"
 
-namespace mylang {
+namespace myparser {
 
-using namespace myparser;
-
-// need specialization
-template <class N>
-class RuleDef: public RuleNamed<N> {
-public:
-    static const Node *parse(Input &input, const Input &end) {
-        (void) input;
-        (void) end;
-
-        return N::need_specialization();
-    }
-};
-
-template <class N, class... RL>
-using RuleList = RuleList<RuleDef, N, RL...>;
-
-template <class N, class... RL>
-using RuleBuiltin = RuleBuiltin<RuleDef, N, RL...>;
-
-template <class N, class RX>
-using RuleRegex = RuleRegex<RuleDef, N, RX>;
-
-template <class TAG = TagNormal>
-using RuleItemSpace = RuleItemSpace<RuleDef, TAG>;
-
-template <class KW, class TAG = TagNormal>
-using RuleItemKeyword = RuleItemKeyword<RuleDef, KW, TAG>;
-
-template <class N, class TAG = TagNormal>
-using RuleItemRef = RuleItemRef<RuleDef, N, TAG>;
-
-template <class E, class TAG = TagNormal>
-using RuleItemError = RuleItemError<RuleDef, E, TAG>;
+using Parser = RuleDef<BuiltinRoot>;
 
 template<>
 class RuleDef<MP_STR("root", 4)>:

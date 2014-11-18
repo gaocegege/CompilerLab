@@ -16,7 +16,7 @@ exit
 
 #include "mylang_syntax.hpp"
 
-using namespace mylang;
+using namespace myparser;
 
 void test() {
     std::string s = "1 * (2 + y*-3 > sin 30)";
