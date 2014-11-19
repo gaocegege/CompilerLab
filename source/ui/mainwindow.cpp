@@ -16,10 +16,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    std::cout << "Lexer now" << std::endl;
+    std::cout << "lex\n" ;
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    std::cout << "Syntax now" << std::endl;
+    std::cout << "syntax\n" ;
 }
