@@ -20,14 +20,9 @@ using namespace mylang;
 
 void test() {
     std::string s = "1 * (2 + y*-3 > sin 30)";
-    //std::string s = "1 +y";
     Input sbegin = s.cbegin();
     auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
     auto x1 = Parser<>::parse(s);
-
-    // std::string s = ":=";
-    // Input sbegin = s.cbegin();
-    // auto x = RuleDef<MP_STR("keyword", 7)>::parse(sbegin, s.cend());
 
     std::cout << x->getTree() << std::endl;
     std::cout << x1->getTree() << std::endl;
@@ -35,6 +30,9 @@ void test() {
     std::cout << x->getTree(2, 2) << std::endl;
     std::cout << x1->getTree(3, 0) << std::endl;
     std::cout << x1->getTree(0, 3) << std::endl;
+
+    Pass<0> p1;
+    x->runPass(&p1);
 
     delete x;
     delete x1;
