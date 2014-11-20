@@ -13,8 +13,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    htmlgenerater.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    htmlgenerater.h
 
 FORMS    += mainwindow.ui
+
+DEFINES += PROJECT_PATH=\"\\\"$$PWD\\\"\"
+DEFINES += BUILD_PATH=\"\\\"$$OUT_PWD\\\"\"
