@@ -6,11 +6,13 @@
 namespace myparser {
 
 template <>
-class Pass<0>: public PassProto {
+class Pass<0>: public PassProto<0> {
 public:
-    MYPARSER_INLINE Pass(): PassProto(0) {}
+    inline Pass(): PassProto() {}
 
-    MYPARSER_INLINE void run(const Node *node) {
+    // virtual ~Pass() {}
+
+    void run(const Node *node) {
         std::cout << node->getFullText() << "aaaaaaaaaaaaaaaa";
     }
 };
