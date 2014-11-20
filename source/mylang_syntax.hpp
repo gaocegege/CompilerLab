@@ -8,8 +8,6 @@
 
 namespace myparser {
 
-using Parser = RuleDef<BuiltinRoot>;
-
 template<>
 class RuleDef<MP_STR("root", 4)>:
 public RuleList<MP_STR("root", 4),

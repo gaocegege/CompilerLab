@@ -28,6 +28,7 @@ void test() {
     PassReprFull<> rf1(std::cout, true);
     PassReprSimple<> rf2(std::cout);
     PassReprText<> rf3(std::cout);
+    PassReprJSON<> rf4(std::cout);
 
     x->runPass(&rf);
     std::cout << std::endl << std::endl;
@@ -37,6 +38,8 @@ void test() {
     std::cout << std::endl << std::endl;
     x->runPass(&rf3);
     std::cout << std::endl << std::endl;
+    x->runPass(&rf4);
+    std::cout << std::endl << std::endl;
     x1->runPass(&rf);
     std::cout << std::endl << std::endl;
     x1->runPass(&rf1);
@@ -44,6 +47,8 @@ void test() {
     x1->runPass(&rf2);
     std::cout << std::endl << std::endl;
     x1->runPass(&rf3);
+    std::cout << std::endl << std::endl;
+    x1->runPass(&rf4);
     std::cout << std::endl << std::endl;
 
     Pass<1> p1;

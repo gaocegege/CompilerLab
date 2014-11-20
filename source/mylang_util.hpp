@@ -11,6 +11,7 @@ using myparser::Pass;
 using myparser::PassReprText;
 using myparser::PassReprSimple;
 using myparser::PassReprFull;
+using myparser::PassReprJSON;
 using myparser::Node;
 using myparser::Parser;
 
