@@ -2,7 +2,6 @@
 #define MYLANG_UTIL_HPP
 
 #include "mylang_syntax.hpp"
-#include "mylang_pass_test.hpp" // TODO
 
 namespace mylang {
 

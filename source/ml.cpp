@@ -51,9 +51,6 @@ void test() {
     x1->runPass(&rf4);
     std::cout << std::endl << std::endl;
 
-    Pass<1> p1;
-    x->runPass(&p1);
-
     delete x;
     delete x1;
 }
