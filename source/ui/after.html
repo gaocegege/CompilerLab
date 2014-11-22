@@ -397,7 +397,10 @@
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
-                return d.rulename;
+                if (d.text == undefined)
+                    return d.rulename;
+                else
+                    return d.rulename + ": " + d.text;
             })
             .style("fill-opacity", 0);
 
@@ -424,7 +427,10 @@
                 return d.children || d._children ? "end" : "start";
             })
             .text(function(d) {
-                return d.rulename;
+                if (d.text == undefined)
+                    return d.rulename;
+                else
+                    return d.rulename + ": " + d.text; 
             });
 
         // Change the circle fill depending on whether it has children and is collapsed

@@ -37,8 +37,8 @@ std::string HtmlGenerater::getStringFromFile(std::string str)
 void HtmlGenerater::generateHtml(std::string myStr, bool flag)
 {
     std::string result = "";
-    std::string start = "/before.txt";
-    std::string end = "/after.txt";
+    std::string start = "/before.html";
+    std::string end = "/after.html";
 
     std::string index = "/index.html";
     index = PROJECT_PATH + index;
