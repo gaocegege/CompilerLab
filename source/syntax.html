@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+    stroke: #ccc;
+}
+
+.node text {
+    pointer-events: none;
+    font: 10px sans-serif;
+}
+
+</style>
+<body>
+<script src="d3.v3.min.js"></script>
+<script>
+
+var width = 960,
+    height = 640,
+    border = 40;
+
+var fill = d3.scale.category20();
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force = d3.layout.force()
+    .gravity(.02)
+    .friction(.5)
+    .distance(80)
+    .charge(-200)
+    .size([width, height]);
+
+var nodes = [
+    {"name": "multiplicative operation"},
+    {"name": "main end"},
+    {"name": "reference"},
+    {"name": "ignored"},
+    {"name": "statement list"},
+    {"name": "relative expression"},
+    {"name": "argument apply"},
+    {"name": "condition chain"},
+    {"name": "const definition"},
+    {"name": "additive operation"},
+    {"name": "expression list"},
+    {"name": "value expression"},
+    {"name": "return"},
+    {"name": "array"},
+    {"name": "type definition"},
+    {"name": "access expression"},
+    {"name": "space"},
+    {"name": "addition"},
+    {"name": "unary operator"},
+    {"name": "code block"},
+    {"name": "main body"},
+    {"name": "id"},
+    {"name": "literal"},
+    {"name": "program"},
+    {"name": "statement"},
+    {"name": "access operation"},
+    {"name": "structure end"},
+    {"name": "is block"},
+    {"name": "type"},
+    {"name": "function"},
+    {"name": "repeat"},
+    {"name": "function proto"},
+    {"name": "string"},
+    {"name": "comparison"},
+    {"name": "assignment"},
+    {"name": "main structure"},
+    {"name": "argument option"},
+    {"name": "additive expression"},
+    {"name": "instant array"},
+    {"name": "return definition"},
+    {"name": "relative operation"},
+    {"name": "multiplicative expression"},
+    {"name": "for range"},
+    {"name": "multiplication"},
+    {"name": "integer"},
+    {"name": "byte"},
+    {"name": "sign"},
+    {"name": "class"},
+    {"name": "structure"},
+    {"name": "definition"},
+    {"name": "interface block"},
+    {"name": "keyword"},
+    {"name": "native type"},
+    {"name": "expression"},
+    {"name": "relation"},
+    {"name": "inherit"},
+    {"name": "specific"},
+    {"name": "unary expression"},
+    {"name": "boolean"},
+    {"name": "var definition"},
+    {"name": "real"},
+    {"name": "type list"},
+    {"name": "root"},
+    {"name": "argument list"},
+];
+
+var links = [
+    {"source": 4, "target": 4},
+    {"source": 20, "target": 27},
+    {"source": 42, "target": 53},
+    {"source": 24, "target": 30},
+    {"source": 48, "target": 53},
+    {"source": 49, "target": 14},
+    {"source": 53, "target": 5},
+    {"source": 12, "target": 53},
+    {"source": 48, "target": 42},
+    {"source": 48, "target": 4},
+    {"source": 24, "target": 12},
+    {"source": 29, "target": 31},
+    {"source": 5, "target": 40},
+    {"source": 30, "target": 4},
+    {"source": 9, "target": 17},
+    {"source": 20, "target": 50},
+    {"source": 28, "target": 2},
+    {"source": 61, "target": 28},
+    {"source": 22, "target": 38},
+    {"source": 50, "target": 50},
+    {"source": 57, "target": 53},
+    {"source": 40, "target": 5},
+    {"source": 28, "target": 47},
+    {"source": 57, "target": 15},
+    {"source": 13, "target": 28},
+    {"source": 59, "target": 21},
+    {"source": 48, "target": 26},
+    {"source": 6, "target": 22},
+    {"source": 63, "target": 36},
+    {"source": 31, "target": 21},
+    {"source": 7, "target": 53},
+    {"source": 38, "target": 10},
+    {"source": 35, "target": 23},
+    {"source": 39, "target": 28},
+    {"source": 63, "target": 63},
+    {"source": 57, "target": 57},
+    {"source": 22, "target": 45},
+    {"source": 15, "target": 25},
+    {"source": 14, "target": 28},
+    {"source": 10, "target": 10},
+    {"source": 11, "target": 6},
+    {"source": 20, "target": 56},
+    {"source": 50, "target": 49},
+    {"source": 31, "target": 63},
+    {"source": 49, "target": 59},
+    {"source": 1, "target": 21},
+    {"source": 57, "target": 18},
+    {"source": 2, "target": 28},
+    {"source": 24, "target": 34},
+    {"source": 15, "target": 11},
+    {"source": 48, "target": 7},
+    {"source": 0, "target": 43},
+    {"source": 7, "target": 7},
+    {"source": 54, "target": 33},
+    {"source": 28, "target": 52},
+    {"source": 8, "target": 21},
+    {"source": 20, "target": 1},
+    {"source": 41, "target": 57},
+    {"source": 51, "target": 46},
+    {"source": 6, "target": 11},
+    {"source": 22, "target": 58},
+    {"source": 27, "target": 50},
+    {"source": 20, "target": 19},
+    {"source": 22, "target": 44},
+    {"source": 34, "target": 53},
+    {"source": 49, "target": 23},
+    {"source": 37, "target": 41},
+    {"source": 13, "target": 44},
+    {"source": 24, "target": 48},
+    {"source": 57, "target": 22},
+    {"source": 22, "target": 60},
+    {"source": 41, "target": 0},
+    {"source": 25, "target": 25},
+    {"source": 23, "target": 20},
+    {"source": 37, "target": 9},
+    {"source": 35, "target": 47},
+    {"source": 28, "target": 13},
+    {"source": 10, "target": 53},
+    {"source": 9, "target": 37},
+    {"source": 51, "target": 21},
+    {"source": 14, "target": 21},
+    {"source": 22, "target": 32},
+    {"source": 61, "target": 61},
+    {"source": 8, "target": 28},
+    {"source": 40, "target": 54},
+    {"source": 29, "target": 20},
+    {"source": 7, "target": 4},
+    {"source": 28, "target": 21},
+    {"source": 63, "target": 21},
+    {"source": 59, "target": 28},
+    {"source": 35, "target": 29},
+    {"source": 0, "target": 41},
+    {"source": 6, "target": 10},
+    {"source": 5, "target": 37},
+    {"source": 49, "target": 39},
+    {"source": 4, "target": 24},
+    {"source": 47, "target": 20},
+    {"source": 19, "target": 4},
+    {"source": 16, "target": 3},
+    {"source": 62, "target": 35},
+    {"source": 11, "target": 21},
+    {"source": 23, "target": 31},
+    {"source": 24, "target": 55},
+    {"source": 30, "target": 53},
+    {"source": 56, "target": 61},
+    {"source": 24, "target": 53},
+    {"source": 49, "target": 29},
+    {"source": 49, "target": 8},
+];
+
+force
+    .nodes(nodes)
+    .links(links)
+    .start();
+
+var link = svg.selectAll(".link")
+    .data(links)
+    .enter().append("line")
+    .attr("class", "link");
+
+var node = svg.selectAll(".node")
+    .data(nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+node.append("svg:circle")
+    .attr("r", 5)
+    .style("fill", function(d) { return fill(0); })
+    .style("stroke", function(d) { return d3.rgb(fill(0)).darker(); })
+    .style("stroke-width", "1.5px")
+    .call(force.drag);
+
+node.append("text")
+    .attr("dx", 12)
+    .attr("dy", ".35em")
+    .text(function(d) { return d.name });
+
+force.on("tick", function() {
+    node.attr("cx", function(d) {
+        return d.x = Math.max(border, Math.min(width - border, d.x));
+    });
+
+    node.attr("cy", function(d) {
+        return d.y = Math.max(border, Math.min(height - border, d.y));
+    });
+
+    node.attr("transform", function(d) {
+        return "translate(" + d.x + "," + d.y + ")";
+    });
+
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+});
+</script>
+</body>
