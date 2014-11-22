@@ -19,7 +19,7 @@ exit
 using namespace mylang;
 
 void test() {
-    std::string s = "1 * (2 + y*-3 > sin 30)";
+    std::string s = "1 * \n(2 + y*-3 > sin 30)";
     Input sbegin = s.cbegin();
     auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
     auto x1 = Parser<>::parse(s);
@@ -28,6 +28,7 @@ void test() {
     PassReprFull<> rf1(std::cout, true);
     PassReprSimple<> rf2(std::cout);
     PassReprText<> rf3(std::cout);
+    PassReprJSON<> rf4(std::cout);
 
     x->runPass(&rf);
     std::cout << std::endl << std::endl;
@@ -37,6 +38,8 @@ void test() {
     std::cout << std::endl << std::endl;
     x->runPass(&rf3);
     std::cout << std::endl << std::endl;
+    x->runPass(&rf4);
+    std::cout << std::endl << std::endl;
     x1->runPass(&rf);
     std::cout << std::endl << std::endl;
     x1->runPass(&rf1);
@@ -45,9 +48,8 @@ void test() {
     std::cout << std::endl << std::endl;
     x1->runPass(&rf3);
     std::cout << std::endl << std::endl;
-
-    Pass<1> p1;
-    x->runPass(&p1);
+    x1->runPass(&rf4);
+    std::cout << std::endl << std::endl;
 
     delete x;
     delete x1;

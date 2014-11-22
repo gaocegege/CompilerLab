@@ -2,7 +2,6 @@
 #define MYLANG_UTIL_HPP
 
 #include "mylang_syntax.hpp"
-#include "mylang_pass_test.hpp" // TODO
 
 namespace mylang {
 
@@ -11,6 +10,7 @@ using myparser::Pass;
 using myparser::PassReprText;
 using myparser::PassReprSimple;
 using myparser::PassReprFull;
+using myparser::PassReprJSON;
 using myparser::Node;
 using myparser::Parser;
 
