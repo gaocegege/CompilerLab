@@ -14,7 +14,7 @@ var searchData=
   ['s_5foverlined',['s_overlined',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2ad397d2f8b74cc59884afcfcb83d87f22',1,'ccc']]],
   ['s_5funderline_5fdouble',['s_underline_double',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2abc532f50bb1a7956f9facf6ebfd8812a',1,'ccc']]],
   ['s_5funderline_5fsingle',['s_underline_single',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2a5f1780c3c987e7e2256fe890d65c49f9',1,'ccc']]],
-  ['staticstr',['StaticStr',['../classmyparser_1_1StaticStr.html#a5e10c978b0d27509282e94adecc64092',1,'myparser::StaticStr']]],
+  ['staticstr',['StaticStr',['../classmyparser_1_1StaticStr.html#a401ca3780158b3b29c65507d9eaaf9c3',1,'myparser::StaticStr']]],
   ['staticstr',['StaticStr',['../classmyparser_1_1StaticStr.html',1,'myparser']]],
   ['style',['Style',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2',1,'ccc']]],
   ['style_5ferror',['style_error',['../namespacemyparser.html#a169fd5061ce001eb457858cc59bc9176',1,'myparser']]],

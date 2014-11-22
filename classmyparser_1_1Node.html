@@ -38,7 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -60,10 +60,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   </div>
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
-      <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
+      <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
+      <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
       <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
+      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -71,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,8 +88,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a>  </div>
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="classmyparser_1_1Node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">myparser::Node Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
@@ -103,11 +105,16 @@ Inheritance diagram for myparser::Node:</div>
 <map name="myparser_1_1Node_inherit__map" id="myparser_1_1Node_inherit__map">
 <area shape="rect" id="node2" href="classmyparser_1_1NodeError.html" title="myparser::NodeError\l\&lt; TX \&gt;" alt="" coords="177,5,319,46"/><area shape="rect" id="node3" href="classmyparser_1_1NodeList.html" title="myparser::NodeList\l\&lt; TX \&gt;" alt="" coords="181,70,315,111"/><area shape="rect" id="node4" href="classmyparser_1_1NodeText.html" title="myparser::NodeText\l\&lt; TX \&gt;" alt="" coords="178,135,318,177"/><area shape="rect" id="node5" href="classmyparser_1_1NodeError.html" title="myparser::NodeError\&lt;\&gt;" alt="" coords="169,201,327,228"/><area shape="rect" id="node8" href="classmyparser_1_1NodeList.html" title="myparser::NodeList\&lt;\&gt;" alt="" coords="173,252,323,279"/><area shape="rect" id="node6" href="classmyparser_1_1NodeErrorNative.html" title="myparser::NodeErrorNative\&lt; E \&gt;" alt="" coords="377,151,589,177"/><area shape="rect" id="node7" href="classmyparser_1_1NodeErrorWrap.html" title="myparser::NodeErrorWrap\&lt; E \&gt;" alt="" coords="380,201,585,228"/><area shape="rect" id="node9" href="classmyparser_1_1NodeListIndexed.html" title="myparser::NodeListIndexed\&lt; I \&gt;" alt="" coords="378,252,587,279"/></map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for myparser::Node:</div>
+<div class="dyncontent">
+<div class="center"><img src="classmyparser_1_1Node__coll__graph.png" border="0" usemap="#myparser_1_1Node_coll__map" alt="Collaboration graph"/></div>
+<map name="myparser_1_1Node_coll__map" id="myparser_1_1Node_coll__map">
+<area shape="rect" id="node2" title="STL iterator class. " alt="" coords="5,6,125,47"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aca2cdca0f8bc48ab1e99541b98a4b83b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#aca2cdca0f8bc48ab1e99541b98a4b83b">Node</a> (const <a class="el" href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">Input</a> &amp;input)</td></tr>
-<tr class="separator:aca2cdca0f8bc48ab1e99541b98a4b83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbccaf4382fbd5ee55abcf35370acef3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#adbccaf4382fbd5ee55abcf35370acef3">~Node</a> ()</td></tr>
 <tr class="separator:adbccaf4382fbd5ee55abcf35370acef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0d568f48f96b887c522d53377ccbb85"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#ae0d568f48f96b887c522d53377ccbb85">accepted</a> () const =0</td></tr>
@@ -124,12 +131,13 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae827503bcf07d13d098d0f164880fc92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafb5645eebcf81dd48365c7a32c2b3bb"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#aafb5645eebcf81dd48365c7a32c2b3bb">getFullText</a> () const </td></tr>
 <tr class="separator:aafb5645eebcf81dd48365c7a32c2b3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe297b1c8f6e8b6f76f78396a90ad404"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#abe297b1c8f6e8b6f76f78396a90ad404">getTree</a> (std::ostream &amp;out, size_t indent=0, size_t simplify=1) const =0</td></tr>
-<tr class="separator:abe297b1c8f6e8b6f76f78396a90ad404"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adff7ba2c5167144afa1a51fe79bd3e7a"><td class="memItemLeft" align="right" valign="top">const std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#adff7ba2c5167144afa1a51fe79bd3e7a">getTree</a> (size_t indent=0, size_t simplify=1) const </td></tr>
-<tr class="separator:adff7ba2c5167144afa1a51fe79bd3e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78554d1ae31379fee3a4b6bb7cfdf7b4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">Input</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#a78554d1ae31379fee3a4b6bb7cfdf7b4">getPos</a> () const </td></tr>
 <tr class="separator:a78554d1ae31379fee3a4b6bb7cfdf7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:aca2cdca0f8bc48ab1e99541b98a4b83b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmyparser_1_1Node.html#aca2cdca0f8bc48ab1e99541b98a4b83b">Node</a> (const <a class="el" href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">Input</a> &amp;input)</td></tr>
+<tr class="separator:aca2cdca0f8bc48ab1e99541b98a4b83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -182,7 +190,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -383,82 +391,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="abe297b1c8f6e8b6f76f78396a90ad404"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void myparser::Node::getTree </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>out</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>indent</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>simplify</em> = <code>1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Implemented in <a class="el" href="classmyparser_1_1NodeErrorWrap.html#affa36d09d832b1f9829c773c9c4a0d69">myparser::NodeErrorWrap&lt; E &gt;</a>, <a class="el" href="classmyparser_1_1NodeErrorNative.html#a41d5e0d124134fa8446c5e54c92818d4">myparser::NodeErrorNative&lt; E &gt;</a>, <a class="el" href="classmyparser_1_1NodeText.html#ad7db94fade9608ad55e963ffcb3acd3e">myparser::NodeText&lt; TX &gt;</a>, <a class="el" href="classmyparser_1_1NodeList.html#a8a03de1d8c08c13a5b276d8069cf7527">myparser::NodeList&lt; TX &gt;</a>, and <a class="el" href="classmyparser_1_1NodeList.html#a8a03de1d8c08c13a5b276d8069cf7527">myparser::NodeList&lt;&gt;</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="adff7ba2c5167144afa1a51fe79bd3e7a"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const std::string myparser::Node::getTree </td>
-          <td>(</td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>indent</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>simplify</em> = <code>1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a class="anchor" id="a36c70b1dc2a9cfb80b6b5bad82d22ba2"></a>
 <div class="memitem">
 <div class="memproto">
@@ -483,7 +415,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Field Documentation</h2>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="aad04fce1a35b2fa19d635854524451de"></a>
 <div class="memitem">
 <div class="memproto">
@@ -505,12 +437,12 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>source/parser/<a class="el" href="myparser__ast_8hpp_source.html">myparser_ast.hpp</a></li>
+<li>/media/hcz/B/code/projects/myparser/<a class="el" href="myparser__ast_8hpp_source.html">myparser_ast.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 20 2014 11:19:20 for MyLang by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Nov 22 2014 23:34:52 for MyLang by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

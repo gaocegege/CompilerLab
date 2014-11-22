@@ -38,7 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="namespaces.html"><span>Namespaces</span></a></li>
-      <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -61,7 +61,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow2" class="tabs2">
     <ul class="tablist">
       <li><a href="files.html"><span>File&#160;List</span></a></li>
-      <li><a href="globals.html"><span>Globals</span></a></li>
+      <li><a href="globals.html"><span>File&#160;Members</span></a></li>
     </ul>
   </div>
 <!-- window showing the filter options -->
@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Data Structures</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_b2f33c71d4aa5e7af42a1ca61ff5af1b.html">source</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_3a4d343a32ff5569aa20c74af8759688.html">source</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -92,28 +92,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define MYLANG_UTIL_HPP</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="mylang__syntax_8hpp.html">mylang_syntax.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="mylang__pass__test_8hpp.html">mylang_pass_test.hpp</a>&quot;</span> <span class="comment">// TODO</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="namespacemylang.html">    7</a></span>&#160;<span class="keyword">namespace </span>mylang {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using</span> <a class="code" href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">myparser::Input</a>;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using</span> <a class="code" href="namespacemyparser.html#ab4cebd02552c81b615af8176dde585f1">myparser::Pass</a>;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1Node.html">myparser::Node</a>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1Parser.html">myparser::Parser</a>;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;}</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="mylang__pass__test_8hpp_html"><div class="ttname"><a href="mylang__pass__test_8hpp.html">mylang_pass_test.hpp</a></div></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="namespacemylang.html">    6</a></span>&#160;<span class="keyword">namespace </span>mylang {</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">using</span> <a class="code" href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">myparser::Input</a>;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1Pass.html">myparser::Pass</a>;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1PassReprText.html">myparser::PassReprText</a>;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1PassReprSimple.html">myparser::PassReprSimple</a>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1PassReprFull.html">myparser::PassReprFull</a>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1PassReprJSON.html">myparser::PassReprJSON</a>;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1Node.html">myparser::Node</a>;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using</span> <a class="code" href="classmyparser_1_1Parser.html">myparser::Parser</a>;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classmyparser_1_1PassReprJSON_html"><div class="ttname"><a href="classmyparser_1_1PassReprJSON.html">myparser::PassReprJSON</a></div><div class="ttdef"><b>Definition:</b> myparser_pass_repr.hpp:241</div></div>
+<div class="ttc" id="classmyparser_1_1PassReprFull_html"><div class="ttname"><a href="classmyparser_1_1PassReprFull.html">myparser::PassReprFull</a></div><div class="ttdef"><b>Definition:</b> myparser_pass_repr.hpp:197</div></div>
+<div class="ttc" id="classmyparser_1_1PassReprText_html"><div class="ttname"><a href="classmyparser_1_1PassReprText.html">myparser::PassReprText</a></div><div class="ttdef"><b>Definition:</b> myparser_pass_repr.hpp:149</div></div>
 <div class="ttc" id="classmyparser_1_1Node_html"><div class="ttname"><a href="classmyparser_1_1Node.html">myparser::Node</a></div><div class="ttdef"><b>Definition:</b> myparser_ast.hpp:11</div></div>
-<div class="ttc" id="namespacemyparser_html_ab4cebd02552c81b615af8176dde585f1"><div class="ttname"><a href="namespacemyparser.html#ab4cebd02552c81b615af8176dde585f1">myparser::Pass</a></div><div class="ttdeci">enum myparser::@0 Pass</div></div>
 <div class="ttc" id="mylang__syntax_8hpp_html"><div class="ttname"><a href="mylang__syntax_8hpp.html">mylang_syntax.hpp</a></div></div>
+<div class="ttc" id="classmyparser_1_1Pass_html"><div class="ttname"><a href="classmyparser_1_1Pass.html">myparser::Pass</a></div><div class="ttdef"><b>Definition:</b> myparser_common.hpp:96</div></div>
+<div class="ttc" id="classmyparser_1_1PassReprSimple_html"><div class="ttname"><a href="classmyparser_1_1PassReprSimple.html">myparser::PassReprSimple</a></div><div class="ttdef"><b>Definition:</b> myparser_pass_repr.hpp:163</div></div>
 <div class="ttc" id="namespacemyparser_html_a7bfd3a249c335cce7435a17f6fec0345"><div class="ttname"><a href="namespacemyparser.html#a7bfd3a249c335cce7435a17f6fec0345">myparser::Input</a></div><div class="ttdeci">std::string::const_iterator Input</div><div class="ttdef"><b>Definition:</b> myparser_ast.hpp:9</div></div>
-<div class="ttc" id="classmyparser_1_1Parser_html"><div class="ttname"><a href="classmyparser_1_1Parser.html">myparser::Parser</a></div><div class="ttdef"><b>Definition:</b> myparser_rule.hpp:262</div></div>
+<div class="ttc" id="classmyparser_1_1Parser_html"><div class="ttname"><a href="classmyparser_1_1Parser.html">myparser::Parser</a></div><div class="ttdef"><b>Definition:</b> myparser_rule.hpp:258</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Nov 20 2014 11:19:20 for MyLang by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Nov 22 2014 23:34:51 for MyLang by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

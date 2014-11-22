@@ -12,7 +12,7 @@ var indexSectionsWithContent =
   2: "cm",
   3: "cm",
   4: "acegmnoprst~",
-  5: "_cilmpst",
+  5: "_cilmopst",
   6: "beint",
   7: "s",
   8: "cdfps",

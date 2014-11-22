@@ -9,6 +9,5 @@ var searchData=
   ['getpos',['getPos',['../classmyparser_1_1Node.html#a78554d1ae31379fee3a4b6bb7cfdf7b4',1,'myparser::Node']]],
   ['getrulename',['getRuleName',['../classmyparser_1_1Node.html#af0e5a8b6f6bedc59db082e274da7cf08',1,'myparser::Node::getRuleName()'],['../classmyparser_1_1NodeTyped.html#ae65f1dff15fa2f0a3b1a34df06972f42',1,'myparser::NodeTyped::getRuleName()']]],
   ['getstr',['getStr',['../classmyparser_1_1StaticStr.html#ad40fd980f88365cbf3406940dbc29a16',1,'myparser::StaticStr']]],
-  ['gettext',['getText',['../classmyparser_1_1NodeText.html#a0a2246baa0febb3dbea39d5ba8e6ac7b',1,'myparser::NodeText']]],
-  ['gettree',['getTree',['../classmyparser_1_1Node.html#abe297b1c8f6e8b6f76f78396a90ad404',1,'myparser::Node::getTree(std::ostream &amp;out, size_t indent=0, size_t simplify=1) const =0'],['../classmyparser_1_1Node.html#adff7ba2c5167144afa1a51fe79bd3e7a',1,'myparser::Node::getTree(size_t indent=0, size_t simplify=1) const '],['../classmyparser_1_1NodeList.html#a8a03de1d8c08c13a5b276d8069cf7527',1,'myparser::NodeList::getTree()'],['../classmyparser_1_1NodeText.html#ad7db94fade9608ad55e963ffcb3acd3e',1,'myparser::NodeText::getTree()'],['../classmyparser_1_1NodeErrorNative.html#a41d5e0d124134fa8446c5e54c92818d4',1,'myparser::NodeErrorNative::getTree()'],['../classmyparser_1_1NodeErrorWrap.html#affa36d09d832b1f9829c773c9c4a0d69',1,'myparser::NodeErrorWrap::getTree()']]]
+  ['gettext',['getText',['../classmyparser_1_1NodeText.html#a0a2246baa0febb3dbea39d5ba8e6ac7b',1,'myparser::NodeText']]]
 ];

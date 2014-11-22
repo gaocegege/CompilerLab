@@ -15,9 +15,10 @@ var searchData=
   ['nodelist',['NodeList',['../classmyparser_1_1NodeList.html#a2a063388c1387afea57a9d42e67506a4',1,'myparser::NodeList']]],
   ['nodelist_3c_3e',['NodeList&lt;&gt;',['../classmyparser_1_1NodeList.html',1,'myparser']]],
   ['nodelistindexed',['NodeListIndexed',['../classmyparser_1_1NodeListIndexed.html',1,'myparser']]],
+  ['nodelistindexed',['NodeListIndexed',['../classmyparser_1_1NodeListIndexed.html#abd44f6cffe9768512b13fe746eb15b49',1,'myparser::NodeListIndexed']]],
   ['nodelisttyped',['NodeListTyped',['../namespacemyparser.html#a7a4bc0bf1303603b383e56d9fa361de0',1,'myparser']]],
-  ['nodetext',['NodeText',['../classmyparser_1_1NodeText.html',1,'myparser']]],
   ['nodetext',['NodeText',['../classmyparser_1_1NodeText.html#a2da3d79c2ff1102bba7a13b16de1a80c',1,'myparser::NodeText']]],
+  ['nodetext',['NodeText',['../classmyparser_1_1NodeText.html',1,'myparser']]],
   ['nodetexttyped',['NodeTextTyped',['../namespacemyparser.html#aeb3a4d623fba3d0e6f10d92a940c151a',1,'myparser']]],
   ['nodetyped',['NodeTyped',['../classmyparser_1_1NodeTyped.html',1,'myparser']]]
 ];
