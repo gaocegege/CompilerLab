@@ -15,6 +15,24 @@
     stroke: steelblue;
     stroke-width: 1.5px;
   }
+
+  .node .error{
+  	fill: #000;
+  	stroke: red;
+    stroke-width: 1.5px;
+  }
+
+  .node .myclass{
+  	fill: #000;
+  	stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+
+  .node .myfunction{
+  	fill: #000;
+  	stroke: steelblue;
+    stroke-width: 1.5px;
+  }
    
   .node text {
     font-size:10px; 
@@ -812,7 +830,18 @@ var treeData =
             .on('click', click);
 
         nodeEnter.append("circle")
-            .attr('class', 'nodeCircle')
+        //change the color of the circle
+
+
+
+
+            .attr('class', /*'nodeCircle error'*/function(d){
+            	console.log(d);
+            	if (d.name == "flare")
+            		return "nodeCircle error";
+            	else
+            		return "nodeCircle";
+            })
             .attr("r", 0)
             .style("fill", function(d) {
                 return d._children ? "lightsteelblue" : "#fff";

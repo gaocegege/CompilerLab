@@ -4,10 +4,9 @@
 #define MYLANG_SYNTAX_HPP
 
 #include "parser/myparser_rule.hpp"
+#include "parser/myparser_pass_repr.hpp"
 
 namespace myparser {
-
-using Parser = RuleDef<BuiltinRoot>;
 
 template<>
 class RuleDef<MP_STR("root", 4)>:
