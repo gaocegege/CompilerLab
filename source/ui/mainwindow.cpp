@@ -9,6 +9,9 @@
 #include <QTextEdit>
 #include <QDialog>
 #include <QWindow>
+#include "../mylang_util.hpp"
+#include <iostream>
+#include <sstream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,7 +35,14 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     std::cout << "syntax\n" ;
-    HtmlGenerater::generateHtml("/test.json", false);
+    std::stringstream ss;
+    mylang::PassReprJSON<> rf4(ss);
+    std::string s = "1 * \n(2 + y*-3 > sin 30)";
+    mylang::Input sbegin = s.cbegin();
+    auto x = mylang::Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
+    x->runPass(&rf4);
+    std::cout << "cece" << ss.str() << std::endl;
+    HtmlGenerater::generateHtml(ss.str(), true);
 
 }
 

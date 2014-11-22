@@ -10,7 +10,7 @@ HtmlGenerater::HtmlGenerater()
 
 std::string HtmlGenerater::getStringFromFile(std::string str)
 {
-    std::cout << "Get:\t" << str << std::endl;
+//    std::cout << "Get:\t" << str << std::endl;
     std::string result;
     QString buf(str.c_str());
     QFile myFile(buf);
@@ -29,7 +29,7 @@ std::string HtmlGenerater::getStringFromFile(std::string str)
         result += lineStr.toStdString();
         result += "\n";
     }
-    std::cout << result << std::endl;
+//    std::cout << result << std::endl;
 
     return result;
 }
@@ -45,6 +45,7 @@ void HtmlGenerater::generateHtml(std::string myStr, bool flag)
     std::string beforeStr = getStringFromFile(PROJECT_PATH + start);
     std::string afterStr = getStringFromFile(PROJECT_PATH + end);
 //    std::cout << PROJECT_PATH + start << std::endl;
+    //true is from program,else from file
     if (flag == true)
         result = beforeStr + myStr + afterStr;
     else
