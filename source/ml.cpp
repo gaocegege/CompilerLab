@@ -7,7 +7,7 @@ python gen_parser.py
 #     strip ml_clang &&\
 #     ./ml_clang
 clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang $@ &&\
-    strip ml_clang &&\
+#    strip ml_clang &&\
     ./ml_clang
 exit
 #endif
@@ -24,14 +24,29 @@ void test() {
     auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
     auto x1 = Parser<>::parse(s);
 
-    std::cout << x->getTree() << std::endl;
-    std::cout << x1->getTree() << std::endl;
+    PassReprFull<> rf(std::cout);
+    PassReprFull<> rf1(std::cout, true);
+    PassReprSimple<> rf2(std::cout);
+    PassReprText<> rf3(std::cout);
 
-    std::cout << x->getTree(2, 2) << std::endl;
-    std::cout << x1->getTree(3, 0) << std::endl;
-    std::cout << x1->getTree(0, 3) << std::endl;
+    x->runPass(&rf);
+    std::cout << std::endl << std::endl;
+    x->runPass(&rf1);
+    std::cout << std::endl << std::endl;
+    x->runPass(&rf2);
+    std::cout << std::endl << std::endl;
+    x->runPass(&rf3);
+    std::cout << std::endl << std::endl;
+    x1->runPass(&rf);
+    std::cout << std::endl << std::endl;
+    x1->runPass(&rf1);
+    std::cout << std::endl << std::endl;
+    x1->runPass(&rf2);
+    std::cout << std::endl << std::endl;
+    x1->runPass(&rf3);
+    std::cout << std::endl << std::endl;
 
-    Pass<0> p1;
+    Pass<1> p1;
     x->runPass(&p1);
 
     delete x;

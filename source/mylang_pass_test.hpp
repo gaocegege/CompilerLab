@@ -6,7 +6,7 @@
 namespace myparser {
 
 template <>
-class Pass<0>: public PassProto<0> {
+class Pass<1>: public PassProto<1> {
 public:
     inline Pass(): PassProto() {}
 
