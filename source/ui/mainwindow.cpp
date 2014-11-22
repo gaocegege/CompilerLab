@@ -35,11 +35,11 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     std::cout << "syntax\n" ;
+    str = "program test()\ntype testArray is array of 20 integer;\nis\nvar buf is testArray;\nbegin\nbuf[0] := 100;\nend";
     std::stringstream ss;
     mylang::PassReprJSON<> rf4(ss);
-    std::string s = "1 * \n(2 + y*-3 > sin 30)";
-    mylang::Input sbegin = s.cbegin();
-    auto x = mylang::Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
+    mylang::Input sbegin = str.cbegin();
+    auto x = mylang::Parser<>::parse(sbegin, str.cend());
     x->runPass(&rf4);
     std::cout << "cece" << ss.str() << std::endl;
     HtmlGenerater::generateHtml(ss.str(), true);
