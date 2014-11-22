@@ -19,7 +19,7 @@ exit
 using namespace mylang;
 
 void test() {
-    std::string s = "1 * (2 + y*-3 > sin 30)";
+    std::string s = "1 * \n(2 + y*-3 > sin 30)";
     Input sbegin = s.cbegin();
     auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
     auto x1 = Parser<>::parse(s);
