@@ -377,5 +377,5 @@ Special
 
 *ignored*:
 
-    ([ \t\r\n]|\/\/.*$)*
+    ([ \t\r\n]|\/\/.*)*
     // including comments
