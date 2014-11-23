@@ -1,4 +1,105 @@
-;
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+  
+  .node {
+    cursor: pointer;
+  }
+
+  .overlay{
+      background-color:#EEE;
+  }
+   
+  .node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+
+  .node .error
+  {
+    fill: #fff;
+    stroke: red;
+    stroke-width: 1.5px;
+  }
+   
+  .node text {
+    font-size:10px; 
+    font-family:sans-serif;
+  }
+   
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+  }
+
+  .templink {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+  }
+
+  .ghostCircle.show{
+      display:block;
+  }
+
+  .ghostCircle, .activeDrag .ghostCircle{
+       display: none;
+  }
+
+</style>
+<script src="jquery-1.11.1.min.js"></script>
+<script src="d3.v3.min.js"></script>
+<script type="text/javascript">
+// Get JSON data
+// treeJSON = d3.json("flare.json", function(error, treeData) {
+$(document).ready(function(){
+var treeData = 
+{
+    "rulename": "root",
+    "ruleindex": "0",
+    "children": [{
+        "rulename": "main structure",
+        "ruleindex": "0",
+        "children": [{
+            "rulename": "program",
+            "ruleindex": "0",
+            "children": [{
+                "rulename": "error",
+                "error": "Bad keyword",
+                "children": [{
+                    "rulename": "keyword",
+                    "ruleindex": "0",
+                    "children": [{
+                        "rulename": "id",
+                        "error": "Regex not matched",
+                    }]
+                }]
+            }]
+        }]
+    }]
+};
+    var jsonbuf = treeData;
+    treeData = {};
+    treeData.rulename="lex root";
+    treeData.children = [];
+    travel(jsonbuf);
+
+    function travel(jsonbuf)
+    {
+        if (jsonbuf.children == undefined)
+        {
+            treeData.children.push(jsonbuf);
+            console.log(jsonbuf);
+            return;
+        }
+        for (var i = 0; i < jsonbuf.children.length; i++)
+        {
+            travel(jsonbuf.children[i]);
+        }
+    }
+
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 0;
@@ -53,6 +154,10 @@
 
 
     // sort the tree according to the node rulenames
+
+
+    /*to do, maybe can remove the sort func*/
+
 
     function sortTree() {
         tree.sort(function(a, b) {
