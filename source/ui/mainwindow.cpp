@@ -29,20 +29,28 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     std::cout << "lex\n" ;
+//    str="1+2";
+    std::stringstream ss;
+    mylang::PassReprJSON<> rf4(ss);
+    mylang::Input sbegin = str.cbegin();
+    auto x = mylang::Parser<>::parse(sbegin, str.cend());
+    x->runPass(&rf4);
+//    std::cout << "cece" << ss.str() << std::endl;
+    HtmlGenerater::generateLex(ss.str(), true);
 }
 
 // syntax
 void MainWindow::on_pushButton_2_clicked()
 {
     std::cout << "syntax\n" ;
-    str = "program test()\ntype testArray is array of 20 integer;\nis\nvar buf is testArray;\nbegin\nbuf[0] := 100;\nend";
+//    str = "program test()\ntype testArray is array of 20 integer;\nis\nvar buf is testArray;\nbegin\nbuf[0] := 100;\nend";
     std::stringstream ss;
     mylang::PassReprJSON<> rf4(ss);
     mylang::Input sbegin = str.cbegin();
     auto x = mylang::Parser<>::parse(sbegin, str.cend());
     x->runPass(&rf4);
-    std::cout << "cece" << ss.str() << std::endl;
-    HtmlGenerater::generateHtml(ss.str(), true);
+//    std::cout << "cece" << ss.str() << std::endl;
+    HtmlGenerater::generateSyntax(ss.str(), true);
 
 }
 
@@ -67,6 +75,8 @@ void MainWindow::on_pushButton_5_clicked()
             {
                 lineStr = txtInput.readLine();
                 str += lineStr.toStdString();
+                // critic
+                str += "\n";
             }
             std::cout << str << std::endl;
         }
