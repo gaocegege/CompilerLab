@@ -1,6 +1,7 @@
-#ifndef MYLANG_UTIL_HPP
-#define MYLANG_UTIL_HPP
+#ifndef MYLANG_HPP
+#define MYLANG_HPP
 
+#include "mylang_tool.hpp"
 #include "mylang_syntax.hpp"
 
 namespace mylang {

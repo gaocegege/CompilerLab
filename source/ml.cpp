@@ -1,25 +1,27 @@
 #if 0
 python gen_parser.py
-# g++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_gcc $@ &&\
+# g++ -std=c++11 -Wall -Wextra -pedantic -O1 *.cpp -o ml_gcc $@ &&\
 #     strip ml_gcc &&\
 #     ./ml_gcc
-# clang++ -std=c++11 -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang $@ &&\
+# clang++ -std=c++11 -Wall -Wextra -pedantic -O1 *.cpp -o ml_clang $@ &&\
 #     strip ml_clang &&\
 #     ./ml_clang
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1 ml.cpp -o ml_clang $@ &&\
+clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1 *.cpp -o ml_clang $@ &&\
 #    strip ml_clang &&\
     ./ml_clang
 exit
 #endif
 
 #include <iostream>
+#include <fstream>
+#include <streambuf>
 
-#include "mylang_util.hpp"
+#include "mylang.hpp"
 
 using namespace mylang;
 
 void test() {
-    std::string s = "1 * \n(2 + y*-3 > sin 30)";
+    std::string s = "1*(2+y*-3>sin(30)\n// 一个\n)"; // "1 * \n(2 + y*-3 > sin 30)";
     Input sbegin = s.cbegin();
     auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
     auto x1 = Parser<>::parse(s);
@@ -53,6 +55,15 @@ void test() {
 
     delete x;
     delete x1;
+
+
+    std::ifstream t("example.ml"/);
+    std::string s1((std::istreambuf_iterator<char>(t)),
+                     std::istreambuf_iterator<char>());
+
+    auto x2 = Parser<>::parse(s1);
+    x->runPass(&rf);
+    std::cout << std::endl << std::endl;
 }
 
 int main() {

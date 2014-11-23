@@ -21,7 +21,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     htmlgenerater.h \
-    ../mylang_util.hpp \
+    ../mylang.hpp \
     ../mylang_syntax.hpp \
     ../parser/lib/ccc.hpp \
     ../parser/myparser_ast.hpp \

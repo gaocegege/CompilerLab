@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "htmlgenerater.h"
-#include "../mylang_util.hpp"
+#include "../mylang.hpp"
 #include <iostream>
 #include <QtWidgets/QFileDialog>
 #include <QFile>
