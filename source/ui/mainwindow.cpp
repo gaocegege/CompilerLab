@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "htmlgenerater.h"
+#include "../mylang_util.hpp"
 #include <iostream>
 #include <QtWidgets/QFileDialog>
 #include <QFile>
@@ -9,9 +10,9 @@
 #include <QTextEdit>
 #include <QDialog>
 #include <QWindow>
-#include "../mylang_util.hpp"
 #include <iostream>
 #include <sstream>
+#include <QDesktopServices>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -37,6 +38,10 @@ void MainWindow::on_pushButton_clicked()
     x->runPass(&rf4);
 //    std::cout << "cece" << ss.str() << std::endl;
     HtmlGenerater::generateLex(ss.str(), true);
+    std::string lexHtml = "/lex.html";
+    std::string fileurl = "file://";
+    lexHtml = fileurl + PROJECT_PATH + lexHtml;
+    QDesktopServices::openUrl(QUrl(QString(lexHtml.c_str())));
 }
 
 // syntax
@@ -51,6 +56,11 @@ void MainWindow::on_pushButton_2_clicked()
     x->runPass(&rf4);
 //    std::cout << "cece" << ss.str() << std::endl;
     HtmlGenerater::generateSyntax(ss.str(), true);
+    std::string syntaxHtml = "/syntax.html";
+    std::string fileurl = "file://";
+    syntaxHtml = fileurl + PROJECT_PATH + syntaxHtml;
+    std::cout << syntaxHtml << std::endl;
+    QDesktopServices::openUrl(QUrl(syntaxHtml.c_str()));
 
 }
 
