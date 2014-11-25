@@ -233,7 +233,7 @@ access expression:
 
 access operation:
 
-    . <access operation>
+    . <access expression>
     <>
 
 value expression:

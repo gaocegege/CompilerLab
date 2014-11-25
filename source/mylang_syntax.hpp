@@ -672,7 +672,7 @@ public RuleList<MP_STR("access operation", 16),
     RuleLine<
         RuleItemKeyword<MP_STR(".", 1)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
+        RuleItemRef<MP_STR("access expression", 17)>
     >,
     RuleLine<
         

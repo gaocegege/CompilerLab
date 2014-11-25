@@ -22,8 +22,7 @@ using namespace mylang;
 
 void test() {
     std::string s = "1*(2+y*-3>sin(30)\n// 一个\n)"; // "1 * \n(2 + y*-3 > sin 30)";
-    Input sbegin = s.cbegin();
-    auto x = Parser<MP_STR("expression", 10)>::parse(sbegin, s.cend());
+    auto x = Parser<MP_STR("expression", 10)>::parse(s);
     auto x1 = Parser<>::parse(s);
 
     PassReprFull<> rf(std::cout);
@@ -32,7 +31,7 @@ void test() {
     PassReprText<> rf3(std::cout);
     PassReprJSON<> rf4(std::cout);
 
-    x->runPass(&rf);
+    /*x->runPass(&rf);
     std::cout << std::endl << std::endl;
     x->runPass(&rf1);
     std::cout << std::endl << std::endl;
@@ -51,19 +50,24 @@ void test() {
     x1->runPass(&rf3);
     std::cout << std::endl << std::endl;
     x1->runPass(&rf4);
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl << std::endl;*/
 
     delete x;
     delete x1;
 
 
-    std::ifstream t("example.ml"/);
+    std::ifstream t("example.ml");
     std::string s1((std::istreambuf_iterator<char>(t)),
                      std::istreambuf_iterator<char>());
 
     auto x2 = Parser<>::parse(s1);
-    x->runPass(&rf);
+
+    x2->runPass(&rf1);
     std::cout << std::endl << std::endl;
+    x2->runPass(&rf);
+    std::cout << std::endl << std::endl;
+
+    delete x2;
 }
 
 int main() {
