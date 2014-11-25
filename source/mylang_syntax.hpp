@@ -954,11 +954,17 @@ template<>
 class RuleDef<MP_STR("keyword", 7)>:
 public RuleList<MP_STR("keyword", 7),
     RuleLine<
-        RuleItemRef<MP_STR("id", 2)>
+        RuleItemRef<MP_STR("reserved id", 11)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("sign", 4)>
     >
+> {};
+
+template<>
+class RuleDef<MP_STR("reserved id", 11)>:
+public RuleRegex<MP_STR("reserved id", 11),
+    MP_STR("[A-Za-z_][A-Za-z0-9_]*", 22)
 > {};
 
 template<>

@@ -368,8 +368,12 @@ Special
 
 **keyword**:
 
-    <id>
+    <reserved id>
     <sign>
+
+*reserved id*:
+
+    [A-Za-z_][A-Za-z0-9_]*
 
 *sign*:
 
