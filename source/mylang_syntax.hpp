@@ -808,27 +808,18 @@ template<>
 class RuleDef<MP_STR("relation", 8)>:
 public RuleList<MP_STR("relation", 8),
     RuleLine<
-        RuleItemKeyword<MP_STR("in", 2)>
+        RuleItemRef<MP_STR("comparison", 10)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("comparison", 10)>
+        RuleItemKeyword<MP_STR("in", 2)>
     >
-> {};
-
-template<>
-class RuleDef<MP_STR("comparison", 10)>:
-public RuleRegex<MP_STR("comparison", 10),
-    MP_STR("<|=|>|<=|=<|<>|><|>=|=>", 23)
 > {};
 
 template<>
 class RuleDef<MP_STR("addition", 8)>:
 public RuleList<MP_STR("addition", 8),
     RuleLine<
-        RuleItemKeyword<MP_STR("+", 1)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("-", 1)>
+        RuleItemRef<MP_STR("addsub", 6)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("or", 2)>
@@ -842,10 +833,10 @@ template<>
 class RuleDef<MP_STR("multiplication", 14)>:
 public RuleList<MP_STR("multiplication", 14),
     RuleLine<
-        RuleItemKeyword<MP_STR("*", 1)>
+        RuleItemRef<MP_STR("muldivmod", 9)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("/", 1)>
+        RuleItemRef<MP_STR("shlshr", 6)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("div", 3)>
@@ -862,14 +853,35 @@ template<>
 class RuleDef<MP_STR("unary operator", 14)>:
 public RuleList<MP_STR("unary operator", 14),
     RuleLine<
-        RuleItemKeyword<MP_STR("+", 1)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("-", 1)>
+        RuleItemRef<MP_STR("addsub", 6)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("not", 3)>
     >
+> {};
+
+template<>
+class RuleDef<MP_STR("comparison", 10)>:
+public RuleRegex<MP_STR("comparison", 10),
+    MP_STR("==|<=|=<|>=|=>|!=|<|>", 21)
+> {};
+
+template<>
+class RuleDef<MP_STR("addsub", 6)>:
+public RuleRegex<MP_STR("addsub", 6),
+    MP_STR("\\+|-", 4)
+> {};
+
+template<>
+class RuleDef<MP_STR("muldivmod", 9)>:
+public RuleRegex<MP_STR("muldivmod", 9),
+    MP_STR("\\*|\\/|%", 7)
+> {};
+
+template<>
+class RuleDef<MP_STR("shlshr", 6)>:
+public RuleRegex<MP_STR("shlshr", 6),
+    MP_STR("<<|>>", 5)
 > {};
 
 template<>
@@ -970,13 +982,13 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("[\\(\\)\\[\\],.+\\-*\\/;]|:=", 22)
+    MP_STR("\\:=|[\\(\\)\\[\\],.;]", 17)
 > {};
 
 template<>
 class RuleDef<MP_STR("ignored", 7)>:
 public RuleRegex<MP_STR("ignored", 7),
-    MP_STR("([ \\t\\r\\n]|\\/\\/.*)*", 19)
+    MP_STR("(\\/\\/.*|[ \\t\\r\\n])*", 19)
 > {};
 
 

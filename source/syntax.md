@@ -294,33 +294,43 @@ Operator
 
 relation:
 
-    in
     <comparison>
-
-*comparison*:
-
-    <|=|>|<=|=<|<>|><|>=|=>
+    in
 
 addition:
 
-    +
-    -
+    <addsub>
     or
     xor
 
 multiplication:
 
-    *
-    /
+    <muldivmod>
+    <shlshr>
     div
     mod
     and
 
 unary operator:
 
-    +
-    -
+    <addsub>
     not
+
+*comparison*:
+
+    ==|<=|=<|>=|=>|!=|<|>
+
+*addsub*:
+
+    \+|-
+
+*muldivmod*:
+
+    \*|\/|%
+
+*shlshr*:
+
+    <<|>>
 
 Literal
 ---
@@ -377,9 +387,9 @@ Special
 
 *sign*:
 
-    [\(\)\[\],.+\-*\/;]|:=
+    \:=|[\(\)\[\],.;]
 
 *ignored*:
 
-    ([ \t\r\n]|\/\/.*)*
+    (\/\/.*|[ \t\r\n])*
     // including comments
