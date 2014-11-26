@@ -3,9 +3,7 @@
 #ifndef MYLANG_SYNTAX_HPP
 #define MYLANG_SYNTAX_HPP
 
-#include "parser/myparser_rule.hpp"
-#include "parser/myparser_pass_filter.hpp"
-#include "parser/myparser_pass_repr.hpp"
+#include "parser/myparser.hpp"
 
 namespace myparser {
 
