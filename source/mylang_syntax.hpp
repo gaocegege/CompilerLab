@@ -413,7 +413,7 @@ public RuleList<MP_STR("structure", 9),
     RuleLine<
         RuleItemKeyword<MP_STR("for", 3)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(":=", 2)>,
         RuleItemSpace<>,
@@ -428,7 +428,7 @@ public RuleList<MP_STR("structure", 9),
     RuleLine<
         RuleItemKeyword<MP_STR("foreach", 7)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("in", 2)>,
         RuleItemSpace<>,
@@ -645,6 +645,8 @@ public RuleList<MP_STR("unary expression", 16),
         RuleItemRef<MP_STR("literal", 7)>
     >,
     RuleLine<
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
         RuleItemRef<MP_STR("access expression", 17)>
     >,
     RuleLine<
@@ -660,35 +662,19 @@ template<>
 class RuleDef<MP_STR("access expression", 17)>:
 public RuleList<MP_STR("access expression", 17),
     RuleLine<
-        RuleItemRef<MP_STR("value expression", 16)>,
+        RuleItemRef<MP_STR("argument apply", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("access operation", 16)>:
-public RuleList<MP_STR("access operation", 16),
+        RuleItemRef<MP_STR("access expression", 17)>
+    >,
     RuleLine<
         RuleItemKeyword<MP_STR(".", 1)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("access expression", 17)>
     >,
     RuleLine<
         
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("value expression", 16)>:
-public RuleList<MP_STR("value expression", 16),
-    RuleLine<
-        RuleItemRef<MP_STR("id", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("argument apply", 14)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("id", 2)>
     >
 > {};
 
@@ -699,7 +685,7 @@ public RuleList<MP_STR("argument apply", 14),
         RuleItemRef<MP_STR("literal", 7)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("value expression", 16)>
+        RuleItemRef<MP_STR("id", 2)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("(", 1)>,

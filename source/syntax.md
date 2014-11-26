@@ -151,8 +151,8 @@ Code Structure
 structure:
 
     if <expression> then <statement list> <condition chain> <structure end>
-    for <expression> := <for range> do <statement list> <structure end>
-    foreach <expression> in <expression> do <statement list> <structure end>
+    for <id> := <for range> do <statement list> <structure end>
+    foreach <id> in <expression> do <statement list> <structure end>
     while <expression> do <statement list> <structure end>
 
 condition chain:
@@ -224,27 +224,19 @@ unary expression:
 
     <unary operator> <unary expression>
     <literal>
-    <access expression>
+    <id> <access expression>
     ( <expression> )
 
 access expression:
 
-    <value expression> <access operation>
-
-access operation:
-
-    . <access expression>
+    <argument apply> <access expression>
+    . <id> <access expression>
     <>
-
-value expression:
-
-    <id> <argument apply>
-    <id>
 
 argument apply:
 
     <literal>
-    <value expression>
+    <id>
     ( <expression list> )
     // x[0] is x.__call<array of 1 integer>([0])
 
