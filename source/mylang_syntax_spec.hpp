@@ -23,14 +23,13 @@ public:
         static const std::set<std::string> keywords = {
             "and", "array", "begin", "boolean", "byte",
             "class", "const", "div", "do", "downto",
-            "elif", "else", "empty", "end", "extends",
+            "elif", "else", "encloses", "end", "extends",
             "for", "foreach", "function",
-            "if", "in", "inherit", "integer", "is",
-            "mod", "no", "not",
-            "of", "or", "out", "program",
+            "if", "in", "integer", "is", "mod", "no", "not",
+            "of", "or", "out", "pointer", "program",
             "real", "reference", "reg", "repeat", "return",
-            "then", "to", "type", "until",
-            "var", "while", "xor", "yes"
+            "static", "then", "to", "type", "until",
+            "var", "void", "while", "xor", "yes"
         };
 
         ok = keywords.find(getText()) == keywords.cend();

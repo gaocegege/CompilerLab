@@ -81,7 +81,7 @@ template<>
 class RuleDef<MP_STR("main body", 9)>:
 public RuleList<MP_STR("main body", 9),
     RuleLine<
-        RuleItemRef<MP_STR("specific", 8)>,
+        RuleItemRef<MP_STR("specific list", 13)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("interface block", 15)>,
         RuleItemSpace<>,
@@ -213,15 +213,35 @@ public RuleList<MP_STR("argument option", 15),
 > {};
 
 template<>
+class RuleDef<MP_STR("specific list", 13)>:
+public RuleList<MP_STR("specific list", 13),
+    RuleLine<
+        RuleItemRef<MP_STR("specific", 8)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(",", 1)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("specific list", 13)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("specific", 8)>
+    >,
+    RuleLine<
+        
+    >
+> {};
+
+template<>
 class RuleDef<MP_STR("specific", 8)>:
 public RuleList<MP_STR("specific", 8),
     RuleLine<
         RuleItemKeyword<MP_STR("extends", 7)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("type list", 9)>
+        RuleItemRef<MP_STR("type", 4)>
     >,
     RuleLine<
-        
+        RuleItemKeyword<MP_STR("encloses", 8)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
     >
 > {};
 
@@ -235,6 +255,11 @@ public RuleList<MP_STR("definition", 10),
     >,
     RuleLine<
         RuleItemRef<MP_STR("const definition", 16)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(";", 1)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("static definition", 17)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
     >,
@@ -306,8 +331,31 @@ public RuleList<MP_STR("const definition", 16),
 > {};
 
 template<>
+class RuleDef<MP_STR("static definition", 17)>:
+public RuleList<MP_STR("static definition", 17),
+    RuleLine<
+        RuleItemKeyword<MP_STR("static", 6)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>
+    >
+> {};
+
+template<>
 class RuleDef<MP_STR("return definition", 17)>:
 public RuleList<MP_STR("return definition", 17),
+    RuleLine<
+        RuleItemKeyword<MP_STR("return", 6)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>
+    >,
     RuleLine<
         RuleItemKeyword<MP_STR("return", 6)>,
         RuleItemSpace<>,
@@ -342,11 +390,6 @@ public RuleList<MP_STR("statement", 9),
         RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("inherit", 7)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("return", 6)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
@@ -377,20 +420,15 @@ public RuleList<MP_STR("assignment", 10),
 > {};
 
 template<>
-class RuleDef<MP_STR("inherit", 7)>:
-public RuleList<MP_STR("inherit", 7),
-    RuleLine<
-        RuleItemKeyword<MP_STR("inherit", 7)>
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("return", 6)>:
 public RuleList<MP_STR("return", 6),
     RuleLine<
         RuleItemKeyword<MP_STR("return", 6)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("return", 6)>
     >
 > {};
 
@@ -518,9 +556,6 @@ public RuleList<MP_STR("structure end", 13),
         RuleItemKeyword<MP_STR("end", 3)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("while", 5)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("end", 3)>
     >
 > {};
 
@@ -642,12 +677,14 @@ public RuleList<MP_STR("unary expression", 16),
         RuleItemRef<MP_STR("unary expression", 16)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("literal", 7)>
+        RuleItemRef<MP_STR("literal", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("access operation", 16)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access expression", 17)>
+        RuleItemRef<MP_STR("access operation", 16)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("(", 1)>,
@@ -659,19 +696,19 @@ public RuleList<MP_STR("unary expression", 16),
 > {};
 
 template<>
-class RuleDef<MP_STR("access expression", 17)>:
-public RuleList<MP_STR("access expression", 17),
+class RuleDef<MP_STR("access operation", 16)>:
+public RuleList<MP_STR("access operation", 16),
     RuleLine<
         RuleItemRef<MP_STR("argument apply", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access expression", 17)>
+        RuleItemRef<MP_STR("access operation", 16)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR(".", 1)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access expression", 17)>
+        RuleItemRef<MP_STR("access operation", 16)>
     >,
     RuleLine<
         
@@ -697,31 +734,22 @@ public RuleList<MP_STR("argument apply", 14),
 > {};
 
 template<>
-class RuleDef<MP_STR("type list", 9)>:
-public RuleList<MP_STR("type list", 9),
-    RuleLine<
-        RuleItemRef<MP_STR("type", 4)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(",", 1)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type list", 9)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("type", 4)>
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("type", 4)>:
 public RuleList<MP_STR("type", 4),
     RuleLine<
         RuleItemRef<MP_STR("native type", 11)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("array", 5)>
+        RuleItemRef<MP_STR("wrap type", 9)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("reference", 9)>
+        RuleItemRef<MP_STR("program type", 12)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("function type", 13)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("type inference", 14)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("class", 5)>
@@ -741,7 +769,7 @@ template<>
 class RuleDef<MP_STR("native type", 11)>:
 public RuleList<MP_STR("native type", 11),
     RuleLine<
-        RuleItemKeyword<MP_STR("empty", 5)>
+        RuleItemKeyword<MP_STR("void", 4)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("boolean", 7)>
@@ -754,6 +782,20 @@ public RuleList<MP_STR("native type", 11),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("real", 4)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("wrap type", 9)>:
+public RuleList<MP_STR("wrap type", 9),
+    RuleLine<
+        RuleItemRef<MP_STR("array", 5)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("pointer", 7)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("reference", 9)>
     >
 > {};
 
@@ -779,6 +821,18 @@ public RuleList<MP_STR("array", 5),
 > {};
 
 template<>
+class RuleDef<MP_STR("pointer", 7)>:
+public RuleList<MP_STR("pointer", 7),
+    RuleLine<
+        RuleItemKeyword<MP_STR("pointer", 7)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("of", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>
+    >
+> {};
+
+template<>
 class RuleDef<MP_STR("reference", 9)>:
 public RuleList<MP_STR("reference", 9),
     RuleLine<
@@ -787,6 +841,38 @@ public RuleList<MP_STR("reference", 9),
         RuleItemKeyword<MP_STR("of", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("type", 4)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("program type", 12)>:
+public RuleList<MP_STR("program type", 12),
+    RuleLine<
+        RuleItemKeyword<MP_STR("program", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("function type", 13)>:
+public RuleList<MP_STR("function type", 13),
+    RuleLine<
+        RuleItemKeyword<MP_STR("function", 8)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("type inference", 14)>:
+public RuleList<MP_STR("type inference", 14),
+    RuleLine<
+        RuleItemKeyword<MP_STR("type", 4)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("of", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
     >
 > {};
 
@@ -890,6 +976,9 @@ public RuleList<MP_STR("literal", 7),
     >,
     RuleLine<
         RuleItemRef<MP_STR("instant array", 13)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("type info", 9)>
     >
 > {};
 
@@ -941,6 +1030,18 @@ public RuleList<MP_STR("instant array", 13),
 > {};
 
 template<>
+class RuleDef<MP_STR("type info", 9)>:
+public RuleList<MP_STR("type info", 9),
+    RuleLine<
+        RuleItemKeyword<MP_STR("$", 1)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("$", 1)>
+    >
+> {};
+
+template<>
 class RuleDef<MP_STR("space", 5)>:
 public RuleList<MP_STR("space", 5),
     RuleLine<
@@ -968,7 +1069,7 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("\\:=|[\\(\\)\\[\\],.;]", 17)
+    MP_STR("\\:=|[\\(\\)\\[\\],.;$]", 18)
 > {};
 
 template<>

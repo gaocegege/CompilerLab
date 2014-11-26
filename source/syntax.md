@@ -37,7 +37,7 @@ Block
 
 main body:
 
-    <specific> <interface block> <is block> <code block> <main end>
+    <specific list> <interface block> <is block> <code block> <main end>
 
 interface block:
 
@@ -82,15 +82,24 @@ argument option:
     reg
     <>
 
+specific list:
+
+    <specific> , <specific list>
+    <specific>
+    <>
+
 specific:
 
-    extends <type list>
-    <>
+    extends <type>
+    encloses <expression>
+    // default: extends <class base> / <program base> / <function base>
+    // default: (if need) encloses outer is reference of type of outer
 
 definition:
 
     <var definition> ;
     <const definition> ;
+    <static definition> ;
     <type definition> ;
     <program> ;
     <function> ;
@@ -109,9 +118,15 @@ var definition:
 const definition:
 
     const <id> is <type>
+    // only bind once in the code block
+
+static definition:
+
+    static <id> is <type>
 
 return definition:
 
+    return <id> is <type>
     return <type>
     // return is supported in function only
 
@@ -127,7 +142,6 @@ statement:
 
     <expression> ;
     <assignment> ;
-    <inherit> ;
     <return> ;
     <structure>
     <repeat> ;
@@ -137,13 +151,10 @@ assignment:
 
     <expression> := <expression>
 
-inherit:
-
-    inherit
-
 return:
 
     return <expression>
+    return
 
 Code Structure
 ---
@@ -172,7 +183,6 @@ structure end:
     end for
     end foreach
     end while
-    end
     // should match the structure
 
 repeat:
@@ -223,14 +233,14 @@ multiplicative operation:
 unary expression:
 
     <unary operator> <unary expression>
-    <literal>
-    <id> <access expression>
+    <literal> <access operation>
+    <id> <access operation>
     ( <expression> )
 
-access expression:
+access operation:
 
-    <argument apply> <access expression>
-    . <id> <access expression>
+    <argument apply> <access operation>
+    . <id> <access operation>
     <>
 
 argument apply:
@@ -243,16 +253,13 @@ argument apply:
 Identifier
 ---
 
-type list:
-
-    <type> , <type list>
-    <type>
-
 type:
 
     <native type>
-    <array>
-    <reference>
+    <wrap type>
+    <program type>
+    <function type>
+    <type inference>
     <class>
     <id>
 
@@ -265,11 +272,17 @@ Type
 
 native type:
 
-    empty
+    void
     boolean
     byte
     integer
     real
+
+wrap type:
+
+    <array>
+    <pointer>
+    <reference>
 
 array:
 
@@ -277,9 +290,25 @@ array:
     array of <type>
     // the second version is pointer
 
+pointer:
+
+    pointer of <type>
+
 reference:
 
     reference of <type>
+
+program type:
+
+    program <id>
+
+function type:
+
+    function <id>
+
+type inference:
+
+    type of <expression>
 
 Operator
 ---
@@ -335,6 +364,7 @@ literal:
     <real>
     <string>
     <instant array>
+    <type info>
 
 boolean:
 
@@ -361,6 +391,10 @@ instant array:
 
     [ <expression list> ]
 
+type info:
+
+    $ <type> $
+
 Special
 ---
 
@@ -379,7 +413,7 @@ Special
 
 *sign*:
 
-    \:=|[\(\)\[\],.;]
+    \:=|[\(\)\[\],.;$]
 
 *ignored*:
 
