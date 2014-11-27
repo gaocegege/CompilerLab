@@ -79,7 +79,7 @@ argument option:
 
     in
     out
-    reg
+    fast <id>
     <>
 
 specific list:
@@ -277,6 +277,8 @@ native type:
     byte
     integer
     real
+    bitset
+    // boolean is also uint
 
 wrap type:
 
@@ -287,8 +289,6 @@ wrap type:
 array:
 
     array of <integer> <type>
-    array of <type>
-    // the second version is pointer
 
 pointer:
 
@@ -331,6 +331,10 @@ multiplication:
     div
     mod
     and
+    shl
+    shr
+    rol
+    ror
 
 unary operator:
 

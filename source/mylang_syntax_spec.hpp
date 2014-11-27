@@ -24,12 +24,12 @@ public:
             "and", "array", "begin", "boolean", "byte",
             "class", "const", "div", "do", "downto",
             "elif", "else", "encloses", "end", "extends",
-            "for", "foreach", "function",
+            "fast", "for", "foreach", "function",
             "if", "in", "integer", "is", "mod", "no", "not",
             "of", "or", "out", "pointer", "program",
-            "real", "reference", "reg", "repeat", "return",
-            "static", "then", "to", "type", "until",
-            "var", "void", "while", "xor", "yes"
+            "real", "reference", "repeat", "return", "rol", "ror"
+            "shl", "shr", "static", "then", "to", "type",
+            "until", "var", "void", "while", "xor", "yes"
         };
 
         ok = keywords.find(getText()) == keywords.cend();
