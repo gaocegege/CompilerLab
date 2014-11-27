@@ -388,6 +388,22 @@ public RuleList<MP_STR("type", 4),
         RuleItemRef<MP_STR("class", 5)>
     >,
     RuleLine<
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("of", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("literal", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("of", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("type", 4)>
+    >,
+    RuleLine<
         RuleItemRef<MP_STR("expression", 10)>
     >
 > {};
@@ -764,11 +780,6 @@ template<>
 class RuleDef<MP_STR("argument apply", 14)>:
 public RuleList<MP_STR("argument apply", 14),
     RuleLine<
-        RuleItemKeyword<MP_STR("of", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("value list", 10)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("value", 5)>
     >,
     RuleLine<
@@ -880,6 +891,17 @@ template<>
 class RuleDef<MP_STR("value", 5)>:
 public RuleList<MP_STR("value", 5),
     RuleLine<
+        RuleItemRef<MP_STR("literal", 7)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("id", 2)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("literal", 7)>:
+public RuleList<MP_STR("literal", 7),
+    RuleLine<
         RuleItemRef<MP_STR("byte", 4)>
     >,
     RuleLine<
@@ -893,9 +915,6 @@ public RuleList<MP_STR("value", 5),
     >,
     RuleLine<
         RuleItemRef<MP_STR("instant array", 13)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("id", 2)>
     >
 > {};
 

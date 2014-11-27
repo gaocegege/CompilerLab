@@ -165,15 +165,17 @@ type:
 
     auto
     <class>
+    <expression> of <literal> <type>
+    <expression> of <type>
     <expression>
     // built-in:
     //     void typeid
     //     byte boolean (boolean is uint) integer
     //     real (double) string (pair of length and pchar)
     // compile-time generation:
-    //     array of <integer> <id>
-    //     pointer of <id>
-    //     reference of <id>
+    //     array of <integer> <type>
+    //     pointer of <type>
+    //     reference of <type>
 
 Statement
 ---
@@ -301,7 +303,6 @@ access operation:
 
 argument apply:
 
-    of <value list>
     <value>
     ( <expression list> )
     // x[0] is x.__call<array of 1 integer>([0])
@@ -359,16 +360,20 @@ value list:
 
 value:
 
+    <literal>
+    <id>
+    // id of runtime value -> value access
+    //               other -> literal
+
+literal:
+
     <byte>
     <integer>
     <real>
     <string>
     <instant array>
-    <id>
     // const boolean yes := (unsigned -1)
     //                no := 0
-    // id of runtime value -> value access
-    //               other -> literal
 
 *byte*:
 
