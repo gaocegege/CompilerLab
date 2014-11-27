@@ -6,9 +6,7 @@ File
 
 **root**:
 
-    <> <main structure> ; <>
     <> <main structure> <>
-    <!Syntax error>
     // allow spaces before and after
     // ignore tail
 
@@ -63,7 +61,7 @@ main end:
     end
     // should match the body
 
-Definition
+Proto
 ---
 
 function proto:
@@ -82,6 +80,9 @@ argument:
     out <id>
     <id>
 
+Specific
+---
+
 specific list:
 
     <specific> , <specific list>
@@ -90,10 +91,21 @@ specific list:
 
 specific:
 
+    <extend specific>
+    <enclose specific>
+
+extend specific:
+
     extends <typed bind>
-    encloses <typed bind>
     // default: extends <class base> / <program base> / <function base>
+
+enclose specific:
+
+    encloses <typed bind>
     // default: (if need) encloses decltype(ref(outer)) default ref(outer)
+
+Definition
+---
 
 definition:
 
@@ -103,8 +115,7 @@ definition:
     <static definition> ;
     <fastvar definition> ;
     <return definition> ;
-    <program> ;
-    <function> ;
+    <main structure>
     ;
     // fastvar (passed by register) for program and function only
     // return for function only
@@ -135,6 +146,9 @@ return definition:
 
     return <id bind>
     // return is supported in function only
+
+Type
+---
 
 id bind:
 
@@ -203,19 +217,19 @@ structure:
 
 if structure:
 
-    if <expression> then <statement list> <condition chain> <structure end>
+    if <expression> then <statement list> <condition chain> end if
 
 for structure:
 
-    for <id> in <for range> do <statement list> <structure end>
+    for <id> in <for range> do <statement list> end for
 
 foreach structure:
 
-    foreach <id> in <expression> do <statement list> <structure end>
+    foreach <id> in <expression> do <statement list> end foreach
 
 while structure:
 
-    while <expression> do <statement list> <structure end>
+    while <expression> do <statement list> end while
 
 condition chain:
 
@@ -227,14 +241,6 @@ for range:
 
     <expression> to <expression>
     <expression> downto <expression>
-
-structure end:
-
-    end if
-    end for
-    end foreach
-    end while
-    // should match the structure
 
 repeat:
 

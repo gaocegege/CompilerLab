@@ -13,17 +13,7 @@ public RuleList<MP_STR("root", 4),
     RuleLine<
         RuleItemSpace<>,
         RuleItemRef<MP_STR("main structure", 14)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>,
         RuleItemSpace<>
-    >,
-    RuleLine<
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("main structure", 14)>,
-        RuleItemSpace<>
-    >,
-    RuleLine<
-        RuleItemError<MP_STR("Syntax error", 12)>
     >
 > {};
 
@@ -226,10 +216,26 @@ template<>
 class RuleDef<MP_STR("specific", 8)>:
 public RuleList<MP_STR("specific", 8),
     RuleLine<
+        RuleItemRef<MP_STR("extend specific", 15)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("enclose specific", 16)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("extend specific", 15)>:
+public RuleList<MP_STR("extend specific", 15),
+    RuleLine<
         RuleItemKeyword<MP_STR("extends", 7)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("typed bind", 10)>
-    >,
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("enclose specific", 16)>:
+public RuleList<MP_STR("enclose specific", 16),
     RuleLine<
         RuleItemKeyword<MP_STR("encloses", 8)>,
         RuleItemSpace<>,
@@ -271,14 +277,7 @@ public RuleList<MP_STR("definition", 10),
         RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("program", 7)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("function", 8)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
+        RuleItemRef<MP_STR("main structure", 14)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR(";", 1)>
@@ -499,7 +498,9 @@ public RuleList<MP_STR("if structure", 12),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("condition chain", 15)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("structure end", 13)>
+        RuleItemKeyword<MP_STR("end", 3)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("if", 2)>
     >
 > {};
 
@@ -519,7 +520,9 @@ public RuleList<MP_STR("for structure", 13),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("statement list", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("structure end", 13)>
+        RuleItemKeyword<MP_STR("end", 3)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("for", 3)>
     >
 > {};
 
@@ -539,7 +542,9 @@ public RuleList<MP_STR("foreach structure", 17),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("statement list", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("structure end", 13)>
+        RuleItemKeyword<MP_STR("end", 3)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("foreach", 7)>
     >
 > {};
 
@@ -555,7 +560,9 @@ public RuleList<MP_STR("while structure", 15),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("statement list", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("structure end", 13)>
+        RuleItemKeyword<MP_STR("end", 3)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("while", 5)>
     >
 > {};
 
@@ -599,31 +606,6 @@ public RuleList<MP_STR("for range", 9),
         RuleItemKeyword<MP_STR("downto", 6)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("structure end", 13)>:
-public RuleList<MP_STR("structure end", 13),
-    RuleLine<
-        RuleItemKeyword<MP_STR("end", 3)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("if", 2)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("end", 3)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("for", 3)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("end", 3)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("foreach", 7)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("end", 3)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("while", 5)>
     >
 > {};
 

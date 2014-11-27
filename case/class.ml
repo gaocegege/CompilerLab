@@ -8,6 +8,7 @@ program test()
 		begin
 			return x;
 		end
+	end class;
 is
 	var buf is integer;
 	var classBuf is MyClass;
