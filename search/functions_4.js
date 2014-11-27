@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../ml_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'ml.cpp']]],
-  ['mpdebug',['mpDebug',['../namespacemyparser.html#a10cae591e613d2ab7e55ebfaabec5b9d',1,'myparser']]]
+  ['free',['free',['../classmyparser_1_1Node.html#a2548b4e45f67a4c8de3411ec65bedcca',1,'myparser::Node::free()'],['../classmyparser_1_1NodeList.html#a59af36ba9a4a32c3db19207d37db81d4',1,'myparser::NodeList::free()']]]
 ];

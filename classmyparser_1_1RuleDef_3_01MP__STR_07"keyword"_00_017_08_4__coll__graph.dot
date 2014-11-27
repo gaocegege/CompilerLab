@@ -5,7 +5,7 @@ digraph "myparser::RuleDef&lt; MP_STR(&quot;keyword&quot;, 7)&gt;"
   rankdir="LR";
   Node1 [label="myparser::RuleDef\<\l MP_STR(\"keyword\", 7)\>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
   Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="myparser::RuleList\l\< MP_STR(\"keyword\",\l 7), RuleLine\< RuleItemRef\l\< MP_STR(\"id\", 2)\> \>, RuleLine\l\< RuleItemRef\< MP_STR(\"sign\", 4)\> \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmyparser_1_1RuleList.html"];
+  Node2 [label="myparser::RuleList\l\< MP_STR(\"keyword\",\l 7), RuleLine\< RuleItemRef\l\< MP_STR(\"reserved id\", 11)\l\> \>, RuleLine\< RuleItemRef\l\< MP_STR(\"sign\", 4)\> \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmyparser_1_1RuleList.html"];
   Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node3 [label="myparser::RuleNamed\l\< MP_STR(\"keyword\", 7) \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classmyparser_1_1RuleNamed.html"];
   Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

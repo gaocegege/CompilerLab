@@ -1,0 +1,7 @@
+<map id="myparser::NodeTyped&lt; RuleId, NodeText&lt;&gt; &gt;" name="myparser::NodeTyped&lt; RuleId, NodeText&lt;&gt; &gt;">
+<area shape="rect" id="node2" href="$classmyparser_1_1NodeTypedProto.html" title="myparser::NodeTypedProto\l\&lt; RuleId, NodeId\&lt;\&gt; \&gt;" alt="" coords="5,321,187,362"/>
+<area shape="rect" id="node3" href="$classmyparser_1_1NodeId.html" title="myparser::NodeId\&lt;\&gt;" alt="" coords="25,245,165,272"/>
+<area shape="rect" id="node4" href="$classmyparser_1_1NodeTextOrError.html" title="myparser::NodeTextOrError\l\&lt; ErrorId \&gt;" alt="" coords="5,155,187,197"/>
+<area shape="rect" id="node5" href="$classmyparser_1_1NodeText.html" title="myparser::NodeText\&lt;\&gt;" alt="" coords="18,80,173,107"/>
+<area shape="rect" id="node6" href="$classmyparser_1_1Node.html" title="myparser::Node" alt="" coords="39,5,153,32"/>
+</map>

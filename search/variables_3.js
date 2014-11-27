@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['least',['least',['../classmyparser_1_1Tag.html#a8854642c737d6976e9de005aec72f91b',1,'myparser::Tag']]]
+  ['data',['data',['../classmyparser_1_1NodeData.html#a68ceac380fa269432bad2fe51362da53',1,'myparser::NodeData']]]
 ];

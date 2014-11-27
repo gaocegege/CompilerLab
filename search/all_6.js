@@ -9,5 +9,6 @@ var searchData=
   ['f_5f6',['f_6',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2af50c1530bef5c7be931c23a6ffe73d08',1,'ccc']]],
   ['f_5f7',['f_7',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2ad297887d65eb84a10e090885b1d4a110',1,'ccc']]],
   ['f_5f8',['f_8',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2a29be9cb8f4aac6177af56751de0db4c4',1,'ccc']]],
-  ['f_5f9',['f_9',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2a01e721a5ac2337fe5e0adc283ff46d18',1,'ccc']]]
+  ['f_5f9',['f_9',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2a01e721a5ac2337fe5e0adc283ff46d18',1,'ccc']]],
+  ['free',['free',['../classmyparser_1_1Node.html#a2548b4e45f67a4c8de3411ec65bedcca',1,'myparser::Node::free()'],['../classmyparser_1_1NodeList.html#a59af36ba9a4a32c3db19207d37db81d4',1,'myparser::NodeList::free()']]]
 ];

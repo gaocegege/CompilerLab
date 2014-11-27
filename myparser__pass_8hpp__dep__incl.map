@@ -1,6 +1,13 @@
-<map id="/media/hcz/B/code/projects/myparser/myparser_pass.hpp" name="/media/hcz/B/code/projects/myparser/myparser_pass.hpp">
-<area shape="rect" id="node2" href="$myparser__ast_8hpp.html" title="/media/hcz/B/code/projects\l/myparser/myparser_ast.hpp" alt="" coords="6,103,193,145"/>
-<area shape="rect" id="node4" href="$myparser__pass__filter_8hpp.html" title="/media/hcz/B/code/projects\l/myparser/myparser_pass\l_filter.hpp" alt="" coords="219,96,400,152"/>
-<area shape="rect" id="node5" href="$myparser__pass__repr_8hpp.html" title="/media/hcz/B/code/projects\l/myparser/myparser_pass\l_repr.hpp" alt="" coords="424,96,605,152"/>
-<area shape="rect" id="node3" href="$myparser__rule_8hpp.html" title="/media/hcz/B/code/projects\l/myparser/myparser_rule.hpp" alt="" coords="5,201,195,242"/>
+<map id="source/parser/myparser_pass.hpp" name="source/parser/myparser_pass.hpp">
+<area shape="rect" id="node2" href="$myparser__ast_8hpp.html" title="source/parser/myparser\l_ast.hpp" alt="" coords="67,97,225,138"/>
+<area shape="rect" id="node10" href="$myparser__pass__filter_8hpp.html" title="source/parser/myparser\l_pass_filter.hpp" alt="" coords="187,187,345,229"/>
+<area shape="rect" id="node11" href="$myparser__pass__highlight_8hpp.html" title="source/parser/myparser\l_pass_highlight.hpp" alt="" coords="305,278,463,319"/>
+<area shape="rect" id="node12" href="$myparser__pass__repr_8hpp.html" title="source/parser/myparser\l_pass_repr.hpp" alt="" coords="422,97,580,138"/>
+<area shape="rect" id="node3" href="$myparser__ast__plus_8hpp.html" title="source/parser/myparser\l_ast_plus.hpp" alt="" coords="5,187,163,229"/>
+<area shape="rect" id="node4" href="$myparser__rule_8hpp.html" title="source/parser/myparser\l_rule.hpp" alt="" coords="38,278,196,319"/>
+<area shape="rect" id="node5" href="$mylang__syntax__spec_8hpp.html" title="source/mylang_syntax\l_spec.hpp" alt="" coords="41,443,193,485"/>
+<area shape="rect" id="node8" href="$myparser_8hpp.html" title="source/parser/myparser.hpp" alt="" coords="216,368,400,395"/>
+<area shape="rect" id="node6" href="$mylang_8hpp.html" title="source/mylang.hpp" alt="" coords="146,533,277,560"/>
+<area shape="rect" id="node7" href="$ml_8cpp.html" title="source/ml.cpp" alt="" coords="160,608,264,635"/>
+<area shape="rect" id="node9" href="$mylang__syntax_8hpp.html" title="source/mylang_syntax.hpp" alt="" coords="219,451,397,477"/>
 </map>

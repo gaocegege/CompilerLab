@@ -11,9 +11,9 @@ var indexSectionsWithContent =
   1: "ahnprst",
   2: "cm",
   3: "cm",
-  4: "acegmnoprst~",
-  5: "_cilmopst",
-  6: "beint",
+  4: "abcefgmnoprst~",
+  5: "_bcdilmopst",
+  6: "beinrt",
   7: "s",
   8: "cdfps",
   9: "m"

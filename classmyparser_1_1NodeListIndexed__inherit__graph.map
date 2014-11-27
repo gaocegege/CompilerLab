@@ -1,4 +1,7 @@
 <map id="myparser::NodeListIndexed&lt; I &gt;" name="myparser::NodeListIndexed&lt; I &gt;">
-<area shape="rect" id="node2" href="$classmyparser_1_1NodeList.html" title="myparser::NodeList\&lt;\&gt;" alt="" coords="34,80,184,107"/>
-<area shape="rect" id="node3" href="$classmyparser_1_1Node.html" title="myparser::Node" alt="" coords="52,5,167,32"/>
+<area shape="rect" id="node4" href="$classmyparser_1_1NodeSpace.html" title="myparser::NodeSpace\&lt; I \&gt;" alt="" coords="21,229,200,256"/>
+<area shape="rect" id="node2" href="$classmyparser_1_1NodeList.html" title="myparser::NodeList\&lt;\&gt;" alt="" coords="35,80,185,107"/>
+<area shape="rect" id="node3" href="$classmyparser_1_1Node.html" title="myparser::Node" alt="" coords="53,5,168,32"/>
+<area shape="rect" id="node5" href="$classmyparser_1_1NodeTypedProto.html" title="NodeTypedProto\&lt; BuiltinSpace,\l NodeSpace\&lt; I \&gt; \&gt;" alt="" coords="7,305,215,346"/>
+<area shape="rect" id="node6" href="$classmyparser_1_1NodeTyped_3_01BuiltinSpace_00_01NodeListIndexed_3_01I_01_4_01_4.html" title="myparser::NodeTyped\l\&lt; BuiltinSpace, NodeListIndexed\l\&lt; I \&gt; \&gt;" alt="" coords="5,395,216,451"/>
 </map>

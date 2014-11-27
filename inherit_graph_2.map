@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node2" href="$classmyparser_1_1NodeTyped.html" title="myparser::NodeTyped\l\&lt; N, T, I \&gt;" alt="" coords="94,5,245,46"/>
+<area shape="rect" id="node2" href="$classmyparser_1_1NodeTypedProto.html" title="myparser::NodeTypedProto\l\&lt; N, T, I \&gt;" alt="" coords="93,5,275,46"/>
+<area shape="rect" id="node3" href="$classmyparser_1_1NodeTypedProto.html" title="myparser::NodeTypedProto\l\&lt; N, T \&gt;" alt="" coords="93,70,275,111"/>
+<area shape="rect" id="node4" href="$classmyparser_1_1NodeTyped.html" title="myparser::NodeTyped\l\&lt; N, T \&gt;" alt="" coords="323,70,474,111"/>
 </map>

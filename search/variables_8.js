@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['text',['text',['../classmyparser_1_1NodeText.html#a672c2e90c6be952db946492c9753af53',1,'myparser::NodeText']]]
+  ['pos',['pos',['../classmyparser_1_1Node.html#aad04fce1a35b2fa19d635854524451de',1,'myparser::Node']]]
 ];

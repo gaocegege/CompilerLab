@@ -19,6 +19,6 @@ var searchData=
   ['cf_5fred',['cf_red',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2a00d7a22bbcd9261c485fecd194da322a',1,'ccc']]],
   ['cf_5fwhite',['cf_white',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2ac825cb5d3e521216a4090a90b0ccebaa',1,'ccc']]],
   ['cf_5fyellow',['cf_yellow',['../namespaceccc.html#a5bdc54cec91a4ddb68f75a1f55aa64e2aaf9edaa39e3af15879740585ace10275',1,'ccc']]],
-  ['child',['child',['../classmyparser_1_1NodeErrorWrap.html#a07fdd8d0dd7ff13a6e3cb2771ba2e576',1,'myparser::NodeErrorWrap']]],
-  ['children',['children',['../classmyparser_1_1NodeList.html#a0c5654bad5704b8632032fd3dd816dcc',1,'myparser::NodeList']]]
+  ['challengelonger',['challengeLonger',['../classmyparser_1_1Node.html#a34bb5de05eb0970ae364e7298f8ed56e',1,'myparser::Node']]],
+  ['children',['children',['../classmyparser_1_1NodeList.html#a79e2b9c0af549be94f8da345c16700d3',1,'myparser::NodeList']]]
 ];
