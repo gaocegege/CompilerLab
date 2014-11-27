@@ -10,12 +10,13 @@ File
     <> <main structure> <>
     <!Syntax error>
     // allow spaces before and after
+    // ignore tail
 
 main structure:
 
     <program>
     <function>
-    <class>
+    // <class> - not allowed here
 
 Main Structure
 ---
@@ -71,16 +72,15 @@ function proto:
 
 argument list:
 
-    <argument option> <id> , <argument list>
-    <argument option> <id>
+    <argument> , <argument list>
+    <argument>
     <>
 
-argument option:
+argument:
 
-    in
-    out
-    fast <id>
-    <>
+    in <id>
+    out <id>
+    <id>
 
 specific list:
 
@@ -90,45 +90,76 @@ specific list:
 
 specific:
 
-    extends <type>
-    encloses <expression>
+    extends <typed bind>
+    encloses <typed bind>
     // default: extends <class base> / <program base> / <function base>
-    // default: (if need) encloses outer is reference of type of outer
+    // default: (if need) encloses decltype(ref(outer)) default ref(outer)
 
 definition:
 
+    <type definition> ;
     <var definition> ;
     <const definition> ;
     <static definition> ;
-    <type definition> ;
+    <fastvar definition> ;
+    <return definition> ;
     <program> ;
     <function> ;
-    <return definition> ;
     ;
-    // return definition for function only (or cause a warning)
+    // fastvar (passed by register) for program and function only
+    // return for function only
 
 type definition:
 
     type <id> is <type>
+    // const <id> is typeid default <...>
 
 var definition:
 
-    var <id> is <type>
+    var <id bind>
 
 const definition:
 
-    const <id> is <type>
-    // only bind once in the code block
+    const <id bind>
 
 static definition:
 
-    static <id> is <type>
+    static <id bind>
+
+fastvar definition:
+
+    fastvar <id bind>
+    // fastvar is supported in program and function
 
 return definition:
 
-    return <id> is <type>
-    return <type>
+    return <id bind>
     // return is supported in function only
+
+id bind:
+
+    <id> is <typed bind>
+    <typed bind>
+    // allow anonymous
+
+typed bind:
+
+    <type> default <expression>
+    <type>
+
+type:
+
+    auto
+    <class>
+    <expression>
+    // built-in:
+    //     void typeid
+    //     byte boolean (boolean is uint) integer
+    //     real (double) string (pair of length and pchar)
+    // compile-time generation:
+    //     array of <integer> <id>
+    //     pointer of <id>
+    //     reference of <id>
 
 Statement
 ---
@@ -165,9 +196,25 @@ Code Structure
 
 structure:
 
+    <if structure>
+    <for structure>
+    <foreach structure>
+    <while structure>
+
+if structure:
+
     if <expression> then <statement list> <condition chain> <structure end>
+
+for structure:
+
     for <id> in <for range> do <statement list> <structure end>
+
+foreach structure:
+
     foreach <id> in <expression> do <statement list> <structure end>
+
+while structure:
+
     while <expression> do <statement list> <structure end>
 
 condition chain:
@@ -237,8 +284,7 @@ multiplicative operation:
 unary expression:
 
     <unary operator> <unary expression>
-    <literal> <access operation>
-    <id> <access operation>
+    <value> <access operation>
     ( <expression> )
 
 access operation:
@@ -249,64 +295,11 @@ access operation:
 
 argument apply:
 
-    <literal>
-    <id>
+    of <value list>
+    <value>
     ( <expression list> )
     // x[0] is x.__call<array of 1 integer>([0])
-
-Type
----
-
-type:
-
-    <native type>
-    <wrap type>
-    <program type>
-    <function type>
-    <type inference>
-    <class>
-    <id>
-
-native type:
-
-    void
-    boolean
-    byte
-    integer
-    real
-    bitset
-    // boolean is also uint
-    // string is class with length and pchar
-
-wrap type:
-
-    <array>
-    <pointer>
-    <reference>
-
-array:
-
-    array of <integer> <type>
-
-pointer:
-
-    pointer of <type>
-
-reference:
-
-    reference of <type>
-
-program type:
-
-    program <id>
-
-function type:
-
-    function <id>
-
-type inference:
-
-    type of <expression>
+    // id can be var, const, type etc
 
 Operator
 ---
@@ -324,7 +317,7 @@ addition:
 
 multiplication:
 
-    <muldiv>
+    <muldivmod>
     div
     mod
     and
@@ -346,26 +339,30 @@ unary operator:
 
     \+|-
 
-*muldiv*:
+*muldivmod*:
 
-    \*|\/
+    \*|\/|%
 
-Literal
+Value
 ---
 
-literal:
+value list:
 
-    <boolean>
+    <value> <value list>
+    <>
+
+value:
+
     <byte>
     <integer>
     <real>
     <string>
     <instant array>
-
-boolean:
-
-    yes
-    no
+    <id>
+    // const boolean yes := (unsigned -1)
+    //                no := 0
+    // id of runtime value -> value access
+    //               other -> literal
 
 *byte*:
 

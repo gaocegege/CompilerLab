@@ -3,7 +3,7 @@
 
 #include <set>
 
-#include "parser/myparser_rule.hpp"
+#include "parser/myparser.hpp"
 
 namespace myparser {
 
@@ -22,13 +22,14 @@ public:
     ): NodeTextOrError(input, std::move(value)) {
         static const std::set<std::string> keywords = {
             "program", "function", "class",
-            "is", "begin", "end", "in", "out", "fast",
+            "is", "begin", "end", "in", "out",
             "extends", "encloses",
-            "type", "var", "const", "static", "return",
-            "if", "then", "for", "do", "foreach", "while", "elif", "else",
-            "to", "downto",
+            "type", "var", "const", "static", "fastvar", "return",
+            "default", "auto",
+            "if", "then", "for", "do", "foreach", "while",
+            "elif", "else", "to", "downto",
             "repeat", "until",
-            "array", "of",
+            "of",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
