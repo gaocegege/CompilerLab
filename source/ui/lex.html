@@ -58,7 +58,7 @@ $(document).ready(function(){
 var treeData = 
 {
     "rulename": "root",
-    "ruleindex": "0",
+    "ruleindex": "1",
     "children": [{
         "rulename": "main structure",
         "ruleindex": "0",
@@ -66,19 +66,355 @@ var treeData =
             "rulename": "program",
             "ruleindex": "0",
             "children": [{
-                "rulename": "error",
-                "error": "Bad keyword",
+                "rulename": "keyword",
+                "ruleindex": "0",
                 "children": [{
+                    "rulename": "reserved id",
+                    "text": "program",
+                }],
+            },
+            {
+                "rulename": "function proto",
+                "ruleindex": "0",
+                "children": [{
+                    "rulename": "id",
+                    "text": "test",
+                },
+                {
                     "rulename": "keyword",
+                    "ruleindex": "1",
+                    "children": [{
+                        "rulename": "sign",
+                        "text": "(",
+                    }],
+                },
+                {
+                    "rulename": "keyword",
+                    "ruleindex": "1",
+                    "children": [{
+                        "rulename": "sign",
+                        "text": ")",
+                    }],
+                }],
+            },
+            {
+                "rulename": "main body",
+                "ruleindex": "0",
+                "children": [{
+                    "rulename": "interface block",
                     "ruleindex": "0",
                     "children": [{
-                        "rulename": "id",
-                        "error": "Regex not matched",
-                    }]
-                }]
-            }]
-        }]
-    }]
+                        "rulename": "definition",
+                        "ruleindex": "3",
+                        "children": [{
+                            "rulename": "type definition",
+                            "ruleindex": "0",
+                            "children": [{
+                                "rulename": "keyword",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "reserved id",
+                                    "text": "type",
+                                }],
+                            },
+                            {
+                                "rulename": "id",
+                                "text": "testArray",
+                            },
+                            {
+                                "rulename": "keyword",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "reserved id",
+                                    "text": "is",
+                                }],
+                            },
+                            {
+                                "rulename": "type",
+                                "ruleindex": "1",
+                                "children": [{
+                                    "rulename": "wrap type",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "array",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "keyword",
+                                            "ruleindex": "0",
+                                            "children": [{
+                                                "rulename": "reserved id",
+                                                "text": "array",
+                                            }],
+                                        },
+                                        {
+                                            "rulename": "keyword",
+                                            "ruleindex": "0",
+                                            "children": [{
+                                                "rulename": "reserved id",
+                                                "text": "of",
+                                            }],
+                                        },
+                                        {
+                                            "rulename": "integer",
+                                            "text": "20",
+                                        },
+                                        {
+                                            "rulename": "type",
+                                            "ruleindex": "0",
+                                            "children": [{
+                                                "rulename": "native type",
+                                                "ruleindex": "3",
+                                                "children": [{
+                                                    "rulename": "keyword",
+                                                    "ruleindex": "0",
+                                                    "children": [{
+                                                        "rulename": "reserved id",
+                                                        "text": "integer",
+                                                    }],
+                                                }],
+                                            }],
+                                        }],
+                                    }],
+                                }],
+                            }],
+                        },
+                        {
+                            "rulename": "keyword",
+                            "ruleindex": "1",
+                            "children": [{
+                                "rulename": "sign",
+                                "text": ";",
+                            }],
+                        }],
+                    }],
+                },
+                {
+                    "rulename": "is block",
+                    "ruleindex": "0",
+                    "children": [{
+                        "rulename": "keyword",
+                        "ruleindex": "0",
+                        "children": [{
+                            "rulename": "reserved id",
+                            "text": "is",
+                        }],
+                    },
+                    {
+                        "rulename": "interface block",
+                        "ruleindex": "0",
+                        "children": [{
+                            "rulename": "definition",
+                            "ruleindex": "0",
+                            "children": [{
+                                "rulename": "var definition",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "keyword",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "reserved id",
+                                        "text": "var",
+                                    }],
+                                },
+                                {
+                                    "rulename": "id",
+                                    "text": "buf",
+                                },
+                                {
+                                    "rulename": "keyword",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "reserved id",
+                                        "text": "is",
+                                    }],
+                                },
+                                {
+                                    "rulename": "type",
+                                    "ruleindex": "6",
+                                    "children": [{
+                                        "rulename": "id",
+                                        "text": "testArray",
+                                    }],
+                                }],
+                            },
+                            {
+                                "rulename": "keyword",
+                                "ruleindex": "1",
+                                "children": [{
+                                    "rulename": "sign",
+                                    "text": ";",
+                                }],
+                            }],
+                        }],
+                    }],
+                },
+                {
+                    "rulename": "code block",
+                    "ruleindex": "0",
+                    "children": [{
+                        "rulename": "keyword",
+                        "ruleindex": "0",
+                        "children": [{
+                            "rulename": "reserved id",
+                            "text": "begin",
+                        }],
+                    },
+                    {
+                        "rulename": "statement list",
+                        "ruleindex": "0",
+                        "children": [{
+                            "rulename": "statement",
+                            "ruleindex": "1",
+                            "children": [{
+                                "rulename": "assignment",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "expression",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "relative expression",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "additive expression",
+                                            "ruleindex": "0",
+                                            "children": [{
+                                                "rulename": "multiplicative expression",
+                                                "ruleindex": "0",
+                                                "children": [{
+                                                    "rulename": "unary expression",
+                                                    "ruleindex": "2",
+                                                    "children": [{
+                                                        "rulename": "id",
+                                                        "text": "buf",
+                                                    },
+                                                    {
+                                                        "rulename": "access operation",
+                                                        "ruleindex": "0",
+                                                        "children": [{
+                                                            "rulename": "argument apply",
+                                                            "ruleindex": "0",
+                                                            "children": [{
+                                                                "rulename": "literal",
+                                                                "ruleindex": "5",
+                                                                "children": [{
+                                                                    "rulename": "instant array",
+                                                                    "ruleindex": "0",
+                                                                    "children": [{
+                                                                        "rulename": "keyword",
+                                                                        "ruleindex": "1",
+                                                                        "children": [{
+                                                                            "rulename": "sign",
+                                                                            "text": "[",
+                                                                        }],
+                                                                    },
+                                                                    {
+                                                                        "rulename": "expression list",
+                                                                        "ruleindex": "1",
+                                                                        "children": [{
+                                                                            "rulename": "expression",
+                                                                            "ruleindex": "0",
+                                                                            "children": [{
+                                                                                "rulename": "relative expression",
+                                                                                "ruleindex": "0",
+                                                                                "children": [{
+                                                                                    "rulename": "additive expression",
+                                                                                    "ruleindex": "0",
+                                                                                    "children": [{
+                                                                                        "rulename": "multiplicative expression",
+                                                                                        "ruleindex": "0",
+                                                                                        "children": [{
+                                                                                            "rulename": "unary expression",
+                                                                                            "ruleindex": "1",
+                                                                                            "children": [{
+                                                                                                "rulename": "literal",
+                                                                                                "ruleindex": "2",
+                                                                                                "children": [{
+                                                                                                    "rulename": "integer",
+                                                                                                    "text": "0",
+                                                                                                }],
+                                                                                            }],
+                                                                                        }],
+                                                                                    }],
+                                                                                }],
+                                                                            }],
+                                                                        }],
+                                                                    },
+                                                                    {
+                                                                        "rulename": "keyword",
+                                                                        "ruleindex": "1",
+                                                                        "children": [{
+                                                                            "rulename": "sign",
+                                                                            "text": "]",
+                                                                        }],
+                                                                    }],
+                                                                }],
+                                                            }],
+                                                        }],
+                                                    }],
+                                                }],
+                                            }],
+                                        }],
+                                    }],
+                                },
+                                {
+                                    "rulename": "assign sign",
+                                    "text": ":=",
+                                },
+                                {
+                                    "rulename": "expression",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "relative expression",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "additive expression",
+                                            "ruleindex": "0",
+                                            "children": [{
+                                                "rulename": "multiplicative expression",
+                                                "ruleindex": "0",
+                                                "children": [{
+                                                    "rulename": "unary expression",
+                                                    "ruleindex": "1",
+                                                    "children": [{
+                                                        "rulename": "literal",
+                                                        "ruleindex": "2",
+                                                        "children": [{
+                                                            "rulename": "integer",
+                                                            "text": "100",
+                                                        }],
+                                                    }],
+                                                }],
+                                            }],
+                                        }],
+                                    }],
+                                }],
+                            },
+                            {
+                                "rulename": "keyword",
+                                "ruleindex": "1",
+                                "children": [{
+                                    "rulename": "sign",
+                                    "text": ";",
+                                }],
+                            }],
+                        }],
+                    }],
+                },
+                {
+                    "rulename": "main end",
+                    "ruleindex": "3",
+                    "children": [{
+                        "rulename": "keyword",
+                        "ruleindex": "0",
+                        "children": [{
+                            "rulename": "reserved id",
+                            "text": "end",
+                        }],
+                    }],
+                }],
+            }],
+        }],
+    }],
 };
     var jsonbuf = treeData;
     treeData = {};

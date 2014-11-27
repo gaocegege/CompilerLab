@@ -12,7 +12,8 @@ TARGET = UI
 TEMPLATE = app
 CONFIG += c++11
 
-INCLUDEPATH += /opt/local/include/
+INCLUDEPATH += /usr/local/include/
+INCLUDEPATH += /Users/gaoce/Downloads/cpp-netlib-0.11.1RC2/
 QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -O1
 
 SOURCES += main.cpp\

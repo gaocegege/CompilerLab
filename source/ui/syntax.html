@@ -66,19 +66,135 @@ var treeData =
             "rulename": "program",
             "ruleindex": "0",
             "children": [{
-                "rulename": "error",
-                "error": "Bad keyword",
+                "rulename": "keyword",
+                "ruleindex": "0",
                 "children": [{
+                    "rulename": "reserved id",
+                    "text": "program",
+                }],
+            },
+            {
+                "rulename": "function proto",
+                "ruleindex": "0",
+                "children": [{
+                    "rulename": "id",
+                    "text": "quickSort",
+                },
+                {
                     "rulename": "keyword",
+                    "ruleindex": "1",
+                    "children": [{
+                        "rulename": "sign",
+                        "text": "(",
+                    }],
+                },
+                {
+                    "rulename": "keyword",
+                    "ruleindex": "1",
+                    "children": [{
+                        "rulename": "sign",
+                        "text": ")",
+                    }],
+                }],
+            },
+            {
+                "rulename": "main body",
+                "ruleindex": "0",
+                "children": [{
+                    "rulename": "interface block",
                     "ruleindex": "0",
                     "children": [{
-                        "rulename": "id",
-                        "error": "Regex not matched",
-                    }]
-                }]
-            }]
-        }]
-    }]
+                        "rulename": "definition",
+                        "ruleindex": "2",
+                        "children": [{
+                            "rulename": "type definition",
+                            "ruleindex": "0",
+                            "children": [{
+                                "rulename": "keyword",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "reserved id",
+                                    "text": "type",
+                                }],
+                            },
+                            {
+                                "rulename": "id",
+                                "text": "intArray",
+                            },
+                            {
+                                "rulename": "keyword",
+                                "ruleindex": "0",
+                                "children": [{
+                                    "rulename": "reserved id",
+                                    "text": "is",
+                                }],
+                            },
+                            {
+                                "rulename": "type",
+                                "ruleindex": "1",
+                                "children": [{
+                                    "rulename": "array",
+                                    "ruleindex": "0",
+                                    "children": [{
+                                        "rulename": "keyword",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "reserved id",
+                                            "text": "array",
+                                        }],
+                                    },
+                                    {
+                                        "rulename": "keyword",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "reserved id",
+                                            "text": "of",
+                                        }],
+                                    },
+                                    {
+                                        "rulename": "integer",
+                                        "text": "100000",
+                                    },
+                                    {
+                                        "rulename": "type",
+                                        "ruleindex": "0",
+                                        "children": [{
+                                            "rulename": "native type",
+                                            "ruleindex": "3",
+                                            "children": [{
+                                                "rulename": "keyword",
+                                                "ruleindex": "0",
+                                                "children": [{
+                                                    "rulename": "reserved id",
+                                                    "text": "integer",
+                                                }],
+                                            }],
+                                        }],
+                                    }],
+                                }],
+                            }],
+                        },
+                        {
+                            "rulename": "keyword",
+                            "ruleindex": "1",
+                            "children": [{
+                                "rulename": "sign",
+                                "text": ";",
+                            }],
+                        }],
+                    }],
+                },
+                {
+                    "rulename": "main end",
+                    "ruleindex": "0",
+                    "children": [{
+                        "rulename": "error",
+                        "error": "Bad keyword",
+                    }],
+                }],
+            }],
+        }],
+    }],
 };
     // Calculate total nodes, max label length
     var totalNodes = 0;
