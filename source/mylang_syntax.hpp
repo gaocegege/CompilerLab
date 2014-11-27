@@ -203,7 +203,9 @@ public RuleList<MP_STR("argument option", 15),
         RuleItemKeyword<MP_STR("out", 3)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("reg", 3)>
+        RuleItemKeyword<MP_STR("fast", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>
     >,
     RuleLine<
         
@@ -780,6 +782,9 @@ public RuleList<MP_STR("native type", 11),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("real", 4)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("bitset", 6)>
     >
 > {};
 
@@ -806,13 +811,6 @@ public RuleList<MP_STR("array", 5),
         RuleItemKeyword<MP_STR("of", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("integer", 7)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("array", 5)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("of", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("type", 4)>
     >
@@ -916,6 +914,18 @@ public RuleList<MP_STR("multiplication", 14),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("and", 3)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("shl", 3)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("shr", 3)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("rol", 3)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("ror", 3)>
     >
 > {};
 
@@ -974,9 +984,6 @@ public RuleList<MP_STR("literal", 7),
     >,
     RuleLine<
         RuleItemRef<MP_STR("instant array", 13)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("type info", 9)>
     >
 > {};
 
@@ -1028,18 +1035,6 @@ public RuleList<MP_STR("instant array", 13),
 > {};
 
 template<>
-class RuleDef<MP_STR("type info", 9)>:
-public RuleList<MP_STR("type info", 9),
-    RuleLine<
-        RuleItemKeyword<MP_STR("$", 1)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("$", 1)>
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("space", 5)>:
 public RuleList<MP_STR("space", 5),
     RuleLine<
@@ -1067,7 +1062,7 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("\\:=|[\\(\\)\\[\\],.;$]", 18)
+    MP_STR("\\:=|[\\(\\)\\[\\],.;]", 17)
 > {};
 
 template<>

@@ -368,7 +368,6 @@ literal:
     <real>
     <string>
     <instant array>
-    <type info>
 
 boolean:
 
@@ -395,10 +394,6 @@ instant array:
 
     [ <expression list> ]
 
-type info:
-
-    $ <type> $
-
 Special
 ---
 
@@ -417,7 +412,7 @@ Special
 
 *sign*:
 
-    \:=|[\(\)\[\],.;$]
+    \:=|[\(\)\[\],.;]
 
 *ignored*:
 
