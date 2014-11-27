@@ -21,15 +21,15 @@ public:
         const Input &input, std::string &&value
     ): NodeTextOrError(input, std::move(value)) {
         static const std::set<std::string> keywords = {
-            "and", "array", "begin", "boolean", "byte",
-            "class", "const", "div", "do", "downto",
-            "elif", "else", "encloses", "end", "extends",
-            "fast", "for", "foreach", "function",
-            "if", "in", "integer", "is", "mod", "no", "not",
-            "of", "or", "out", "pointer", "program",
-            "real", "reference", "repeat", "return", "rol", "ror"
-            "shl", "shr", "static", "then", "to", "type",
-            "until", "var", "void", "while", "xor", "yes"
+            "program", "function", "class",
+            "is", "begin", "end", "in", "out", "fast",
+            "extends", "encloses",
+            "type", "var", "const", "static", "return",
+            "if", "then", "for", "do", "foreach", "while", "elif", "else",
+            "to", "downto",
+            "repeat", "until",
+            "array", "of",
+            "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
         ok = keywords.find(getText()) == keywords.cend();

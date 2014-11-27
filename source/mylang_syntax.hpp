@@ -413,10 +413,16 @@ public RuleList<MP_STR("assignment", 10),
     RuleLine<
         RuleItemRef<MP_STR("expression", 10)>,
         RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(":=", 2)>,
+        RuleItemRef<MP_STR("assign sign", 11)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
     >
+> {};
+
+template<>
+class RuleDef<MP_STR("assign sign", 11)>:
+public RuleRegex<MP_STR("assign sign", 11),
+    MP_STR("\\:=|\\+=|-=|\\*=|\\/=", 18)
 > {};
 
 template<>
@@ -453,7 +459,7 @@ public RuleList<MP_STR("structure", 9),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(":=", 2)>,
+        RuleItemKeyword<MP_STR("in", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("for range", 9)>,
         RuleItemSpace<>,
@@ -760,12 +766,6 @@ public RuleList<MP_STR("type", 4),
 > {};
 
 template<>
-class RuleDef<MP_STR("id", 2)>:
-public RuleRegex<MP_STR("id", 2),
-    MP_STR("[A-Za-z_][A-Za-z0-9_]*", 22)
-> {};
-
-template<>
 class RuleDef<MP_STR("native type", 11)>:
 public RuleList<MP_STR("native type", 11),
     RuleLine<
@@ -901,10 +901,7 @@ template<>
 class RuleDef<MP_STR("multiplication", 14)>:
 public RuleList<MP_STR("multiplication", 14),
     RuleLine<
-        RuleItemRef<MP_STR("muldivmod", 9)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("shlshr", 6)>
+        RuleItemRef<MP_STR("muldiv", 6)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("div", 3)>
@@ -953,15 +950,9 @@ public RuleRegex<MP_STR("addsub", 6),
 > {};
 
 template<>
-class RuleDef<MP_STR("muldivmod", 9)>:
-public RuleRegex<MP_STR("muldivmod", 9),
-    MP_STR("\\*|\\/|%", 7)
-> {};
-
-template<>
-class RuleDef<MP_STR("shlshr", 6)>:
-public RuleRegex<MP_STR("shlshr", 6),
-    MP_STR("<<|>>", 5)
+class RuleDef<MP_STR("muldiv", 6)>:
+public RuleRegex<MP_STR("muldiv", 6),
+    MP_STR("\\*|\\/", 5)
 > {};
 
 template<>
@@ -1054,6 +1045,12 @@ public RuleList<MP_STR("keyword", 7),
 > {};
 
 template<>
+class RuleDef<MP_STR("id", 2)>:
+public RuleRegex<MP_STR("id", 2),
+    MP_STR("[A-Za-z_][A-Za-z0-9_]*", 22)
+> {};
+
+template<>
 class RuleDef<MP_STR("reserved id", 11)>:
 public RuleRegex<MP_STR("reserved id", 11),
     MP_STR("[A-Za-z_][A-Za-z0-9_]*", 22)
@@ -1062,7 +1059,7 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("\\:=|[\\(\\)\\[\\],.;]", 17)
+    MP_STR("[\\(\\)\\[\\],.;]", 13)
 > {};
 
 template<>

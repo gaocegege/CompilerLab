@@ -149,7 +149,11 @@ statement:
 
 assignment:
 
-    <expression> := <expression>
+    <expression> <assign sign> <expression>
+
+*assign sign*:
+
+    \:=|\+=|-=|\*=|\/=
 
 return:
 
@@ -162,7 +166,7 @@ Code Structure
 structure:
 
     if <expression> then <statement list> <condition chain> <structure end>
-    for <id> := <for range> do <statement list> <structure end>
+    for <id> in <for range> do <statement list> <structure end>
     foreach <id> in <expression> do <statement list> <structure end>
     while <expression> do <statement list> <structure end>
 
@@ -250,7 +254,7 @@ argument apply:
     ( <expression list> )
     // x[0] is x.__call<array of 1 integer>([0])
 
-Identifier
+Type
 ---
 
 type:
@@ -263,13 +267,6 @@ type:
     <class>
     <id>
 
-*id*:
-
-    [A-Za-z_][A-Za-z0-9_]*
-
-Type
----
-
 native type:
 
     void
@@ -279,6 +276,7 @@ native type:
     real
     bitset
     // boolean is also uint
+    // string is class with length and pchar
 
 wrap type:
 
@@ -326,8 +324,7 @@ addition:
 
 multiplication:
 
-    <muldivmod>
-    <shlshr>
+    <muldiv>
     div
     mod
     and
@@ -349,13 +346,9 @@ unary operator:
 
     \+|-
 
-*muldivmod*:
+*muldiv*:
 
-    \*|\/|%
-
-*shlshr*:
-
-    <<|>>
+    \*|\/
 
 Literal
 ---
@@ -406,13 +399,17 @@ Special
     <reserved id>
     <sign>
 
+*id*:
+
+    [A-Za-z_][A-Za-z0-9_]*
+
 *reserved id*:
 
     [A-Za-z_][A-Za-z0-9_]*
 
 *sign*:
 
-    \:=|[\(\)\[\],.;]
+    [\(\)\[\],.;]
 
 *ignored*:
 
