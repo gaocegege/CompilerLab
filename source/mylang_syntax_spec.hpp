@@ -21,15 +21,13 @@ public:
         const Input &input, std::string &&value
     ): NodeTextOrError(input, std::move(value)) {
         static const std::set<std::string> keywords = {
-            "program", "function", "class",
-            "is", "begin", "end", "in", "out",
-            "extends", "encloses",
-            "type", "var", "const", "static", "fastvar", "return",
-            "default", "auto",
+            "program", "function", "class", "end",
+            "is", "begin", "in", "out",
+            "type", "extends", "enclose",
+            "var", "const", "static", "register", "return",
+            "default", "auto", "of",
             "if", "then", "for", "do", "foreach", "while",
-            "elif", "else", "to", "downto",
-            "repeat", "until",
-            "of",
+            "elif", "else", "to", "downto", "repeat", "until",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 

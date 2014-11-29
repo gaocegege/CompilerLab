@@ -14,29 +14,39 @@ main structure:
 
     <program>
     <function>
-    // <class> - not allowed here
+    // <class> not allowed here
 
 Main Structure
 ---
 
 program:
 
-    program <function proto> <main body>
+    program <function proto> <main body> <end program>
 
 function:
 
-    function <function proto> <main body>
+    function <function proto> <main body> <end function>
 
 class:
 
-    class <main body>
+    class <main body> end class
+
+end program:
+
+    end program <id>
+    end
+
+end function:
+
+    end function <id>
+    end
 
 Block
 ---
 
 main body:
 
-    <specific list> <interface block> <is block> <code block> <main end>
+    <interface block> <is block> <code block>
 
 interface block:
 
@@ -52,14 +62,6 @@ code block:
 
     begin <statement list>
     <>
-
-main end:
-
-    end program <id>
-    end function <id>
-    end class
-    end
-    // should match the body
 
 Proto
 ---
@@ -80,71 +82,35 @@ argument:
     out <id>
     <id>
 
-Specific
----
-
-specific list:
-
-    <specific> , <specific list>
-    <specific>
-    <>
-
-specific:
-
-    <extend specific>
-    <enclose specific>
-
-extend specific:
-
-    extends <typed bind>
-    // default: extends <class base> / <program base> / <function base>
-
-enclose specific:
-
-    encloses <typed bind>
-    // default: (if need) encloses decltype(ref(outer)) default ref(outer)
-
 Definition
 ---
 
 definition:
 
-    <type definition> ;
-    <var definition> ;
-    <const definition> ;
-    <static definition> ;
-    <fastvar definition> ;
-    <return definition> ;
-    <main structure>
+    <type definition>
+    <field definition>
+    <main structure> ;
     ;
-    // fastvar (passed by register) for program and function only
-    // return for function only
 
 type definition:
 
     type <id> is <type>
-    // const <id> is typeid default <...>
+    // the same as "const <id> is typeid default <...>"
 
-var definition:
+field definition:
 
-    var <id bind>
+    <field type> <id bind>
 
-const definition:
+field type:
 
-    const <id bind>
-
-static definition:
-
-    static <id bind>
-
-fastvar definition:
-
-    fastvar <id bind>
-    // fastvar is supported in program and function
-
-return definition:
-
-    return <id bind>
+    extends
+    enclose
+    var
+    const
+    static
+    register
+    return
+    // register is supported in program and function
     // return is supported in function only
 
 Type
@@ -152,22 +118,20 @@ Type
 
 id bind:
 
-    <id> is <typed bind>
-    <typed bind>
+    <id> is <type> <default>
+    <type> <default>
     // allow anonymous
 
-typed bind:
+default:
 
-    <type> default <expression>
-    <type>
+    default <expression>
+    <>
 
 type:
 
     auto
     <class>
-    <expression> of <literal> <type>
-    <expression> of <type>
-    <expression>
+    <expression> <type of>
     // built-in:
     //     void typeid
     //     byte boolean (boolean is uint) integer
@@ -176,6 +140,12 @@ type:
     //     array of <integer> <type>
     //     pointer of <type>
     //     reference of <type>
+
+type of:
+
+    of <value> <type>
+    of <type>
+    <>
 
 Statement
 ---
@@ -223,7 +193,7 @@ if structure:
 
 for structure:
 
-    for <id> in <for range> do <statement list> end for
+    for <id> in <expression> <to range> do <statement list> end for
 
 foreach structure:
 
@@ -239,10 +209,10 @@ condition chain:
     else <statement list>
     <>
 
-for range:
+to range:
 
-    <expression> to <expression>
-    <expression> downto <expression>
+    to <expression>
+    downto <expression>
 
 repeat:
 
@@ -293,18 +263,14 @@ unary expression:
 
     <unary operator> <unary expression>
     <value> <access operation>
-    ( <expression> )
+    ( <expression> ) <access operation>
 
 access operation:
 
-    <argument apply> <access operation>
+    <value> <access operation>
+    ( <expression list> ) <access operation>
     . <id> <access operation>
     <>
-
-argument apply:
-
-    <value>
-    ( <expression list> )
     // x[0] is x.__call<array of 1 integer>([0])
     // id can be var, const, type etc
 
@@ -368,8 +334,8 @@ value:
 literal:
 
     <byte>
-    <integer>
     <real>
+    <integer>
     <string>
     <instant array>
     // const boolean yes := (unsigned -1)
@@ -379,13 +345,13 @@ literal:
 
     '([^\\]|\\.)'
 
-*integer*:
-
-    [0-9]+
-
 *real*:
 
     [0-9]*\.[0-9]+([Ee][\+-]?[0-9]+)?
+
+*integer*:
+
+    [0-9]+
 
 *string*:
 
