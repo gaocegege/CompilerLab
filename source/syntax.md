@@ -15,6 +15,8 @@ main structure:
     <program>
     <function>
     // <class> not allowed here
+    // <program> like l-value: has receive / no return
+    // <function> like r-value: has return / no receive
 
 Main Structure
 ---
@@ -80,6 +82,7 @@ argument:
 
     in <id>
     out <id>
+    var <id>
     <id>
 
 Definition
@@ -108,9 +111,11 @@ field type:
     var
     const
     static
-    register
+    fast
+    receive
     return
-    // register is supported in program and function
+    // fast is supported in program and function
+    // receive is supported in program only
     // return is supported in function only
 
 Type
@@ -140,6 +145,7 @@ type:
     //     array of <integer> <type>
     //     pointer of <type>
     //     reference of <type>
+    // "array of 10 integer" is the same as "array(10, integer)"
 
 type of:
 
@@ -159,6 +165,8 @@ statement:
 
     <expression> ;
     <assignment> ;
+    <receive> ;
+    <pause> ;
     <return> ;
     <structure>
     <repeat> ;
@@ -171,6 +179,15 @@ assignment:
 *assign sign*:
 
     \:=|\+=|-=|\*=|\/=
+
+receive:
+
+    receive <expression>
+    receive
+
+pause:
+
+    pause
 
 return:
 

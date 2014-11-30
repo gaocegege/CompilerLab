@@ -197,6 +197,11 @@ public RuleList<MP_STR("argument", 8),
         RuleItemRef<MP_STR("id", 2)>
     >,
     RuleLine<
+        RuleItemKeyword<MP_STR("var", 3)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>
+    >,
+    RuleLine<
         RuleItemRef<MP_STR("id", 2)>
     >
 > {};
@@ -263,7 +268,10 @@ public RuleList<MP_STR("field type", 10),
         RuleItemKeyword<MP_STR("static", 6)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("register", 8)>
+        RuleItemKeyword<MP_STR("fast", 4)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("receive", 7)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("return", 6)>
@@ -365,6 +373,16 @@ public RuleList<MP_STR("statement", 9),
         RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
+        RuleItemRef<MP_STR("receive", 7)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(";", 1)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("pause", 5)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(";", 1)>
+    >,
+    RuleLine<
         RuleItemRef<MP_STR("return", 6)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
@@ -398,6 +416,27 @@ template<>
 class RuleDef<MP_STR("assign sign", 11)>:
 public RuleRegex<MP_STR("assign sign", 11),
     MP_STR("\\:=|\\+=|-=|\\*=|\\/=", 18)
+> {};
+
+template<>
+class RuleDef<MP_STR("receive", 7)>:
+public RuleList<MP_STR("receive", 7),
+    RuleLine<
+        RuleItemKeyword<MP_STR("receive", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("receive", 7)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("pause", 5)>:
+public RuleList<MP_STR("pause", 5),
+    RuleLine<
+        RuleItemKeyword<MP_STR("pause", 5)>
+    >
 > {};
 
 template<>
