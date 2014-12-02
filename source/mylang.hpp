@@ -4,6 +4,7 @@
 #include "mylang_tool.hpp"
 #include "mylang_syntax_spec.hpp"
 #include "mylang_syntax.hpp"
+#include "mylang_analysis.hpp"
 
 namespace mylang {
 
