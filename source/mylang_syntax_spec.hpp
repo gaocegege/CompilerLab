@@ -42,17 +42,15 @@ public:
 };
 
 template <size_t I>
-class NodeTyped<BuiltinSpace, NodeListIndexed<I>>:
-public NodeTypedProto<BuiltinSpace, NodeSpace<I>> {
+class NodeBaseList<BuiltinSpace, I> {
 public:
-    using NodeTypedProto<BuiltinSpace, NodeSpace<I>>::NodeTypedProto;
+    using Type = NodeSpace<I>;
 };
 
 template <>
-class NodeTyped<RuleId, NodeText<>>:
-public NodeTypedProto<RuleId, NodeId<>> {
+class NodeBaseText<RuleId> {
 public:
-    using NodeTypedProto<RuleId, NodeId<>>::NodeTypedProto;
+    using Type = NodeId<>;
 };
 
 }

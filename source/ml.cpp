@@ -23,7 +23,7 @@ using namespace mylang;
 void test() {
     std::string s = "1*(2+y*-3>sin(30)\n// 一个\n)"; // "1 * \n(2 + y*-3 > sin 30)";
     auto x = Parser<MP_STR("expression", 10)>::parse(s);
-    auto x1 = Parser<>::parse(s);
+    // auto x1 = Parser<>::parse(s);
 
     PassReprFull<> rf(std::cout);
     PassReprFull<> rf1(std::cout, true);
@@ -53,7 +53,7 @@ void test() {
     std::cout << std::endl << std::endl;*/
 
     delete x;
-    delete x1;
+    // delete x1;
 
 
     std::ifstream t("example.ml");
