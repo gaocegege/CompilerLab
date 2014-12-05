@@ -865,13 +865,13 @@ template<>
 class RuleDef<MP_STR("literal", 7)>:
 public RuleList<MP_STR("literal", 7),
     RuleLine<
-        RuleItemRef<MP_STR("byte", 4)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("real", 4)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("integer", 7)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("byte", 4)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("string", 6)>
@@ -879,12 +879,6 @@ public RuleList<MP_STR("literal", 7),
     RuleLine<
         RuleItemRef<MP_STR("instant array", 13)>
     >
-> {};
-
-template<>
-class RuleDef<MP_STR("byte", 4)>:
-public RuleRegex<MP_STR("byte", 4),
-    MP_STR("\'([^\\\\]|\\\\.)\'", 13)
 > {};
 
 template<>
@@ -897,6 +891,12 @@ template<>
 class RuleDef<MP_STR("integer", 7)>:
 public RuleRegex<MP_STR("integer", 7),
     MP_STR("[0-9]+", 6)
+> {};
+
+template<>
+class RuleDef<MP_STR("byte", 4)>:
+public RuleRegex<MP_STR("byte", 4),
+    MP_STR("\'([^\\\\]|\\\\.)\'", 13)
 > {};
 
 template<>

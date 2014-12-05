@@ -350,17 +350,13 @@ value:
 
 literal:
 
-    <byte>
     <real>
     <integer>
+    <byte>
     <string>
     <instant array>
     // const boolean yes := (unsigned -1)
     //                no := 0
-
-*byte*:
-
-    '([^\\]|\\.)'
 
 *real*:
 
@@ -369,6 +365,10 @@ literal:
 *integer*:
 
     [0-9]+
+
+*byte*:
+
+    '([^\\]|\\.)'
 
 *string*:
 

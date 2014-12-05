@@ -1,7 +1,7 @@
 #ifndef MYLANG_ANALYSIS_HPP
 #define MYLANG_ANALYSIS_HPP
 
-#include "parser/myparser.hpp"
+#include "mylang_syntax_spec.hpp"
 #include "semantic/block.hpp"
 
 namespace myparser {
