@@ -22,14 +22,15 @@ using namespace mylang;
 
 void test() {
     std::string s = "1*(2+y*-3>sin(30)\n// 一个\n)"; // "1 * \n(2 + y*-3 > sin 30)";
-    auto x = Parser<MP_STR("expression", 10)>::parse(s);
-    // auto x1 = Parser<>::parse(s);
+    auto x = Parser<MP_STR("expression", 10)>::parse(s, false);
+    // auto x1 = Parser<>::parse(s, false);
 
     PassReprFull<> rf(std::cout);
     PassReprFull<> rf1(std::cout, true);
     PassReprSimple<> rf2(std::cout);
     PassReprText<> rf3(std::cout);
     PassReprJSON<> rf4(std::cout);
+    PassHighlight<> hl(std::cout);
 
     /*x->runPass(&rf);
     std::cout << std::endl << std::endl;
@@ -60,11 +61,13 @@ void test() {
     std::string s1((std::istreambuf_iterator<char>(t)),
                      std::istreambuf_iterator<char>());
 
-    auto x2 = Parser<>::parse(s1);
+    auto x2 = Parser<>::parse(s1, false);
 
     x2->runPass(&rf1);
     std::cout << std::endl << std::endl;
     x2->runPass(&rf);
+    std::cout << std::endl << std::endl;
+    x2->runPass(&hl);
     std::cout << std::endl << std::endl;
 
     delete x2;

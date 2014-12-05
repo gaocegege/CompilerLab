@@ -10,6 +10,7 @@ namespace mylang {
 
 using myparser::Input;
 using myparser::Pass;
+using myparser::PassHighlight;
 using myparser::PassReprText;
 using myparser::PassReprSimple;
 using myparser::PassReprFull;

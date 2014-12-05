@@ -7,19 +7,18 @@
 
 namespace myparser {
 
-using RuleId = MP_STR("id", 2);
-
 using ErrorId = MP_STR("Illegal identifier", 18);
+using ErrorInteger = MP_STR("Illegal integer", 15);
 
-template <class TX = void> // actually not a template
-class NodeId: public NodeTextOrError<ErrorId> {
+template <class E> // actually not a template
+class NodeId: public NodeTextOrError<E> {
 private:
     /* const */ bool ok;
 
 public:
     inline NodeId(
         const Input &input, std::string &&value
-    ): NodeTextOrError(input, std::move(value)) {
+    ): NodeTextOrError<E>(input, std::move(value)) {
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
             "is", "begin", "in", "out",
@@ -31,7 +30,7 @@ public:
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
-        ok = keywords.find(getText()) == keywords.cend();
+        ok = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
     }
 
     // virtual ~NodeId() {}
@@ -48,10 +47,25 @@ public:
 };
 
 template <>
-class NodeBaseText<RuleId> {
+class NodeBaseText<MP_STR("id", 2)> {
 public:
-    using Type = NodeId<>;
+    using Type = NodeId<ErrorId>;
 };
+
+template <>
+class NodeBaseText<MP_STR("real", 4)> {
+public:
+    using Type = NodeData<double, ErrorInteger>;
+};
+
+template <>
+class NodeBaseText<MP_STR("integer", 7)> {
+public:
+    using Type = NodeData<long, ErrorInteger>;
+};
+
+// byte
+// string
 
 }
 
