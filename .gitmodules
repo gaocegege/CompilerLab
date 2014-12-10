@@ -1,3 +1,6 @@
 [submodule "source/parser"]
 	path = source/parser
 	url = https://github.com/hczhcz/myparser.git
+[submodule "source/semantic"]
+	path = source/semantic
+	url = https://github.com/hczhcz/libblock.git
