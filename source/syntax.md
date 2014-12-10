@@ -92,6 +92,7 @@ definition:
 
     <type definition>
     <field definition>
+    <field deletion>
     <main structure> ;
     ;
 
@@ -103,6 +104,10 @@ type definition:
 field definition:
 
     <field type> <id bind>
+
+field deletion:
+
+    delete <id>
 
 field type:
 

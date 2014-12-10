@@ -21,10 +21,6 @@ exit
 using namespace mylang;
 
 void test() {
-    std::string s = "1*(2+y*-3>sin(30)\n// 一个\n)"; // "1 * \n(2 + y*-3 > sin 30)";
-    auto x = Parser<MP_STR("expression", 10)>::parse(s, false);
-    // auto x1 = Parser<>::parse(s, false);
-
     PassReprFull<> rf(std::cout);
     PassReprFull<> rf1(std::cout, true);
     PassReprSimple<> rf2(std::cout);
@@ -32,34 +28,11 @@ void test() {
     PassReprJSON<> rf4(std::cout);
     PassHighlight<> hl(std::cout);
 
-    /*x->runPass(&rf);
-    std::cout << std::endl << std::endl;
-    x->runPass(&rf1);
-    std::cout << std::endl << std::endl;
-    x->runPass(&rf2);
-    std::cout << std::endl << std::endl;
-    x->runPass(&rf3);
-    std::cout << std::endl << std::endl;
-    x->runPass(&rf4);
-    std::cout << std::endl << std::endl;
-    x1->runPass(&rf);
-    std::cout << std::endl << std::endl;
-    x1->runPass(&rf1);
-    std::cout << std::endl << std::endl;
-    x1->runPass(&rf2);
-    std::cout << std::endl << std::endl;
-    x1->runPass(&rf3);
-    std::cout << std::endl << std::endl;
-    x1->runPass(&rf4);
-    std::cout << std::endl << std::endl;*/
-
-    delete x;
-    // delete x1;
-
-
     std::ifstream t("example.ml");
-    std::string s1((std::istreambuf_iterator<char>(t)),
-                     std::istreambuf_iterator<char>());
+    std::string s1(
+        (std::istreambuf_iterator<char>(t)),
+        std::istreambuf_iterator<char>()
+    );
 
     auto x2 = Parser<>::parse(s1, false);
 
