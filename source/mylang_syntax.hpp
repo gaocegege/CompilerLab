@@ -345,13 +345,6 @@ public RuleList<MP_STR("type of", 7),
     RuleLine<
         RuleItemKeyword<MP_STR("of", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("value", 5)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("of", 2)>,
-        RuleItemSpace<>,
         RuleItemRef<MP_STR("type", 4)>
     >,
     RuleLine<

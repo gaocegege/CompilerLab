@@ -12,8 +12,11 @@ enum {
 
 template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
+private:
+    std::vector<libblock::Block *> blocks;
+
 public:
-    inline Pass() {}
+    inline Pass(libblock::Block &base): blocks{&base} {}
 
     // virtual ~Pass() {}
 

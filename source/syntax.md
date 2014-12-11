@@ -154,7 +154,6 @@ type:
 
 type of:
 
-    of <value> <type>
     of <type>
     <>
 
