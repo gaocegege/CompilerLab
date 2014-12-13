@@ -1,12 +1,12 @@
 #if 0
 python gen_parser.py
-# g++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -O1 *.cpp -o ml_gcc $@ &&\
+# g++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O1 *.cpp -o ml_gcc $@ &&\
 #     strip ml_gcc &&\
 #     ./ml_gcc
-# clang++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -O1 *.cpp -o ml_clang $@ &&\
+# clang++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O1 *.cpp -o ml_clang $@ &&\
 #     strip ml_clang &&\
 #     ./ml_clang
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -fno-rtti -O1 *.cpp -o ml_clang $@ &&\
+clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O1 *.cpp -o ml_clang $@ &&\
 #    strip ml_clang &&\
     ./ml_clang
 exit

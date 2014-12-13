@@ -10,7 +10,7 @@ namespace myparser {
 using ErrorId = MP_STR("Illegal identifier", 18);
 using ErrorInteger = MP_STR("Illegal integer", 15);
 
-template <class E> // actually not a template
+template <class E>
 class NodeId: public NodeTextOrError<E> {
 private:
     /* const */ bool ok;
