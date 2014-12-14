@@ -207,6 +207,10 @@ public:
     void run(const NodeTypedError<NT, E> *node) {
         // TODO: never reach
     }
+
+    void run(const Node<> *node) {
+        // TODO: ???
+    }
 };
 
 }
