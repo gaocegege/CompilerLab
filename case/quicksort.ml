@@ -24,7 +24,7 @@ program quickSort()
 
       while i < j do
         // get a element which is in the right side but it < buf
-        while i < j and data[j] >= buf do
+        while (i < j) and (data[j] >= buf) do
           j := j - 1;
         end while
 
@@ -33,7 +33,7 @@ program quickSort()
           i := i + 1;
         end if
 
-        while i < j and data[i] <= buf do
+        while (i < j) and (data[i] <= buf) do
           i := i + 1;
         end while
 
