@@ -1,0 +1,8 @@
+# ignore the out
+*.out
+*.out.dSYM/
+
+# ignore the generated files
+ml_clang
+source/ui/lex.html
+source/ui/syntax.html
