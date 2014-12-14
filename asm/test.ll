@@ -35,9 +35,9 @@ define void @_Z4swapPiii(i32* %a, i32 %x, i32 %y) #0 {
   %18 = load i32* %tmp, align 4
   %19 = load i32* %3, align 4
   %20 = sext i32 %19 to i64
-  %21 = load i32** %1, align 8
-  %22 = getelementptr inbounds i32* %21, i64 %20
-  store i32 %18, i32* %22, align 4
+  %yyy = load i32** %1, align 8
+  %xxx = getelementptr inbounds i32* %yyy, i64 %20
+  store i32 %18, i32* %xxx, align 4
   ret void
 }
 

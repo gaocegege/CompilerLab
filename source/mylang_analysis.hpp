@@ -16,7 +16,7 @@ private:
     std::vector<libblock::Block *> blocks;
 
     void go(const NodeList<> *node) {
-        for (const Node *child: node->getChildren()) {
+        for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
     }
