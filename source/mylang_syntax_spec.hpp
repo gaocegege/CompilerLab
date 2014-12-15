@@ -8,7 +8,7 @@
 namespace myparser {
 
 using ErrorId = MP_STR("Illegal identifier", 18);
-using ErrorInteger = MP_STR("Illegal integer", 15);
+using ErrorLiteral = MP_STR("Illegal literal", 15);
 
 template <class E>
 class NodeId: public NodeTextOrError<E> {
@@ -55,17 +55,26 @@ public:
 template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
-    using Type = NodeData<double, ErrorInteger>;
+    using Type = NodeData<double, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
-    using Type = NodeData<long, ErrorInteger>;
+    using Type = NodeData<long, ErrorLiteral>;
 };
 
-// byte
-// string
+template <>
+class NodeBaseText<MP_STR("byte", 4)> {
+public:
+    using Type = NodeString<1, 1, '\\', ErrorLiteral>;
+};
+
+template <>
+class NodeBaseText<MP_STR("string", 6)> {
+public:
+    using Type = NodeString<1, 1, '\\', ErrorLiteral>;
+};
 
 }
 

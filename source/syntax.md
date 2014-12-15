@@ -48,16 +48,15 @@ Block
 
 main body:
 
-    <interface block> <is block> <code block>
+    <public block> <private block> <code block>
 
-interface block:
+public block:
 
-    <definition> <interface block>
-    <>
+    <definition list>
 
-is block:
+private block:
 
-    is <interface block>
+    is <definition list>
     <>
 
 code block:
@@ -87,6 +86,11 @@ argument:
 
 Definition
 ---
+
+definition list:
+
+    <definition> <definition list>
+    <>
 
 definition:
 
@@ -372,11 +376,11 @@ literal:
 
 *byte*:
 
-    '([^\\]|\\.)'
+    '([^"'\\]|\\.)'
 
 *string*:
 
-    "([^\\]|\\.)*"
+    "([^"'\\]|\\.)*"
 
 instant array:
 
