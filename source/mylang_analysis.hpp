@@ -13,16 +13,43 @@ enum {
 template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
-    std::vector<libblock::Block *> blocks;
+    // in status
+    libblock::Block *in_block;
+    libblock::Name::Visibility *in_visibility;
 
-    void go(const NodeList<> *node) {
+    // out status
+    enum ModeAssign {
+        MA_E, MA_ADD, MA_SUB, MA_MUL, MA_DIV
+    } *out_assign;
+    enum ModeOperator {
+        MO_E, MO_LE, MO_GE, MO_NE, MO_L, MO_G,
+        MO_ADD, MO_SUB,
+        MO_MUL, MO_DIV, MO_MOD
+    } *out_operator;
+    double *out_double;
+    long *out_long;
+    char *out_byte;
+    std::string *out_string;
+    libblock::Name *out_id;
+
+    inline void go(const NodeList<> *node) {
         for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
     }
 
+    inline void enterBlock() {
+        libblock::Block *current = new libblock::Block(in_block);
+        in_block->putChild(current);
+        in_block = current;
+    }
+
+    inline void exitBlock() {
+        in_block = in_block->getParent();
+    }
+
 public:
-    inline Pass(libblock::Block &base): blocks{&base} {}
+    inline Pass(libblock::Block &base): in_block{&base} {}
 
     // virtual ~Pass() {}
 
@@ -43,55 +70,102 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
-        // TODO
+        // TODO: proto?
+        enterBlock();
+        go(node);
+        exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
-        // TODO
+        // TODO: proto?
+        enterBlock();
+        go(node);
+        exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
-        // TODO
+        enterBlock();
+        go(node);
+        exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
         if (I == 0) {
             // TODO: check ID
+            go(node);
         }
     }
 
     MYLANG_ANALYSIS_LIST("end function", 12) {
         if (I == 0) {
             // TODO: check ID
+            go(node);
         }
     }
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
-        // rule = public
         go(node);
     }
 
-    MYLANG_ANALYSIS_LIST("interface block", 15) {}
+    MYLANG_ANALYSIS_LIST("public block", 12) {
+        auto visibility = libblock::Name::V_PUBLIC;
 
-    MYLANG_ANALYSIS_LIST("is block", 8) {}
+        in_visibility = &visibility;
+        // TODO: pass1 - create name; pass2 - compile
+        go(node);
+        in_visibility = nullptr;
+    }
 
-    MYLANG_ANALYSIS_LIST("code block", 10) {}
+    MYLANG_ANALYSIS_LIST("private block", 13) {
+        auto visibility = libblock::Name::V_PRIVATE;
 
-    MYLANG_ANALYSIS_LIST("function proto", 14) {}
+        in_visibility = &visibility;
+        // TODO: pass1 - create name; pass2 - compile
+        go(node);
+        in_visibility = nullptr;
+    }
 
-    MYLANG_ANALYSIS_LIST("argument list", 13) {}
+    MYLANG_ANALYSIS_LIST("code block", 10) {
+        // TODO: entry = code_main
+        go(node);
+    }
 
-    MYLANG_ANALYSIS_LIST("argument", 8) {}
+    MYLANG_ANALYSIS_LIST("function proto", 14) {
+        // TODO: get name & arg list
+        go(node);
+    }
 
-    MYLANG_ANALYSIS_LIST("definition", 10) {}
+    MYLANG_ANALYSIS_LIST("argument list", 13) {
+        go(node);
+    }
 
-    MYLANG_ANALYSIS_LIST("type definition", 15) {}
+    MYLANG_ANALYSIS_LIST("argument", 8) {
+        // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("field definition", 16) {}
+    MYLANG_ANALYSIS_LIST("definition list", 15) {
+        go(node);
+    }
 
-    MYLANG_ANALYSIS_LIST("field deletion", 14) {}
+    MYLANG_ANALYSIS_LIST("definition", 10) {
+        go(node);
+    }
 
-    MYLANG_ANALYSIS_LIST("field type", 10) {}
+    MYLANG_ANALYSIS_LIST("type definition", 15) {
+        // TODO
+    }
+
+    MYLANG_ANALYSIS_LIST("field definition", 16) {
+        // TODO
+    }
+
+    MYLANG_ANALYSIS_LIST("field deletion", 14) {
+        // TODO: get id, delete
+    }
+
+    MYLANG_ANALYSIS_LIST("field type", 10) {
+        // TODO
+    }
 
     MYLANG_ANALYSIS_LIST("id bind", 7) {}
 
