@@ -49,7 +49,7 @@ private:
     }
 
 public:
-    inline Pass(libblock::Block &base): in_block{&base} {}
+    inline Pass(libblock::Block *base): in_block{base} {}
 
     // virtual ~Pass() {}
 
@@ -74,6 +74,7 @@ public:
         enterBlock();
         go(node);
         exitBlock();
+        // TODO: end?
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
@@ -81,6 +82,7 @@ public:
         enterBlock();
         go(node);
         exitBlock();
+        // TODO: end?
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
@@ -90,17 +92,11 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
-        if (I == 0) {
-            // TODO: check ID
-            go(node);
-        }
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("end function", 12) {
-        if (I == 0) {
-            // TODO: check ID
-            go(node);
-        }
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
@@ -141,6 +137,7 @@ public:
 
     MYLANG_ANALYSIS_LIST("argument", 8) {
         // TODO
+        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_LIST("definition list", 15) {
@@ -153,33 +150,58 @@ public:
 
     MYLANG_ANALYSIS_LIST("type definition", 15) {
         // TODO
+        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_LIST("field definition", 16) {
         // TODO
+        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_LIST("field deletion", 14) {
         // TODO: get id, delete
+        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_LIST("field type", 10) {
         // TODO
+        (void) node; // TODO
     }
 
-    MYLANG_ANALYSIS_LIST("id bind", 7) {}
+    MYLANG_ANALYSIS_LIST("id bind", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("default", 7) {}
+    MYLANG_ANALYSIS_LIST("default", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("type", 4) {}
+    MYLANG_ANALYSIS_LIST("type", 4) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("type of", 7) {}
+    MYLANG_ANALYSIS_LIST("type of", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("statement list", 14) {}
+    MYLANG_ANALYSIS_LIST("statement list", 14) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("statement", 9) {}
+    MYLANG_ANALYSIS_LIST("statement", 9) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("assignment", 10) {}
+    MYLANG_ANALYSIS_LIST("assignment", 10) {
+        // TODO
+        (void) node; // TODO
+    }
 
     MYLANG_ANALYSIS_TEXT("assign sign", 11) {
         static const std::map<const std::string, ModeAssign> table = {
@@ -192,55 +214,130 @@ public:
         *out_assign = table.find(node->getText())->second;
     }
 
-    MYLANG_ANALYSIS_LIST("receive", 7) {}
+    MYLANG_ANALYSIS_LIST("receive", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("pause", 5) {}
+    MYLANG_ANALYSIS_LIST("pause", 5) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("return", 6) {}
+    MYLANG_ANALYSIS_LIST("return", 6) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("structure", 9) {}
+    MYLANG_ANALYSIS_LIST("structure", 9) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("if structure", 12) {}
+    MYLANG_ANALYSIS_LIST("if structure", 12) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("for structure", 13) {}
+    MYLANG_ANALYSIS_LIST("for structure", 13) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("foreach structure", 17) {}
+    MYLANG_ANALYSIS_LIST("foreach structure", 17) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("while structure", 15) {}
+    MYLANG_ANALYSIS_LIST("while structure", 15) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("condition chain", 15) {}
+    MYLANG_ANALYSIS_LIST("condition chain", 15) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("to range", 8) {}
+    MYLANG_ANALYSIS_LIST("to range", 8) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("repeat", 6) {}
+    MYLANG_ANALYSIS_LIST("repeat", 6) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("expression list", 15) {}
+    MYLANG_ANALYSIS_LIST("expression list", 15) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("expression", 10) {}
+    MYLANG_ANALYSIS_LIST("expression", 10) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("relative expression", 19) {}
+    MYLANG_ANALYSIS_LIST("relative expression", 19) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("relative operation", 18) {}
+    MYLANG_ANALYSIS_LIST("relative operation", 18) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("additive expression", 19) {}
+    MYLANG_ANALYSIS_LIST("additive expression", 19) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("additive operation", 18) {}
+    MYLANG_ANALYSIS_LIST("additive operation", 18) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("multiplicative expression", 25) {}
+    MYLANG_ANALYSIS_LIST("multiplicative expression", 25) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("multiplicative operation", 24) {}
+    MYLANG_ANALYSIS_LIST("multiplicative operation", 24) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("unary expression", 16) {}
+    MYLANG_ANALYSIS_LIST("unary expression", 16) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("access operation", 16) {}
+    MYLANG_ANALYSIS_LIST("access operation", 16) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("relation", 8) {}
+    MYLANG_ANALYSIS_LIST("relation", 8) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("addition", 8) {}
+    MYLANG_ANALYSIS_LIST("addition", 8) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("multiplication", 14) {}
+    MYLANG_ANALYSIS_LIST("multiplication", 14) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("unary operator", 14) {}
+    MYLANG_ANALYSIS_LIST("unary operator", 14) {
+        // TODO
+        (void) node; // TODO
+    }
 
     MYLANG_ANALYSIS_TEXT("comparison", 10) {
         static const std::map<std::string, ModeOperator> table = {
@@ -273,11 +370,20 @@ public:
         *out_operator = table.find(node->getText())->second;
     }
 
-    MYLANG_ANALYSIS_LIST("value list", 10) {}
+    MYLANG_ANALYSIS_LIST("value list", 10) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("value", 5) {}
+    MYLANG_ANALYSIS_LIST("value", 5) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("literal", 7) {}
+    MYLANG_ANALYSIS_LIST("literal", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
     MYLANG_ANALYSIS_TEXT("real", 4) {
         *out_real = node->getData();
@@ -295,26 +401,39 @@ public:
         *out_string = node->getRaw();
     }
 
-    MYLANG_ANALYSIS_LIST("instant array", 13) {}
+    MYLANG_ANALYSIS_LIST("instant array", 13) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("space", 5) {}
+    MYLANG_ANALYSIS_LIST("space", 5) {
+        // TODO
+        (void) node; // TODO
+    }
 
-    MYLANG_ANALYSIS_LIST("keyword", 7) {}
+    MYLANG_ANALYSIS_LIST("keyword", 7) {
+        // TODO
+        (void) node; // TODO
+    }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
         // TODO out_id = ...
+        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_TEXT("reserved id", 11) {
         // skip
+        (void) node;
     }
 
     MYLANG_ANALYSIS_TEXT("sign", 4) {
         // skip
+        (void) node;
     }
 
     MYLANG_ANALYSIS_TEXT("ignored", 7) {
         // skip
+        (void) node;
     }
 
     #undef MYLANG_ANALYSIS_LIST
@@ -325,15 +444,18 @@ public:
     template <class NT, class KW>
     void run(const NodeTypedKeyword<NT, KW> *node) {
         // TODO: never reach
+        (void) node;
     }
 
     template <class NT, class E>
     void run(const NodeTypedError<NT, E> *node) {
         // TODO: never reach
+        (void) node;
     }
 
     void run(const Node<> *node) {
         // TODO: ???
+        (void) node;
     }
 };
 
