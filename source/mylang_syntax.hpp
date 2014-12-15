@@ -910,13 +910,13 @@ public RuleRegex<MP_STR("integer", 7),
 template<>
 class RuleDef<MP_STR("byte", 4)>:
 public RuleRegex<MP_STR("byte", 4),
-    MP_STR("\'([^\"\'\\\\]|\\\\.)\'", 15)
+    MP_STR("\'([^\"\'\\\\]|\\\\[Xx][0-9A-Fa-f][0-9A-Fa-f]|\\\\[^Xx])\'", 48)
 > {};
 
 template<>
 class RuleDef<MP_STR("string", 6)>:
 public RuleRegex<MP_STR("string", 6),
-    MP_STR("\"([^\"\'\\\\]|\\\\.)*\"", 16)
+    MP_STR("\"([^\"\'\\\\]|\\\\[Xx][0-9A-Fa-f][0-9A-Fa-f]|\\\\[^Xx])*\"", 49)
 > {};
 
 template<>
