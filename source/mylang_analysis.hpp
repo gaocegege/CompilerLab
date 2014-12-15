@@ -412,8 +412,8 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
-        // TODO
-        (void) node; // TODO
+        // skip
+        (void) node;
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
@@ -440,12 +440,6 @@ public:
     #undef MYLANG_ANALYSIS_TEXT
 
     // misc
-
-    template <class NT, class KW>
-    void run(const NodeTypedKeyword<NT, KW> *node) {
-        // TODO: never reach
-        (void) node;
-    }
 
     template <class NT, class E>
     void run(const NodeTypedError<NT, E> *node) {
