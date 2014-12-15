@@ -104,34 +104,29 @@ template<>
 class RuleDef<MP_STR("main body", 9)>:
 public RuleList<MP_STR("main body", 9),
     RuleLine<
-        RuleItemRef<MP_STR("interface block", 15)>,
+        RuleItemRef<MP_STR("public block", 12)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("is block", 8)>,
+        RuleItemRef<MP_STR("private block", 13)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("code block", 10)>
     >
 > {};
 
 template<>
-class RuleDef<MP_STR("interface block", 15)>:
-public RuleList<MP_STR("interface block", 15),
+class RuleDef<MP_STR("public block", 12)>:
+public RuleList<MP_STR("public block", 12),
     RuleLine<
-        RuleItemRef<MP_STR("definition", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("interface block", 15)>
-    >,
-    RuleLine<
-        
+        RuleItemRef<MP_STR("definition list", 15)>
     >
 > {};
 
 template<>
-class RuleDef<MP_STR("is block", 8)>:
-public RuleList<MP_STR("is block", 8),
+class RuleDef<MP_STR("private block", 13)>:
+public RuleList<MP_STR("private block", 13),
     RuleLine<
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("interface block", 15)>
+        RuleItemRef<MP_STR("definition list", 15)>
     >,
     RuleLine<
         
@@ -203,6 +198,19 @@ public RuleList<MP_STR("argument", 8),
     >,
     RuleLine<
         RuleItemRef<MP_STR("id", 2)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("definition list", 15)>:
+public RuleList<MP_STR("definition list", 15),
+    RuleLine<
+        RuleItemRef<MP_STR("definition", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("definition list", 15)>
+    >,
+    RuleLine<
+        
     >
 > {};
 
