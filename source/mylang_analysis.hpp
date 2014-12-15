@@ -26,8 +26,8 @@ private:
         MO_ADD, MO_SUB,
         MO_MUL, MO_DIV, MO_MOD
     } *out_operator;
-    double *out_double;
-    long *out_long;
+    double *out_real;
+    long *out_integer;
     char *out_byte;
     std::string *out_string;
     libblock::Name *out_id;
@@ -181,7 +181,16 @@ public:
 
     MYLANG_ANALYSIS_LIST("assignment", 10) {}
 
-    MYLANG_ANALYSIS_TEXT("assign sign", 11) {}
+    MYLANG_ANALYSIS_TEXT("assign sign", 11) {
+        static const std::map<const std::string, ModeAssign> table = {
+            {":=", MA_E},
+            {"+=", MA_ADD},
+            {"-=", MA_SUB},
+            {"*=", MA_MUL},
+            {"/=", MA_DIV}
+        };
+        *out_assign = table.find(node->getText())->second;
+    }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {}
 
@@ -233,11 +242,36 @@ public:
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {}
 
-    MYLANG_ANALYSIS_TEXT("comparison", 10) {}
+    MYLANG_ANALYSIS_TEXT("comparison", 10) {
+        static const std::map<std::string, ModeOperator> table = {
+            {"==", MO_E},
+            {"<=", MO_LE},
+            {"=<", MO_LE},
+            {">=", MO_GE},
+            {"=>", MO_GE},
+            {"!=", MO_NE},
+            {"<", MO_L},
+            {">", MO_G}
+        };
+        *out_operator = table.find(node->getText())->second;
+    }
 
-    MYLANG_ANALYSIS_TEXT("addsub", 6) {}
+    MYLANG_ANALYSIS_TEXT("addsub", 6) {
+        static const std::map<std::string, ModeOperator> table = {
+            {"+", MO_ADD},
+            {"-", MO_SUB}
+        };
+        *out_operator = table.find(node->getText())->second;
+    }
 
-    MYLANG_ANALYSIS_TEXT("muldivmod", 9) {}
+    MYLANG_ANALYSIS_TEXT("muldivmod", 9) {
+        static const std::map<std::string, ModeOperator> table = {
+            {"*", MO_MUL},
+            {"/", MO_DIV},
+            {"%", MO_MOD}
+        };
+        *out_operator = table.find(node->getText())->second;
+    }
 
     MYLANG_ANALYSIS_LIST("value list", 10) {}
 
@@ -245,13 +279,21 @@ public:
 
     MYLANG_ANALYSIS_LIST("literal", 7) {}
 
-    MYLANG_ANALYSIS_TEXT("real", 4) {}
+    MYLANG_ANALYSIS_TEXT("real", 4) {
+        *out_real = node->getData();
+    }
 
-    MYLANG_ANALYSIS_TEXT("integer", 7) {}
+    MYLANG_ANALYSIS_TEXT("integer", 7) {
+        *out_integer = node->getData();
+    }
 
-    MYLANG_ANALYSIS_TEXT("byte", 4) {}
+    MYLANG_ANALYSIS_TEXT("byte", 4) {
+        *out_byte = node->getRaw()[0];
+    }
 
-    MYLANG_ANALYSIS_TEXT("string", 6) {}
+    MYLANG_ANALYSIS_TEXT("string", 6) {
+        *out_string = node->getRaw();
+    }
 
     MYLANG_ANALYSIS_LIST("instant array", 13) {}
 
@@ -259,13 +301,21 @@ public:
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {}
 
-    MYLANG_ANALYSIS_TEXT("id", 2) {}
+    MYLANG_ANALYSIS_TEXT("id", 2) {
+        // TODO out_id = ...
+    }
 
-    MYLANG_ANALYSIS_TEXT("reserved id", 11) {}
+    MYLANG_ANALYSIS_TEXT("reserved id", 11) {
+        // skip
+    }
 
-    MYLANG_ANALYSIS_TEXT("sign", 4) {}
+    MYLANG_ANALYSIS_TEXT("sign", 4) {
+        // skip
+    }
 
-    MYLANG_ANALYSIS_TEXT("ignored", 7) {}
+    MYLANG_ANALYSIS_TEXT("ignored", 7) {
+        // skip
+    }
 
     #undef MYLANG_ANALYSIS_LIST
     #undef MYLANG_ANALYSIS_TEXT
