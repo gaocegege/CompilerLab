@@ -47,6 +47,12 @@ public:
 };
 
 template <>
+class NodeBaseText<BuiltinKeyword> {
+public:
+    using Type = NodeKeyword<>;
+};
+
+template <>
 class NodeBaseText<MP_STR("id", 2)> {
 public:
     using Type = NodeId<ErrorId>;
