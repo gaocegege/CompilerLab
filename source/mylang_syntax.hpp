@@ -910,13 +910,13 @@ public RuleRegex<MP_STR("integer", 7),
 template<>
 class RuleDef<MP_STR("byte", 4)>:
 public RuleRegex<MP_STR("byte", 4),
-    MP_STR("\'([^\\\\]|\\\\.)\'", 13)
+    MP_STR("\'([^\"\'\\\\]|\\\\.)\'", 15)
 > {};
 
 template<>
 class RuleDef<MP_STR("string", 6)>:
 public RuleRegex<MP_STR("string", 6),
-    MP_STR("\"([^\\\\]|\\\\.)*\"", 14)
+    MP_STR("\"([^\"\'\\\\]|\\\\.)*\"", 16)
 > {};
 
 template<>
