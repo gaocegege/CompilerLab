@@ -12,35 +12,56 @@ template <class>
 class DelayedCall;
 
 template <class OUT, class... IN>
-class DelayedCall<OUT(const IN...)> {
+class DelayedCall<OUT(IN...)> {
 private:
-    using Proto = OUT(const IN...);
+    using Proto = OUT(IN...);
 
-    // instance chain
-    // TODO: thread_local ???
-    static thread_local DelayedCall<Proto> *instance = nullptr;
-
-    DelayedCall<Proto> *holding;
     std::function<Proto> exec;
 
+    // instance chain: getInstance() -> holding -> ... -> nullptr
+    DelayedCall<Proto> *parent;
+
+    static inline DelayedCall<Proto> *accessInstance(
+        DelayedCall<Proto> *value = nullptr
+    ) {
+        // WARNING: thread_local
+        static thread_local DelayedCall<Proto> *instance = nullptr;
+
+        if (value) {
+            std::swap(instance, value);
+            return value;
+        } else {
+            return instance;
+        }
+    }
+
     // no dynamic allocation
-    void *operator new(size_t) = delete;
-    void operator delete(void *) = delete;
+    inline void *operator new(size_t) = delete;
+    inline void operator delete(void *) = delete;
 
 public:
-    inline DelayedCall(): holding(instance), exec() {
-        instance = this;
+    inline DelayedCall(): parent(), exec() {
+        // holding = parent; instance = this;
+        parent = accessInstance(this);
     }
 
     // virtual ~InfoFrame() {}
 
-    static void put(std::function<Proto> &&func) {
-        instance->exec = std::move(func);
-        instance = instance->holding;
+    static inline void put(std::function<Proto> &&func) {
+        DelayedCall<Proto> *current = accessInstance();
+
+        (void) accessInstance(current->parent);
+
+        current->exec = std::move(func);
     }
 
-    OUT operator()(const IN... arg) {
-        return exec(std::forward(arg...));
+    inline operator bool() const {
+        return accessInstance();
+    }
+
+    inline OUT operator()(IN... arg) const {
+        // TODO: if exec == nullptr, error
+        return exec(std::forward<IN>(arg)...);
     }
 };
 
