@@ -1,6 +1,7 @@
 #ifndef MYLANG_ANALYSIS_PASS_HPP
 #define MYLANG_ANALYSIS_PASS_HPP
 
+#include "mylang_const.hpp"
 #include "mylang_syntax_spec.hpp"
 #include "mylang_analysis_call.hpp"
 #include "semantic/block.hpp"
@@ -47,19 +48,19 @@ public:
         //    return (libblock::Block *) nullptr;
         //});
     }
-/*
+
     MYLANG_ANALYSIS_LIST("function", 8) {
         // TODO: proto?
-        enterBlock();
+        //enterBlock();
         go(node);
-        exitBlock();
+        //exitBlock();
         // TODO: end?
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
-        enterBlock();
+        //enterBlock();
         go(node);
-        exitBlock();
+        //exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
@@ -75,21 +76,21 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("public block", 12) {
-        auto visibility = libblock::Name::V_PUBLIC;
+        //auto visibility = libblock::Name::V_PUBLIC;
 
-        in_visibility = &visibility;
+        //in_visibility = &visibility;
         // TODO: pass1 - create name; pass2 - compile
         go(node);
-        in_visibility = nullptr;
+        //in_visibility = nullptr;
     }
 
     MYLANG_ANALYSIS_LIST("private block", 13) {
-        auto visibility = libblock::Name::V_PRIVATE;
+        //auto visibility = libblock::Name::V_PRIVATE;
 
-        in_visibility = &visibility;
+        //in_visibility = &visibility;
         // TODO: pass1 - create name; pass2 - compile
         go(node);
-        in_visibility = nullptr;
+        //in_visibility = nullptr;
     }
 
     MYLANG_ANALYSIS_LIST("code block", 10) {
@@ -174,15 +175,18 @@ public:
         (void) node; // TODO
     }
 
-    MYLANG_ANALYSIS_TEXT("assign sign", 11) {
-        static const std::map<const std::string, ModeAssign> table = {
-            {":=", MA_E},
-            {"+=", MA_ADD},
-            {"-=", MA_SUB},
-            {"*=", MA_MUL},
-            {"/=", MA_DIV}
-        };
-        *out_assign = table.find(node->getText())->second;
+    MYLANG_ANALYSIS_LIST("assign sign", 11) {
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {":=", mylang::name_assign},
+                {"+=", mylang::name_assign_add},
+                {"-=", mylang::name_assign_sub},
+                {"*=", mylang::name_assign_mul},
+                {"/=", mylang::name_assign_div}
+            };
+
+            return table.find(node->asFullText())->second;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {
@@ -291,54 +295,77 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("relation", 8) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"==", mylang::name_equal},
+                {"<=", mylang::name_less_equal},
+                {"=<", mylang::name_less_equal},
+                {">=", mylang::name_greater_equal},
+                {"=>", mylang::name_greater_equal},
+                {"!=", mylang::name_not_equal},
+                {"<", mylang::name_less},
+                {">", mylang::name_greater},
+                {"in", mylang::name_in}
+            };
+
+            return table.find(node->asFullText())->second;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("addition", 8) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"+", mylang::name_add},
+                {"-", mylang::name_sub},
+                {"or", mylang::name_or},
+                {"xor", mylang::name_xor}
+            };
+
+            return table.find(node->asFullText())->second;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("multiplication", 14) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"*", mylang::name_mul},
+                {"/", mylang::name_div},
+                {"%", mylang::name_mod},
+                {"div", mylang::name_div},
+                {"mod", mylang::name_mod},
+                {"and", mylang::name_and},
+                {"shl", mylang::name_shl},
+                {"shr", mylang::name_shr},
+                {"rol", mylang::name_rol},
+                {"ror", mylang::name_ror}
+            };
+
+            return table.find(node->asFullText())->second;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"+", mylang::name_pos},
+                {"-", mylang::name_neg},
+                {"not", mylang::name_not}
+            };
+
+            return table.find(node->asFullText())->second;
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("comparison", 10) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"==", MO_E},
-            {"<=", MO_LE},
-            {"=<", MO_LE},
-            {">=", MO_GE},
-            {"=>", MO_GE},
-            {"!=", MO_NE},
-            {"<", MO_L},
-            {">", MO_G}
-        };
-        *out_operator = table.find(node->getText())->second;
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_TEXT("addsub", 6) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"+", MO_ADD},
-            {"-", MO_SUB}
-        };
-        *out_operator = table.find(node->getText())->second;
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_TEXT("muldivmod", 9) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"*", MO_MUL},
-            {"/", MO_DIV},
-            {"%", MO_MOD}
-        };
-        *out_operator = table.find(node->getText())->second;
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_LIST("value list", 10) {
@@ -357,19 +384,27 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("real", 4) {
-        *out_real = node->getData();
+        mylang::DelayedCall<double ()>::put([=]() {
+            return node->getData();
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("integer", 7) {
-        *out_integer = node->getData();
+        mylang::DelayedCall<long ()>::put([=]() {
+            return node->getData();
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("byte", 4) {
-        *out_byte = node->getRaw()[0];
+        mylang::DelayedCall<char ()>::put([=]() {
+            return node->getRaw()[0];
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("string", 6) {
-        *out_string = node->getRaw();
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            return node->getRaw();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("instant array", 13) {
@@ -383,6 +418,14 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
+        // notice:
+        //     "keyword" can be both list (parsing) and text (parsed)
+
+        // never reach
+        (void) node;
+    }
+
+    MYLANG_ANALYSIS_TEXT("keyword", 7) {
         // skip
         (void) node;
     }
@@ -406,7 +449,7 @@ public:
         // skip
         (void) node;
     }
-*/
+
     #undef MYLANG_ANALYSIS_LIST
     #undef MYLANG_ANALYSIS_TEXT
 
@@ -417,12 +460,6 @@ public:
         // TODO: never reach if no parsing error
         (void) node;
     }
-
-
-    // TODO remove
-    void run(const Node<> *node) {(void) node;}
-
-
 };
 
 }

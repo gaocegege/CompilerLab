@@ -40,45 +40,52 @@ public:
     }
 };
 
-template <size_t I>
-class NodeBaseList<BuiltinSpace, I> {
+template <>
+class NodeBaseList<BuiltinSpace> {
 public:
+    template <size_t I>
     using Type = NodeSpace<I>;
 };
 
 template <>
 class NodeBaseText<BuiltinKeyword> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeKeyword<>;
 };
 
 template <>
 class NodeBaseText<MP_STR("id", 2)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeId<ErrorId>;
 };
 
 template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeData<double, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeData<long, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("byte", 4)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeString<1, 1, '\\', ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("string", 6)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeString<1, 1, '\\', ErrorLiteral>;
 };
 

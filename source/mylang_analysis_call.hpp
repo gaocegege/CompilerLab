@@ -40,10 +40,7 @@ private:
     inline void operator delete(void *) = delete;
 
 public:
-    inline DelayedCall(): parent(), exec() {
-        // holding = parent; instance = this;
-        parent = accessInstance(this);
-    }
+    inline DelayedCall(): exec(nullptr), parent(accessInstance(this)) {}
 
     // virtual ~InfoFrame() {}
 
