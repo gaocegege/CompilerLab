@@ -2,7 +2,7 @@
 #define MYLANG_ANALYSIS_PASS_HPP
 
 #include "mylang_syntax_spec.hpp"
-#include "mylang_analysis_node.hpp"
+#include "mylang_analysis_call.hpp"
 #include "semantic/block.hpp"
 
 namespace myparser {
