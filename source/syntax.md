@@ -184,9 +184,13 @@ assignment:
 
     <expression> <assign sign> <expression>
 
-*assign sign*:
+assign sign:
 
-    \:=|\+=|-=|\*=|\/=
+    :=
+    +=
+    -=
+    *=
+    /=
 
 receive:
 
@@ -408,7 +412,7 @@ Special
 
 *sign*:
 
-    [\(\)\[\],.;]
+    [\(\)\[\],.;]|[\:\+\-\*\/]\=
 
 *ignored*:
 

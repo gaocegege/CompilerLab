@@ -428,8 +428,22 @@ public RuleList<MP_STR("assignment", 10),
 
 template<>
 class RuleDef<MP_STR("assign sign", 11)>:
-public RuleRegex<MP_STR("assign sign", 11),
-    MP_STR("\\:=|\\+=|-=|\\*=|\\/=", 18)
+public RuleList<MP_STR("assign sign", 11),
+    RuleLine<
+        RuleItemKeyword<MP_STR(":=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("+=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("-=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("*=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("/=", 2)>
+    >
 > {};
 
 template<>
@@ -965,7 +979,7 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("[\\(\\)\\[\\],.;]", 13)
+    MP_STR("[\\(\\)\\[\\],.;]|[\\:\\+\\-\\*\\/]\\=", 28)
 > {};
 
 template<>
