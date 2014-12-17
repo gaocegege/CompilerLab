@@ -13,7 +13,7 @@ using ErrorLiteral = MP_STR("Illegal literal", 15);
 template <class E>
 class NodeId: public NodeTextOrError<E> {
 private:
-    /* const */ bool ok;
+    /* const */ bool succeed;
 
 public:
     inline NodeId(
@@ -30,13 +30,13 @@ public:
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
-        ok = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
+        succeed = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
     }
 
     // virtual ~NodeId() {}
 
     virtual bool accepted() const {
-        return ok;
+        return succeed;
     }
 };
 

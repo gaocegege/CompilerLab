@@ -24,29 +24,17 @@ public:
 
     // ignored nodes
 
-    template <class NT, class E>
-    void run(const NodeTyped<NT, NodeError<E>> *node) {
+    template <class N, class E>
+    void run(const NodeTyped<N, NodeError<E>> *node) {
         // TODO: never reach if no parsing error
         (void) node;
     }
 
-    /*template <class NT, size_t I>
-    void run(const NodeTyped<NT, NodeSpace<I>> *node) {
-        // skip
-        (void) node;
-    }
-
-    template <class NT, class E>
-    void run(const NodeTyped<NT, NodeKeyword<E>> *node) {
-        // skip
-        (void) node;
-    }*/ // TODO: necessary?
-
     // common nodes
 
-    template <class NT, class T>
-    void run(const NodeTyped<NT, T> *node) {
-        //
+    template <class N, class T>
+    void run(const NodeTyped<N, T> *node) {
+        // mylang::InfoFrame<N, T>::run()
     }
 };
 
