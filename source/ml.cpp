@@ -36,14 +36,24 @@ void test() {
 
     auto x2 = Parser<>::parse(s1, false);
 
-    x2->runPass(&rf1);
-    std::cout << std::endl << std::endl;
-    x2->runPass(&rf);
-    std::cout << std::endl << std::endl;
-    x2->runPass(&hl);
-    std::cout << std::endl << std::endl;
+    // x2->runPass(&rf1);
+    // std::cout << std::endl << std::endl;
+    // x2->runPass(&rf);
+    // std::cout << std::endl << std::endl;
+    // x2->runPass(&hl);
+    // std::cout << std::endl << std::endl;
 
     delete x2;
+
+    ////////
+
+    DelayedCall<int(int)> test;
+
+    DelayedCall<int(int)>::put([=](int a) {
+        return 1200 + a;
+    });
+
+    std::cout << test(34) << std::endl;
 }
 
 int main() {

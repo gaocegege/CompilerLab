@@ -1,7 +1,9 @@
-#ifndef MYLANG_ANALYSIS_HPP
-#define MYLANG_ANALYSIS_HPP
+#ifndef MYLANG_ANALYSIS_PASS_HPP
+#define MYLANG_ANALYSIS_PASS_HPP
 
+#include "mylang_const.hpp"
 #include "mylang_syntax_spec.hpp"
+#include "mylang_analysis_call.hpp"
 #include "semantic/block.hpp"
 
 namespace myparser {
@@ -13,43 +15,14 @@ enum {
 template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
-    // in status
-    libblock::Block *in_block;
-    libblock::Name::Visibility *in_visibility;
-
-    // out status
-    enum ModeAssign {
-        MA_E, MA_ADD, MA_SUB, MA_MUL, MA_DIV
-    } *out_assign;
-    enum ModeOperator {
-        MO_E, MO_LE, MO_GE, MO_NE, MO_L, MO_G,
-        MO_ADD, MO_SUB,
-        MO_MUL, MO_DIV, MO_MOD
-    } *out_operator;
-    double *out_real;
-    long *out_integer;
-    char *out_byte;
-    std::string *out_string;
-    libblock::Name *out_id;
-
     inline void go(const NodeList<> *node) {
         for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
     }
 
-    inline void enterBlock() {
-        libblock::Block *current = new libblock::Block(in_block);
-        in_block->putChild(current);
-        in_block = current;
-    }
-
-    inline void exitBlock() {
-        in_block = in_block->getParent();
-    }
-
 public:
-    inline Pass(libblock::Block *base): in_block{base} {}
+    // inline Pass(libblock::Block *base): in_block{base} {} // TODO
 
     // virtual ~Pass() {}
 
@@ -70,25 +43,24 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
-        // TODO: proto?
-        enterBlock();
-        go(node);
-        exitBlock();
-        // TODO: end?
+        //mylang::putCall([=]() {
+            //mylang::DelayedCall<Proto *()> proto;
+        //    return (libblock::Block *) nullptr;
+        //});
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
         // TODO: proto?
-        enterBlock();
+        //enterBlock();
         go(node);
-        exitBlock();
+        //exitBlock();
         // TODO: end?
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
-        enterBlock();
+        //enterBlock();
         go(node);
-        exitBlock();
+        //exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
@@ -104,21 +76,21 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("public block", 12) {
-        auto visibility = libblock::Name::V_PUBLIC;
+        //auto visibility = libblock::Name::V_PUBLIC;
 
-        in_visibility = &visibility;
+        //in_visibility = &visibility;
         // TODO: pass1 - create name; pass2 - compile
         go(node);
-        in_visibility = nullptr;
+        //in_visibility = nullptr;
     }
 
     MYLANG_ANALYSIS_LIST("private block", 13) {
-        auto visibility = libblock::Name::V_PRIVATE;
+        //auto visibility = libblock::Name::V_PRIVATE;
 
-        in_visibility = &visibility;
+        //in_visibility = &visibility;
         // TODO: pass1 - create name; pass2 - compile
         go(node);
-        in_visibility = nullptr;
+        //in_visibility = nullptr;
     }
 
     MYLANG_ANALYSIS_LIST("code block", 10) {
@@ -198,28 +170,7 @@ public:
         (void) node; // TODO
     }
 
-    MYLANG_ANALYSIS_LIST("assignment", 10) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_TEXT("assign sign", 11) {
-        static const std::map<const std::string, ModeAssign> table = {
-            {":=", MA_E},
-            {"+=", MA_ADD},
-            {"-=", MA_SUB},
-            {"*=", MA_MUL},
-            {"/=", MA_DIV}
-        };
-        *out_assign = table.find(node->getText())->second;
-    }
-
     MYLANG_ANALYSIS_LIST("receive", 7) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("pause", 5) {
         // TODO
         (void) node; // TODO
     }
@@ -279,6 +230,16 @@ public:
         (void) node; // TODO
     }
 
+    MYLANG_ANALYSIS_LIST("assign expression", 17) {
+        // TODO
+        (void) node; // TODO
+    }
+
+    MYLANG_ANALYSIS_LIST("assign operation", 16) {
+        // TODO
+        (void) node; // TODO
+    }
+
     MYLANG_ANALYSIS_LIST("relative expression", 19) {
         // TODO
         (void) node; // TODO
@@ -319,60 +280,92 @@ public:
         (void) node; // TODO
     }
 
+    MYLANG_ANALYSIS_LIST("assignment", 10) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {":=", mylang::name_assign},
+                {"+=", mylang::name_assign_add},
+                {"-=", mylang::name_assign_sub},
+                {"*=", mylang::name_assign_mul},
+                {"/=", mylang::name_assign_div}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
+    }
+
     MYLANG_ANALYSIS_LIST("relation", 8) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"==", mylang::name_equal},
+                {"<=", mylang::name_less_equal},
+                {"=<", mylang::name_less_equal},
+                {">=", mylang::name_greater_equal},
+                {"=>", mylang::name_greater_equal},
+                {"!=", mylang::name_not_equal},
+                {"<", mylang::name_less},
+                {">", mylang::name_greater},
+                {"in", mylang::name_in}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
     }
 
     MYLANG_ANALYSIS_LIST("addition", 8) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"+", mylang::name_add},
+                {"-", mylang::name_sub},
+                {"or", mylang::name_or},
+                {"xor", mylang::name_xor}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
     }
 
     MYLANG_ANALYSIS_LIST("multiplication", 14) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"*", mylang::name_mul},
+                {"/", mylang::name_div},
+                {"%", mylang::name_mod},
+                {"div", mylang::name_div},
+                {"mod", mylang::name_mod},
+                {"and", mylang::name_and},
+                {"shl", mylang::name_shl},
+                {"shr", mylang::name_shr},
+                {"rol", mylang::name_rol},
+                {"ror", mylang::name_ror}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
     }
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {"+", mylang::name_pos},
+                {"-", mylang::name_neg},
+                {"not", mylang::name_not}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("comparison", 10) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"==", MO_E},
-            {"<=", MO_LE},
-            {"=<", MO_LE},
-            {">=", MO_GE},
-            {"=>", MO_GE},
-            {"!=", MO_NE},
-            {"<", MO_L},
-            {">", MO_G}
-        };
-        *out_operator = table.find(node->getText())->second;
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_TEXT("addsub", 6) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"+", MO_ADD},
-            {"-", MO_SUB}
-        };
-        *out_operator = table.find(node->getText())->second;
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_TEXT("muldivmod", 9) {
-        static const std::map<std::string, ModeOperator> table = {
-            {"*", MO_MUL},
-            {"/", MO_DIV},
-            {"%", MO_MOD}
-        };
-        *out_operator = table.find(node->getText())->second;
-    }
-
-    MYLANG_ANALYSIS_LIST("value list", 10) {
-        // TODO
-        (void) node; // TODO
+        (void) node; // see parent list
     }
 
     MYLANG_ANALYSIS_LIST("value", 5) {
@@ -386,39 +379,57 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("real", 4) {
-        *out_real = node->getData();
+        mylang::DelayedCall<double ()>::put([=]() {
+            return node->getData();
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("integer", 7) {
-        *out_integer = node->getData();
+        mylang::DelayedCall<long ()>::put([=]() {
+            return node->getData();
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("byte", 4) {
-        *out_byte = node->getRaw()[0];
+        mylang::DelayedCall<char ()>::put([=]() {
+            return node->getRaw()[0];
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("string", 6) {
-        *out_string = node->getRaw();
+        mylang::DelayedCall<std::string ()>::put([=]() {
+            return node->getRaw();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("instant array", 13) {
-        // TODO
-        (void) node; // TODO
+        // mylang::DelayedCall<Code *(libblock::Block *)>::put([=]() {
+        //     return node->getRaw();
+        // });
     }
 
     MYLANG_ANALYSIS_LIST("space", 5) {
-        // TODO
-        (void) node; // TODO
+        // skip
+        (void) node;
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
+        // notice:
+        //     "keyword" can be both list (parsing) and text (parsed)
+
+        // never reach
+        (void) node;
+    }
+
+    MYLANG_ANALYSIS_TEXT("keyword", 7) {
         // skip
         (void) node;
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
-        // TODO out_id = ...
-        (void) node; // TODO
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            return libblock::name_t(node->getText());
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("reserved id", 11) {
@@ -439,16 +450,11 @@ public:
     #undef MYLANG_ANALYSIS_LIST
     #undef MYLANG_ANALYSIS_TEXT
 
-    // misc
+    // ignored nodes
 
-    template <class NT, class E>
-    void run(const NodeTypedError<NT, E> *node) {
-        // TODO: never reach
-        (void) node;
-    }
-
-    void run(const Node<> *node) {
-        // TODO: ???
+    template <class N, class E>
+    void run(const NodeTyped<N, NodeError<E>> *node) {
+        // TODO: never reach if no parsing error
         (void) node;
     }
 };

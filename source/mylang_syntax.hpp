@@ -382,17 +382,7 @@ public RuleList<MP_STR("statement", 9),
         RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("assignment", 10)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("receive", 7)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("pause", 5)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
     >,
@@ -415,24 +405,6 @@ public RuleList<MP_STR("statement", 9),
 > {};
 
 template<>
-class RuleDef<MP_STR("assignment", 10)>:
-public RuleList<MP_STR("assignment", 10),
-    RuleLine<
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("assign sign", 11)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("assign sign", 11)>:
-public RuleRegex<MP_STR("assign sign", 11),
-    MP_STR("\\:=|\\+=|-=|\\*=|\\/=", 18)
-> {};
-
-template<>
 class RuleDef<MP_STR("receive", 7)>:
 public RuleList<MP_STR("receive", 7),
     RuleLine<
@@ -442,14 +414,6 @@ public RuleList<MP_STR("receive", 7),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("receive", 7)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("pause", 5)>:
-public RuleList<MP_STR("pause", 5),
-    RuleLine<
-        RuleItemKeyword<MP_STR("pause", 5)>
     >
 > {};
 
@@ -642,7 +606,30 @@ template<>
 class RuleDef<MP_STR("expression", 10)>:
 public RuleList<MP_STR("expression", 10),
     RuleLine<
-        RuleItemRef<MP_STR("relative expression", 19)>
+        RuleItemRef<MP_STR("assign expression", 17)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("assign expression", 17)>:
+public RuleList<MP_STR("assign expression", 17),
+    RuleLine<
+        RuleItemRef<MP_STR("relative expression", 19)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("assign operation", 16)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("assign operation", 16)>:
+public RuleList<MP_STR("assign operation", 16),
+    RuleLine<
+        RuleItemRef<MP_STR("assignment", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("assign expression", 17)>
+    >,
+    RuleLine<
+        
     >
 > {};
 
@@ -769,6 +756,26 @@ public RuleList<MP_STR("access operation", 16),
 > {};
 
 template<>
+class RuleDef<MP_STR("assignment", 10)>:
+public RuleList<MP_STR("assignment", 10),
+    RuleLine<
+        RuleItemKeyword<MP_STR(":=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("+=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("-=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("*=", 2)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("/=", 2)>
+    >
+> {};
+
+template<>
 class RuleDef<MP_STR("relation", 8)>:
 public RuleList<MP_STR("relation", 8),
     RuleLine<
@@ -852,19 +859,6 @@ public RuleRegex<MP_STR("muldivmod", 9),
 > {};
 
 template<>
-class RuleDef<MP_STR("value list", 10)>:
-public RuleList<MP_STR("value list", 10),
-    RuleLine<
-        RuleItemRef<MP_STR("value", 5)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("value list", 10)>
-    >,
-    RuleLine<
-        
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("value", 5)>:
 public RuleList<MP_STR("value", 5),
     RuleLine<
@@ -872,6 +866,9 @@ public RuleList<MP_STR("value", 5),
     >,
     RuleLine<
         RuleItemRef<MP_STR("id", 2)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("instant array", 13)>
     >
 > {};
 
@@ -889,9 +886,6 @@ public RuleList<MP_STR("literal", 7),
     >,
     RuleLine<
         RuleItemRef<MP_STR("string", 6)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("instant array", 13)>
     >
 > {};
 
@@ -965,7 +959,7 @@ public RuleRegex<MP_STR("reserved id", 11),
 template<>
 class RuleDef<MP_STR("sign", 4)>:
 public RuleRegex<MP_STR("sign", 4),
-    MP_STR("[\\(\\)\\[\\],.;]", 13)
+    MP_STR("[\\(\\)\\[\\],.;]|[\\:\\+\\-\\*\\/]\\=", 28)
 > {};
 
 template<>

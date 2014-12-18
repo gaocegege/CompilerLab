@@ -172,30 +172,16 @@ statement list:
 statement:
 
     <expression> ;
-    <assignment> ;
     <receive> ;
-    <pause> ;
     <return> ;
     <structure>
     <repeat> ;
     ;
 
-assignment:
-
-    <expression> <assign sign> <expression>
-
-*assign sign*:
-
-    \:=|\+=|-=|\*=|\/=
-
 receive:
 
     receive <expression>
     receive
-
-pause:
-
-    pause
 
 return:
 
@@ -255,7 +241,16 @@ expression list:
 
 expression:
 
-    <relative expression>
+    <assign expression>
+
+assign expression:
+
+    <relative expression> <assign operation>
+
+assign operation:
+
+    <assignment> <assign expression>
+    <>
 
 relative expression:
 
@@ -302,6 +297,14 @@ access operation:
 Operator
 ---
 
+assignment:
+
+    :=
+    +=
+    -=
+    *=
+    /=
+
 relation:
 
     <comparison>
@@ -344,15 +347,11 @@ unary operator:
 Value
 ---
 
-value list:
-
-    <value> <value list>
-    <>
-
 value:
 
     <literal>
     <id>
+    <instant array>
     // id of runtime value -> value access
     //               other -> literal
 
@@ -362,7 +361,6 @@ literal:
     <integer>
     <byte>
     <string>
-    <instant array>
     // const boolean yes := (unsigned -1)
     //                no := 0
 
@@ -408,7 +406,7 @@ Special
 
 *sign*:
 
-    [\(\)\[\],.;]
+    [\(\)\[\],.;]|[\:\+\-\*\/]\=
 
 *ignored*:
 
