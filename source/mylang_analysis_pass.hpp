@@ -170,27 +170,6 @@ public:
         (void) node; // TODO
     }
 
-    MYLANG_ANALYSIS_LIST("assignment", 10) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("assign sign", 11) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
-            static const std::map<const std::string, const std::string> table = {
-                {":=", mylang::name_assign},
-                {"+=", mylang::name_assign_add},
-                {"-=", mylang::name_assign_sub},
-                {"*=", mylang::name_assign_mul},
-                {"/=", mylang::name_assign_div}
-            };
-
-            return block->getMember(table.find(node->asFullText())->second);
-        });
-    }
-
     MYLANG_ANALYSIS_LIST("receive", 7) {
         // TODO
         (void) node; // TODO
@@ -251,6 +230,16 @@ public:
         (void) node; // TODO
     }
 
+    MYLANG_ANALYSIS_LIST("assign expression", 17) {
+        // TODO
+        (void) node; // TODO
+    }
+
+    MYLANG_ANALYSIS_LIST("assign operation", 16) {
+        // TODO
+        (void) node; // TODO
+    }
+
     MYLANG_ANALYSIS_LIST("relative expression", 19) {
         // TODO
         (void) node; // TODO
@@ -291,10 +280,22 @@ public:
         (void) node; // TODO
     }
 
+    MYLANG_ANALYSIS_LIST("assignment", 10) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            static const std::map<const std::string, const std::string> table = {
+                {":=", mylang::name_assign},
+                {"+=", mylang::name_assign_add},
+                {"-=", mylang::name_assign_sub},
+                {"*=", mylang::name_assign_mul},
+                {"/=", mylang::name_assign_div}
+            };
+
+            return libblock::name_t(table.find(node->asFullText())->second);
+        });
+    }
+
     MYLANG_ANALYSIS_LIST("relation", 8) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"==", mylang::name_equal},
                 {"<=", mylang::name_less_equal},
@@ -307,14 +308,12 @@ public:
                 {"in", mylang::name_in}
             };
 
-            return block->getMember(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("addition", 8) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_add},
                 {"-", mylang::name_sub},
@@ -322,14 +321,12 @@ public:
                 {"xor", mylang::name_xor}
             };
 
-            return block->getMember(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("multiplication", 14) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"*", mylang::name_mul},
                 {"/", mylang::name_div},
@@ -343,21 +340,19 @@ public:
                 {"ror", mylang::name_ror}
             };
 
-            return block->getMember(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_pos},
                 {"-", mylang::name_neg},
                 {"not", mylang::name_not}
             };
 
-            return block->getMember(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->asFullText())->second);
         });
     }
 
@@ -408,8 +403,9 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("instant array", 13) {
-        // TODO
-        (void) node; // TODO
+        // mylang::DelayedCall<Code *(libblock::Block *)>::put([=]() {
+        //     return node->getRaw();
+        // });
     }
 
     MYLANG_ANALYSIS_LIST("space", 5) {
@@ -431,10 +427,8 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
-        mylang::DelayedCall<
-            libblock::NameRange (libblock::Block *)
-        >::put([=](libblock::Block *block) {
-            return block->getMember(node->getText());
+        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+            return libblock::name_t(node->getText());
         });
     }
 
