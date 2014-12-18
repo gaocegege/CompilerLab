@@ -172,24 +172,11 @@ statement list:
 statement:
 
     <expression> ;
-    <assignment> ;
     <receive> ;
     <return> ;
     <structure>
     <repeat> ;
     ;
-
-assignment:
-
-    <expression> <assign sign> <expression>
-
-assign sign:
-
-    :=
-    +=
-    -=
-    *=
-    /=
 
 receive:
 
@@ -254,7 +241,16 @@ expression list:
 
 expression:
 
-    <relative expression>
+    <assign expression>
+
+assign expression:
+
+    <relative expression> <assign operation>
+
+assign operation:
+
+    <assignment> <assign expression>
+    <>
 
 relative expression:
 
@@ -300,6 +296,14 @@ access operation:
 
 Operator
 ---
+
+assignment:
+
+    :=
+    +=
+    -=
+    *=
+    /=
 
 relation:
 
