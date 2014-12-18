@@ -176,7 +176,9 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("assign sign", 11) {
-        mylang::DelayedCall<std::string ()>::put([=]() {
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
             static const std::map<const std::string, const std::string> table = {
                 {":=", mylang::name_assign},
                 {"+=", mylang::name_assign_add},
@@ -185,16 +187,11 @@ public:
                 {"/=", mylang::name_assign_div}
             };
 
-            return table.find(node->asFullText())->second;
+            return block->getMember(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("pause", 5) {
         // TODO
         (void) node; // TODO
     }
@@ -295,7 +292,9 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("relation", 8) {
-        mylang::DelayedCall<std::string ()>::put([=]() {
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
             static const std::map<const std::string, const std::string> table = {
                 {"==", mylang::name_equal},
                 {"<=", mylang::name_less_equal},
@@ -308,12 +307,14 @@ public:
                 {"in", mylang::name_in}
             };
 
-            return table.find(node->asFullText())->second;
+            return block->getMember(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("addition", 8) {
-        mylang::DelayedCall<std::string ()>::put([=]() {
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_add},
                 {"-", mylang::name_sub},
@@ -321,12 +322,14 @@ public:
                 {"xor", mylang::name_xor}
             };
 
-            return table.find(node->asFullText())->second;
+            return block->getMember(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("multiplication", 14) {
-        mylang::DelayedCall<std::string ()>::put([=]() {
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
             static const std::map<const std::string, const std::string> table = {
                 {"*", mylang::name_mul},
                 {"/", mylang::name_div},
@@ -340,19 +343,21 @@ public:
                 {"ror", mylang::name_ror}
             };
 
-            return table.find(node->asFullText())->second;
+            return block->getMember(table.find(node->asFullText())->second);
         });
     }
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {
-        mylang::DelayedCall<std::string ()>::put([=]() {
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_pos},
                 {"-", mylang::name_neg},
                 {"not", mylang::name_not}
             };
 
-            return table.find(node->asFullText())->second;
+            return block->getMember(table.find(node->asFullText())->second);
         });
     }
 
@@ -366,11 +371,6 @@ public:
 
     MYLANG_ANALYSIS_TEXT("muldivmod", 9) {
         (void) node; // see parent list
-    }
-
-    MYLANG_ANALYSIS_LIST("value list", 10) {
-        // TODO
-        (void) node; // TODO
     }
 
     MYLANG_ANALYSIS_LIST("value", 5) {
@@ -413,8 +413,8 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("space", 5) {
-        // TODO
-        (void) node; // TODO
+        // skip
+        (void) node;
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
@@ -431,8 +431,11 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
-        // TODO out_id = ...
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::NameRange (libblock::Block *)
+        >::put([=](libblock::Block *block) {
+            return block->getMember(node->getText());
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("reserved id", 11) {

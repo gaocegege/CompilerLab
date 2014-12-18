@@ -866,19 +866,6 @@ public RuleRegex<MP_STR("muldivmod", 9),
 > {};
 
 template<>
-class RuleDef<MP_STR("value list", 10)>:
-public RuleList<MP_STR("value list", 10),
-    RuleLine<
-        RuleItemRef<MP_STR("value", 5)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("value list", 10)>
-    >,
-    RuleLine<
-        
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("value", 5)>:
 public RuleList<MP_STR("value", 5),
     RuleLine<

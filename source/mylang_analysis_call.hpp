@@ -42,14 +42,13 @@ private:
 public:
     inline DelayedCall(): exec(nullptr), parent(accessInstance(this)) {}
 
-    // virtual ~InfoFrame() {}
+    // notice: delete by pointer is not allowed
+    ~DelayedCall() {
+        //accessInstance(parent);
+    }
 
     static inline void put(std::function<Proto> &&func) {
-        DelayedCall<Proto> *current = accessInstance();
-
-        (void) accessInstance(current->parent);
-
-        current->exec = std::move(func);
+        accessInstance()->exec = std::move(func);
     }
 
     inline operator bool() const {
