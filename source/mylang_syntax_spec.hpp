@@ -4,6 +4,7 @@
 #include <set>
 
 #include "parser/myparser.hpp"
+#include "mylang_const.hpp"
 
 namespace myparser {
 
@@ -65,14 +66,14 @@ template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<double, ErrorLiteral>;
+    using Type = NodeData<mylang::ml_real, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<long, ErrorLiteral>;
+    using Type = NodeData<mylang::ml_integer, ErrorLiteral>;
 };
 
 template <>
