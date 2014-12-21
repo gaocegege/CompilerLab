@@ -357,7 +357,6 @@ public:
         });
     }
 
-    // TODO: asFullText() faster? (make virtual & remove unnecessary stringstream)
     MYLANG_ANALYSIS_LIST("assignment", 10) {
         mylang::DelayedCall<libblock::name_t ()>::put([=]() {
             static const std::map<const std::string, const std::string> table = {
@@ -368,7 +367,7 @@ public:
                 {"/=", mylang::name_assign_div}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -386,7 +385,7 @@ public:
                 {"in", mylang::name_in}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -399,7 +398,7 @@ public:
                 {"xor", mylang::name_xor}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -418,7 +417,7 @@ public:
                 {"ror", mylang::name_ror}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -430,7 +429,7 @@ public:
                 {"not", mylang::name_not}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -511,19 +510,19 @@ public:
             case 5:
                 // <tuple>
                 {
-                    mylang::DelayedCall<void (libblock::CodeTuple *)> adder;
+                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
 
                     go(node);
 
                     auto result = new libblock::CodeTuple();
-                    adder(result);
+                    tuple(result);
 
                     return result;
                 }
             case 6:
                 // <array>
                 {
-                    mylang::DelayedCall<void (libblock::CodeTuple *)> adder;
+                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
 
                     go(node);
 
@@ -532,7 +531,7 @@ public:
                     );
                     auto arg = new libblock::CodeTuple();
 
-                    adder(arg);
+                    tuple(arg);
 
                     return new libblock::CodeApply(func, arg);
                 }
