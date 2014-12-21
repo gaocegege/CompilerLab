@@ -224,7 +224,16 @@ public:
         mylang::DelayedCall<void (libblock::CodeTuple *)>::put([=](
             libblock::CodeTuple *tuple
         ) {
-            //
+            for (const Node<> *child: node->getChildren()) {
+                mylang::DelayedCall<libblock::Code * ()> entry;
+
+                child->runPass(this);
+
+                if (entry) {
+                    // if is an expression
+                    tuple->add(entry());
+                }
+            }
         });
     }
 
@@ -594,7 +603,7 @@ public:
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
         mylang::DelayedCall<libblock::name_t ()>::put([=]() {
-            return libblock::name_t(node->getText());
+            return libblock::name_t(node->getFullText());
         });
     }
 

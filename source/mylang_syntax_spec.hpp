@@ -18,8 +18,8 @@ private:
 
 public:
     inline NodeId(
-        const Input &input, std::string &&value
-    ): NodeTextOrError<E>(input, std::move(value)) {
+        const Input &input, const Input &end
+    ): NodeTextOrError<E>(input, end) {
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
             "is", "begin", "in", "out",
@@ -31,7 +31,7 @@ public:
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
-        succeed = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
+        succeed = keywords.find(std::string(input, end)) == keywords.cend();
     }
 
     // virtual ~NodeId() {}
