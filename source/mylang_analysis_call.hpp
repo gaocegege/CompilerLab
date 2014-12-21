@@ -46,7 +46,7 @@ public:
     }
 
     inline operator bool() const {
-        return exec;
+        return exec != nullptr;
     }
 
     inline OUT operator()(IN... arg) const {

@@ -896,7 +896,7 @@ public RuleList<MP_STR("tuple", 5),
     RuleLine<
         RuleItemKeyword<MP_STR("(", 1)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10), TagAny1>,
+        RuleItemRef<MP_STR("expression list", 15)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(")", 1)>
     >
@@ -908,7 +908,7 @@ public RuleList<MP_STR("array", 5),
     RuleLine<
         RuleItemKeyword<MP_STR("[", 1)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10), TagAny1>,
+        RuleItemRef<MP_STR("expression list", 15)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("]", 1)>
     >
