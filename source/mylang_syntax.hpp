@@ -711,6 +711,35 @@ public RuleList<MP_STR("unary expression", 16),
         RuleItemRef<MP_STR("unary expression", 16)>
     >,
     RuleLine<
+        RuleItemRef<MP_STR("call expression", 15)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("call expression", 15)>:
+public RuleList<MP_STR("call expression", 15),
+    RuleLine<
+        RuleItemRef<MP_STR("access expression", 17)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("call operation", 14)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("call operation", 14)>:
+public RuleList<MP_STR("call operation", 14),
+    RuleLine<
+        RuleItemRef<MP_STR("call expression", 15)>
+    >,
+    RuleLine<
+        
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("access expression", 17)>:
+public RuleList<MP_STR("access expression", 17),
+    RuleLine<
         RuleItemRef<MP_STR("value", 5)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("access operation", 16)>
@@ -721,16 +750,9 @@ template<>
 class RuleDef<MP_STR("access operation", 16)>:
 public RuleList<MP_STR("access operation", 16),
     RuleLine<
-        RuleItemRef<MP_STR("value", 5)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
-    >,
-    RuleLine<
         RuleItemKeyword<MP_STR(".", 1)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("id", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
+        RuleItemRef<MP_STR("access expression", 17)>
     >,
     RuleLine<
         
