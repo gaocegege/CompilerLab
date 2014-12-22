@@ -26,6 +26,10 @@ public:
 
     // virtual ~Pass() {}
 
+    using ExpressionCall = mylang::DelayedCall<libblock::Code * ()>;
+    using OperationCall = mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
+    using IdCall = mylang::DelayedCall<libblock::name_t ()>;
+
     #define MYLANG_ANALYSIS_LIST(name, namelen) \
         template <size_t I>\
         void run(const NodeTypedList<MP_STR(name, namelen), I> *node)
@@ -225,7 +229,7 @@ public:
             libblock::CodeTuple *tuple
         ) {
             for (const Node<> *child: node->getChildren()) {
-                mylang::DelayedCall<libblock::Code * ()> entry;
+                ExpressionCall entry;
 
                 child->runPass(this);
 
@@ -242,132 +246,189 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("assign expression", 17) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            // libblock::Code *left = ??? // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
             go(node);
-            // if (has right node) {
-            //     return root
-            // } else {
-            //     return left
-            // }
-            return new libblock::Code();
+
+            return root(left);
         });
     }
 
     MYLANG_ANALYSIS_LIST("assign operation", 16) {
-        mylang::DelayedCall<
-            libblock::Code * (libblock::Code *)
-        >::put([=](libblock::Code *left) -> libblock::Code * {
-            // libblock::Code *right = ??? // TODO
-            // libblock::Code *root = // TODO op(l, r)
-            // return root
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                IdCall op;
+                ExpressionCall right;
+
+                go(node);
+
+                auto func = new libblock::CodeGet(op());
+                auto arg = new libblock::CodeTuple(left(), right());
+
+                return new libblock::CodeCall(func, arg);
+            } else {
+                return left();
+            }
             return new libblock::Code();
         });
     }
 
     MYLANG_ANALYSIS_LIST("relative expression", 19) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            // libblock::Code *left = ??? // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
             go(node);
-            // if (has right node) {
-            //     return root
-            // } else {
-            //     return left
-            // }
-            return new libblock::Code();
+
+            return root(left);
         });
     }
 
     MYLANG_ANALYSIS_LIST("relative operation", 18) {
-        mylang::DelayedCall<
-            libblock::Code * (libblock::Code *)
-        >::put([=](libblock::Code *left) -> libblock::Code * {
-            // libblock::Code *right = ??? // TODO
-            // libblock::Code *root = // TODO op(l, r)
-            // return root
-            return new libblock::Code();
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                IdCall op;
+                ExpressionCall right;
+
+                go(node);
+
+                auto func = new libblock::CodeGet(op());
+                auto arg = new libblock::CodeTuple(left(), right());
+
+                return new libblock::CodeCall(func, arg);
+            } else {
+                return left();
+            }
         });
     }
 
     MYLANG_ANALYSIS_LIST("additive expression", 19) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            // libblock::Code *left = ??? // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
             go(node);
-            // if (has right node) {
-            //     return root
-            // } else {
-            //     return left
-            // }
-            return new libblock::Code();
+
+            return root(left);
         });
     }
 
     MYLANG_ANALYSIS_LIST("additive operation", 18) {
-        mylang::DelayedCall<
-            libblock::Code * (libblock::Code *)
-        >::put([=](libblock::Code *left) -> libblock::Code * {
-            // libblock::Code *right = ??? // TODO
-            // libblock::Code *root = // TODO op(l, r)
-            // return root
-            return new libblock::Code();
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                IdCall op;
+                ExpressionCall right;
+
+                go(node);
+
+                auto func = new libblock::CodeGet(op());
+                auto arg = new libblock::CodeTuple(left(), right());
+
+                return new libblock::CodeCall(func, arg);
+            } else {
+                return left();
+            }
         });
     }
 
     MYLANG_ANALYSIS_LIST("multiplicative expression", 25) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            // libblock::Code *left = ??? // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
             go(node);
-            // if (has right node) {
-            //     return root
-            // } else {
-            //     return left
-            // }
-            return new libblock::Code();
+
+            return root(left);
         });
     }
 
     MYLANG_ANALYSIS_LIST("multiplicative operation", 24) {
-        mylang::DelayedCall<
-            libblock::Code * (libblock::Code *)
-        >::put([=](libblock::Code *left) -> libblock::Code * {
-            // libblock::Code *right = ??? // TODO
-            // libblock::Code *root = // TODO op(l, r)
-            // return root
-            return new libblock::Code();
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                IdCall op;
+                ExpressionCall right;
+
+                go(node);
+
+                auto func = new libblock::CodeGet(op());
+                auto arg = new libblock::CodeTuple(left(), right());
+
+                return new libblock::CodeCall(func, arg);
+            } else {
+                return left();
+            }
         });
     }
 
     MYLANG_ANALYSIS_LIST("unary expression", 16) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            // I == 0?
-            // I == 1?
-            // return ???; // TODO
-            return new libblock::Code();
+        ExpressionCall::put([=]() -> libblock::Code * {
+            IdCall op;
+            ExpressionCall right;
+
+            go(node);
+
+            auto func = new libblock::CodeGet(op());
+            // auto arg = new libblock::CodeTuple(right());
+            auto arg = right();
+
+            return new libblock::CodeCall(func, arg);
+        });
+    }
+
+    MYLANG_ANALYSIS_LIST("call expression", 15) {
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
+            go(node);
+
+            return root(left);
+        });
+    }
+
+    MYLANG_ANALYSIS_LIST("call operation", 14) {
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                ExpressionCall right;
+
+                go(node);
+
+                return new libblock::CodeCall(left(), right());
+            } else {
+                return left();
+            }
+        });
+    }
+
+    MYLANG_ANALYSIS_LIST("access expression", 17) {
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+            OperationCall root;
+
+            go(node);
+
+            return root(left);
         });
     }
 
     MYLANG_ANALYSIS_LIST("access operation", 16) {
-        mylang::DelayedCall<
-            libblock::Code * (libblock::Code *)
-        >::put([=](libblock::Code *left) -> libblock::Code * {
-            // libblock::Code *root = // TODO op(l)
-            // return root
-            return new libblock::Code();
+        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+            if (I == 0) {
+                ExpressionCall right;
+
+                go(node);
+
+                return new libblock::CodeWith(left(), right());
+            } else {
+                return left();
+            }
         });
     }
 
     MYLANG_ANALYSIS_LIST("assignment", 10) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {":=", mylang::name_assign},
                 {"+=", mylang::name_assign_add},
@@ -381,7 +442,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("relation", 8) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"==", mylang::name_equal},
                 {"<=", mylang::name_less_equal},
@@ -399,7 +460,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("addition", 8) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_add},
                 {"-", mylang::name_sub},
@@ -412,7 +473,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("multiplication", 14) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"*", mylang::name_mul},
                 {"/", mylang::name_div},
@@ -431,7 +492,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("unary operator", 14) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             static const std::map<const std::string, const std::string> table = {
                 {"+", mylang::name_pos},
                 {"-", mylang::name_neg},
@@ -455,18 +516,16 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("value", 5) {
-        mylang::DelayedCall<
-            libblock::Code * ()
-        >::put([=]() -> libblock::Code * {
-            switch (I){
+        ExpressionCall::put([=]() -> libblock::Code * {
+            switch (I) {
             case 0:
                 // <id>
                 {
-                    mylang::DelayedCall<libblock::name_t ()> value;
+                    IdCall value;
 
                     go(node);
 
-                    return new libblock::CodeAccess(value());
+                    return new libblock::CodeGet(value());
                 }
             case 1:
                 // <real>
@@ -502,7 +561,7 @@ public:
 
                     go(node);
 
-                    auto func = new libblock::CodeAccess(
+                    auto func = new libblock::CodeGet(
                         libblock::name_t(mylang::name_array)
                     );
                     auto arg = new libblock::CodeTuple();
@@ -514,7 +573,7 @@ public:
                         ));
                     }
 
-                    return new libblock::CodeApply(func, arg);
+                    return new libblock::CodeCall(func, arg);
                 }
             case 5:
                 // <tuple>
@@ -535,14 +594,14 @@ public:
 
                     go(node);
 
-                    auto func = new libblock::CodeAccess(
+                    auto func = new libblock::CodeGet(
                         libblock::name_t(mylang::name_array)
                     );
                     auto arg = new libblock::CodeTuple();
 
                     tuple(arg);
 
-                    return new libblock::CodeApply(func, arg);
+                    return new libblock::CodeCall(func, arg);
                 }
             default:
                 // never reach
@@ -594,7 +653,7 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
-        mylang::DelayedCall<libblock::name_t ()>::put([=]() {
+        IdCall::put([=]() {
             return libblock::name_t(node->getFullText());
         });
     }
