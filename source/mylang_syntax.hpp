@@ -714,15 +714,6 @@ public RuleList<MP_STR("unary expression", 16),
         RuleItemRef<MP_STR("value", 5)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("access operation", 16)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("(", 1)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(")", 1)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
     >
 > {};
 
@@ -731,15 +722,6 @@ class RuleDef<MP_STR("access operation", 16)>:
 public RuleList<MP_STR("access operation", 16),
     RuleLine<
         RuleItemRef<MP_STR("value", 5)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("access operation", 16)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("(", 1)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression list", 15)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(")", 1)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("access operation", 16)>
     >,
@@ -862,19 +844,8 @@ template<>
 class RuleDef<MP_STR("value", 5)>:
 public RuleList<MP_STR("value", 5),
     RuleLine<
-        RuleItemRef<MP_STR("literal", 7)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("id", 2)>
     >,
-    RuleLine<
-        RuleItemRef<MP_STR("instant array", 13)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("literal", 7)>:
-public RuleList<MP_STR("literal", 7),
     RuleLine<
         RuleItemRef<MP_STR("real", 4)>
     >,
@@ -886,6 +857,12 @@ public RuleList<MP_STR("literal", 7),
     >,
     RuleLine<
         RuleItemRef<MP_STR("string", 6)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("tuple", 5)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("array", 5)>
     >
 > {};
 
@@ -914,8 +891,20 @@ public RuleRegex<MP_STR("string", 6),
 > {};
 
 template<>
-class RuleDef<MP_STR("instant array", 13)>:
-public RuleList<MP_STR("instant array", 13),
+class RuleDef<MP_STR("tuple", 5)>:
+public RuleList<MP_STR("tuple", 5),
+    RuleLine<
+        RuleItemKeyword<MP_STR("(", 1)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression list", 15)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(")", 1)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("array", 5)>:
+public RuleList<MP_STR("array", 5),
     RuleLine<
         RuleItemKeyword<MP_STR("[", 1)>,
         RuleItemSpace<>,

@@ -221,63 +221,149 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("expression list", 15) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<void (libblock::CodeTuple *)>::put([=](
+            libblock::CodeTuple *tuple
+        ) {
+            for (const Node<> *child: node->getChildren()) {
+                mylang::DelayedCall<libblock::Code * ()> entry;
+
+                child->runPass(this);
+
+                if (entry) {
+                    // if is an expression
+                    tuple->add(entry());
+                }
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("expression", 10) {
-        // TODO
-        (void) node; // TODO
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("assign expression", 17) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            // libblock::Code *left = ??? // TODO
+            go(node);
+            // if (has right node) {
+            //     return root
+            // } else {
+            //     return left
+            // }
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("assign operation", 16) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * (libblock::Code *)
+        >::put([=](libblock::Code *left) -> libblock::Code * {
+            // libblock::Code *right = ??? // TODO
+            // libblock::Code *root = // TODO op(l, r)
+            // return root
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("relative expression", 19) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            // libblock::Code *left = ??? // TODO
+            go(node);
+            // if (has right node) {
+            //     return root
+            // } else {
+            //     return left
+            // }
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("relative operation", 18) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * (libblock::Code *)
+        >::put([=](libblock::Code *left) -> libblock::Code * {
+            // libblock::Code *right = ??? // TODO
+            // libblock::Code *root = // TODO op(l, r)
+            // return root
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("additive expression", 19) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            // libblock::Code *left = ??? // TODO
+            go(node);
+            // if (has right node) {
+            //     return root
+            // } else {
+            //     return left
+            // }
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("additive operation", 18) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * (libblock::Code *)
+        >::put([=](libblock::Code *left) -> libblock::Code * {
+            // libblock::Code *right = ??? // TODO
+            // libblock::Code *root = // TODO op(l, r)
+            // return root
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("multiplicative expression", 25) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            // libblock::Code *left = ??? // TODO
+            go(node);
+            // if (has right node) {
+            //     return root
+            // } else {
+            //     return left
+            // }
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("multiplicative operation", 24) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * (libblock::Code *)
+        >::put([=](libblock::Code *left) -> libblock::Code * {
+            // libblock::Code *right = ??? // TODO
+            // libblock::Code *root = // TODO op(l, r)
+            // return root
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("unary expression", 16) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            // I == 0?
+            // I == 1?
+            // return ???; // TODO
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("access operation", 16) {
-        // TODO
-        (void) node; // TODO
+        mylang::DelayedCall<
+            libblock::Code * (libblock::Code *)
+        >::put([=](libblock::Code *left) -> libblock::Code * {
+            // libblock::Code *root = // TODO op(l)
+            // return root
+            return new libblock::Code();
+        });
     }
 
     MYLANG_ANALYSIS_LIST("assignment", 10) {
@@ -290,7 +376,7 @@ public:
                 {"/=", mylang::name_assign_div}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -308,7 +394,7 @@ public:
                 {"in", mylang::name_in}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -321,7 +407,7 @@ public:
                 {"xor", mylang::name_xor}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -340,7 +426,7 @@ public:
                 {"ror", mylang::name_ror}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -352,7 +438,7 @@ public:
                 {"not", mylang::name_not}
             };
 
-            return libblock::name_t(table.find(node->asFullText())->second);
+            return libblock::name_t(table.find(node->getFullText())->second);
         });
     }
 
@@ -369,29 +455,116 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("value", 5) {
-        // TODO
-        (void) node; // TODO
-    }
+        mylang::DelayedCall<
+            libblock::Code * ()
+        >::put([=]() -> libblock::Code * {
+            switch (I){
+            case 0:
+                // <id>
+                {
+                    mylang::DelayedCall<libblock::name_t ()> value;
 
-    MYLANG_ANALYSIS_LIST("literal", 7) {
-        // TODO
-        (void) node; // TODO
+                    go(node);
+
+                    return new libblock::CodeAccess(value());
+                }
+            case 1:
+                // <real>
+                {
+                    mylang::DelayedCall<mylang::ml_real ()> value;
+
+                    go(node);
+
+                    return new libblock::CodeLiteral<mylang::ml_real>(value());
+                }
+            case 2:
+                // <integer>
+                {
+                    mylang::DelayedCall<mylang::ml_integer ()> value;
+
+                    go(node);
+
+                    return new libblock::CodeLiteral<mylang::ml_integer>(value());
+                }
+            case 3:
+                // <byte>
+                {
+                    mylang::DelayedCall<mylang::ml_byte ()> value;
+
+                    go(node);
+
+                    return new libblock::CodeLiteral<mylang::ml_byte>(value());
+                }
+            case 4:
+                // <string>
+                {
+                    mylang::DelayedCall<std::string ()> value;
+
+                    go(node);
+
+                    auto func = new libblock::CodeAccess(
+                        libblock::name_t(mylang::name_array)
+                    );
+                    auto arg = new libblock::CodeTuple();
+
+                    const std::string data = value();
+                    for (const char i: data) {
+                        arg->add(new libblock::CodeLiteral<mylang::ml_byte>(
+                            mylang::ml_byte(i)
+                        ));
+                    }
+
+                    return new libblock::CodeApply(func, arg);
+                }
+            case 5:
+                // <tuple>
+                {
+                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
+
+                    go(node);
+
+                    auto result = new libblock::CodeTuple();
+                    tuple(result);
+
+                    return result;
+                }
+            case 6:
+                // <array>
+                {
+                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
+
+                    go(node);
+
+                    auto func = new libblock::CodeAccess(
+                        libblock::name_t(mylang::name_array)
+                    );
+                    auto arg = new libblock::CodeTuple();
+
+                    tuple(arg);
+
+                    return new libblock::CodeApply(func, arg);
+                }
+            default:
+                // never reach
+                return nullptr;
+            }
+        });
     }
 
     MYLANG_ANALYSIS_TEXT("real", 4) {
-        mylang::DelayedCall<double ()>::put([=]() {
+        mylang::DelayedCall<mylang::ml_real ()>::put([=]() {
             return node->getData();
         });
     }
 
     MYLANG_ANALYSIS_TEXT("integer", 7) {
-        mylang::DelayedCall<long ()>::put([=]() {
+        mylang::DelayedCall<mylang::ml_integer ()>::put([=]() {
             return node->getData();
         });
     }
 
     MYLANG_ANALYSIS_TEXT("byte", 4) {
-        mylang::DelayedCall<char ()>::put([=]() {
+        mylang::DelayedCall<mylang::ml_byte ()>::put([=]() {
             return node->getRaw()[0];
         });
     }
@@ -402,10 +575,12 @@ public:
         });
     }
 
-    MYLANG_ANALYSIS_LIST("instant array", 13) {
-        // mylang::DelayedCall<Code *(libblock::Block *)>::put([=]() {
-        //     return node->getRaw();
-        // });
+    MYLANG_ANALYSIS_LIST("tuple", 5) {
+        go(node);
+    }
+
+    MYLANG_ANALYSIS_LIST("array", 5) {
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("space", 5) {
@@ -414,21 +589,13 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
-        // notice:
-        //     "keyword" can be both list (parsing) and text (parsed)
-
-        // never reach
-        (void) node;
-    }
-
-    MYLANG_ANALYSIS_TEXT("keyword", 7) {
         // skip
         (void) node;
     }
 
     MYLANG_ANALYSIS_TEXT("id", 2) {
         mylang::DelayedCall<libblock::name_t ()>::put([=]() {
-            return libblock::name_t(node->getText());
+            return libblock::name_t(node->getFullText());
         });
     }
 

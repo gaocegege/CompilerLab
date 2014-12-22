@@ -18,21 +18,15 @@ private:
 
     std::function<Proto> exec;
 
-    // instance chain: getInstance() -> holding -> ... -> nullptr
-    DelayedCall<Proto> *parent;
-
     static inline DelayedCall<Proto> *accessInstance(
         DelayedCall<Proto> *value = nullptr
     ) {
         // WARNING: thread_local
         static thread_local DelayedCall<Proto> *instance = nullptr;
 
-        if (value) {
-            std::swap(instance, value);
-            return value;
-        } else {
-            return instance;
-        }
+        // assert(!instance || !value)
+        std::swap(value, instance);
+        return value;
     }
 
     // no dynamic allocation
@@ -40,19 +34,19 @@ private:
     inline void operator delete(void *) = delete;
 
 public:
-    inline DelayedCall(): exec(nullptr), parent(accessInstance(this)) {}
+    inline DelayedCall(): exec(nullptr) {
+        accessInstance(this);
+    }
 
     // notice: delete by pointer is not allowed
-    ~DelayedCall() {
-        //accessInstance(parent);
-    }
+    // ~DelayedCall() {}
 
     static inline void put(std::function<Proto> &&func) {
         accessInstance()->exec = std::move(func);
     }
 
     inline operator bool() const {
-        return accessInstance();
+        return exec != nullptr;
     }
 
     inline OUT operator()(IN... arg) const {

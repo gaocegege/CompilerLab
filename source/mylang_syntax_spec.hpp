@@ -4,6 +4,7 @@
 #include <set>
 
 #include "parser/myparser.hpp"
+#include "mylang_const.hpp"
 
 namespace myparser {
 
@@ -17,8 +18,8 @@ private:
 
 public:
     inline NodeId(
-        const Input &input, std::string &&value
-    ): NodeTextOrError<E>(input, std::move(value)) {
+        const Input &input, const Input &end
+    ): NodeTextOrError<E>(input, end) {
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
             "is", "begin", "in", "out",
@@ -30,7 +31,7 @@ public:
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
-        succeed = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
+        succeed = keywords.find(std::string(input, end)) == keywords.cend();
     }
 
     // virtual ~NodeId() {}
@@ -40,19 +41,7 @@ public:
     }
 };
 
-template <>
-class NodeBaseList<BuiltinSpace> {
-public:
-    template <size_t I>
-    using Type = NodeSpace<I>;
-};
-
-template <>
-class NodeBaseText<BuiltinKeyword> {
-public:
-    template <class TX = void> // actually not a template
-    using Type = NodeKeyword<>;
-};
+// specialization
 
 template <>
 class NodeBaseText<MP_STR("id", 2)> {
@@ -65,14 +54,14 @@ template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<double, ErrorLiteral>;
+    using Type = NodeData<mylang::ml_real, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<long, ErrorLiteral>;
+    using Type = NodeData<mylang::ml_integer, ErrorLiteral>;
 };
 
 template <>

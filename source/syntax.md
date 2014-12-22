@@ -283,15 +283,13 @@ unary expression:
 
     <unary operator> <unary expression>
     <value> <access operation>
-    ( <expression> ) <access operation>
 
 access operation:
 
     <value> <access operation>
-    ( <expression list> ) <access operation>
     . <id> <access operation>
     <>
-    // x[0] is x.__call<array of 1 integer>([0])
+    // <value> <value> is calling
     // id can be var, const, type etc
 
 Operator
@@ -349,19 +347,14 @@ Value
 
 value:
 
-    <literal>
     <id>
-    <instant array>
-    // id of runtime value -> value access
-    //               other -> literal
-
-literal:
-
     <real>
     <integer>
     <byte>
     <string>
-    // const boolean yes := (unsigned -1)
+    <tuple>
+    <array>
+    // const boolean yes := -1
     //                no := 0
 
 *real*:
@@ -380,7 +373,11 @@ literal:
 
     "([^"'\\]|\\[Xx][0-9A-Fa-f][0-9A-Fa-f]|\\[^Xx])*"
 
-instant array:
+tuple:
+
+    ( <expression list> )
+
+array:
 
     [ <expression list> ]
 
