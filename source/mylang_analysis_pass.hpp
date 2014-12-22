@@ -589,14 +589,6 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("keyword", 7) {
-        // notice:
-        //     "keyword" can be both list (parsing) and text (parsed)
-
-        // never reach
-        (void) node;
-    }
-
-    MYLANG_ANALYSIS_TEXT("keyword", 7) {
         // skip
         (void) node;
     }

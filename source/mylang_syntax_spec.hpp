@@ -41,19 +41,7 @@ public:
     }
 };
 
-template <>
-class NodeBaseList<BuiltinSpace> {
-public:
-    template <size_t I>
-    using Type = NodeSpace<I>;
-};
-
-template <>
-class NodeBaseText<BuiltinKeyword> {
-public:
-    template <class TX = void> // actually not a template
-    using Type = NodeKeyword<>;
-};
+// specialization
 
 template <>
 class NodeBaseText<MP_STR("id", 2)> {
