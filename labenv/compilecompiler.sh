@@ -1,0 +1,1 @@
+clang++ -g compiler.cpp -lncurses `llvm-config --cxxflags --ldflags --libs` -o compiler.out
