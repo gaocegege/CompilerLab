@@ -172,30 +172,16 @@ statement list:
 statement:
 
     <expression> ;
-    <assignment> ;
     <receive> ;
-    <pause> ;
     <return> ;
     <structure>
     <repeat> ;
     ;
 
-assignment:
-
-    <expression> <assign sign> <expression>
-
-*assign sign*:
-
-    \:=|\+=|-=|\*=|\/=
-
 receive:
 
     receive <expression>
     receive
-
-pause:
-
-    pause
 
 return:
 
@@ -255,7 +241,16 @@ expression list:
 
 expression:
 
-    <relative expression>
+    <assign expression>
+
+assign expression:
+
+    <relative expression> <assign operation>
+
+assign operation:
+
+    <assignment> <assign expression>
+    <>
 
 relative expression:
 
@@ -288,19 +283,25 @@ unary expression:
 
     <unary operator> <unary expression>
     <value> <access operation>
-    ( <expression> ) <access operation>
 
 access operation:
 
     <value> <access operation>
-    ( <expression list> ) <access operation>
     . <id> <access operation>
     <>
-    // x[0] is x.__call<array of 1 integer>([0])
+    // <value> <value> is calling
     // id can be var, const, type etc
 
 Operator
 ---
+
+assignment:
+
+    :=
+    +=
+    -=
+    *=
+    /=
 
 relation:
 
@@ -344,26 +345,16 @@ unary operator:
 Value
 ---
 
-value list:
-
-    <value> <value list>
-    <>
-
 value:
 
-    <literal>
     <id>
-    // id of runtime value -> value access
-    //               other -> literal
-
-literal:
-
     <real>
     <integer>
     <byte>
     <string>
-    <instant array>
-    // const boolean yes := (unsigned -1)
+    <tuple>
+    <array>
+    // const boolean yes := -1
     //                no := 0
 
 *real*:
@@ -382,7 +373,11 @@ literal:
 
     "([^"'\\]|\\[Xx][0-9A-Fa-f][0-9A-Fa-f]|\\[^Xx])*"
 
-instant array:
+tuple:
+
+    ( <expression list> )
+
+array:
 
     [ <expression list> ]
 
@@ -408,7 +403,7 @@ Special
 
 *sign*:
 
-    [\(\)\[\],.;]
+    [\(\)\[\],.;]|[\:\+\-\*\/]\=
 
 *ignored*:
 

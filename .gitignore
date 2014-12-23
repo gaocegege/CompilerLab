@@ -1,9 +1,18 @@
-# ignore the out
+# main executable
+ml_clang
+ml_gcc
+
+# output files
+*.asm
 *.out
 *.out.dSYM
 
-# ignore the generated files
-ml_clang
-ml_gcc
+# generated files
 source/ui/lex.html
 source/ui/syntax.html
+source/build-*
+source/__*
+
+# misc files
+misc
+source/misc

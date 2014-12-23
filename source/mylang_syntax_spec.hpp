@@ -4,6 +4,7 @@
 #include <set>
 
 #include "parser/myparser.hpp"
+#include "mylang_const.hpp"
 
 namespace myparser {
 
@@ -13,12 +14,12 @@ using ErrorLiteral = MP_STR("Illegal literal", 15);
 template <class E>
 class NodeId: public NodeTextOrError<E> {
 private:
-    /* const */ bool ok;
+    /* const */ bool succeed;
 
 public:
     inline NodeId(
-        const Input &input, std::string &&value
-    ): NodeTextOrError<E>(input, std::move(value)) {
+        const Input &input, const Input &end
+    ): NodeTextOrError<E>(input, end) {
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
             "is", "begin", "in", "out",
@@ -30,55 +31,50 @@ public:
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
-        ok = keywords.find(NodeTextOrError<E>::getText()) == keywords.cend();
+        succeed = keywords.find(std::string(input, end)) == keywords.cend();
     }
 
     // virtual ~NodeId() {}
 
     virtual bool accepted() const {
-        return ok;
+        return succeed;
     }
 };
 
-template <size_t I>
-class NodeBaseList<BuiltinSpace, I> {
-public:
-    using Type = NodeSpace<I>;
-};
-
-template <>
-class NodeBaseText<BuiltinKeyword> {
-public:
-    using Type = NodeKeyword<>;
-};
+// specialization
 
 template <>
 class NodeBaseText<MP_STR("id", 2)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeId<ErrorId>;
 };
 
 template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
-    using Type = NodeData<double, ErrorLiteral>;
+    template <class TX = void> // actually not a template
+    using Type = NodeData<mylang::ml_real, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
-    using Type = NodeData<long, ErrorLiteral>;
+    template <class TX = void> // actually not a template
+    using Type = NodeData<mylang::ml_integer, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("byte", 4)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeString<1, 1, '\\', ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("string", 6)> {
 public:
+    template <class TX = void> // actually not a template
     using Type = NodeString<1, 1, '\\', ErrorLiteral>;
 };
 

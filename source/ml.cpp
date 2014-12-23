@@ -36,8 +36,8 @@ void test() {
 
     auto x2 = Parser<>::parse(s1, false);
 
-    x2->runPass(&rf1);
-    std::cout << std::endl << std::endl;
+    // x2->runPass(&rf1);
+    // std::cout << std::endl << std::endl;
     x2->runPass(&rf);
     std::cout << std::endl << std::endl;
     x2->runPass(&hl);
