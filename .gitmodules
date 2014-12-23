@@ -4,3 +4,6 @@
 [submodule "source/semantic"]
 	path = source/semantic
 	url = https://github.com/hczhcz/libblock.git
+[submodule "source/LLVM-Simple-Wrapper"]
+	path = source/LLVM-Simple-Wrapper
+	url = https://github.com/gaocegege/LLVM-Simple-Wrapper.git
