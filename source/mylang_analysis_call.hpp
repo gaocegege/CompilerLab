@@ -22,7 +22,8 @@ private:
         DelayedCall<Proto> *value = nullptr
     ) {
         // WARNING: thread_local
-        static thread_local DelayedCall<Proto> *instance = nullptr;
+        // static thread_local DelayedCall<Proto> *instance = nullptr;
+        static DelayedCall<Proto> *instance = nullptr;
 
         // assert(!instance || !value)
         std::swap(value, instance);

@@ -49,6 +49,11 @@ const auto name_not = "__not";
 
 const auto name_array = "__array";
 
+// runtime
+
+const auto name_input = "__input";
+const auto name_result = "__result";
+
 }
 
 #endif

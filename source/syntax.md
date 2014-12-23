@@ -282,15 +282,25 @@ multiplicative operation:
 unary expression:
 
     <unary operator> <unary expression>
+    <call expression>
+
+call expression:
+
+    <access expression> <call operation>
+
+call operation:
+
+    <call expression>
+    <>
+
+access expression:
+
     <value> <access operation>
 
 access operation:
 
-    <value> <access operation>
-    . <id> <access operation>
+    . <access expression>
     <>
-    // <value> <value> is calling
-    // id can be var, const, type etc
 
 Operator
 ---
