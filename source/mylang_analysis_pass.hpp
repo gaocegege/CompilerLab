@@ -21,6 +21,43 @@ private:
         }
     }
 
+    template <class T>
+    inline libblock::Code *makeCall(
+        T name,
+        libblock::Code *arg
+    ) {
+        libblock::Code *func =
+            new libblock::CodeGet(
+                libblock::name_t(std::forward<T>(name))
+            );
+
+        return new libblock::CodeCall(func, arg);
+    }
+
+    template <class T>
+    inline libblock::Code *makeCall(
+        T name,
+        libblock::Code *left,
+        libblock::Code *right
+    ) {
+        // TODO: if (!left || !right)
+
+        libblock::Code *func =
+            new libblock::CodeGet(
+                libblock::name_t(std::forward<T>(name))
+            );
+
+        if (left->getNext() || right->getNext()) {
+            // TODO: anonymous struct (tuple)
+            return nullptr;
+        } else {
+            return makeCall(
+                std::forward<T>(name),
+                libblock::Code::pack(left, right)
+            );
+        }
+    }
+
 public:
     // inline Pass(libblock::Block *base): in_block{base} {} // TODO
 
@@ -165,23 +202,61 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("statement list", 14) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            if (I == 0) {
+                // member:
+                ExpressionCall left;
+
+                node->getChildren().front()->runPass(this);
+
+                // next:
+                ExpressionCall right;
+
+                node->getChildren().back()->runPass(this);
+
+                return libblock::Code::pack(left(), right());
+            } else {
+                return nullptr;
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("statement", 9) {
-        // TODO
-        (void) node; // TODO
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall left;
+
+            go(node);
+
+            return makeCall(
+                mylang::name_assign,
+                left(),
+                new libblock::CodeGet(
+                    libblock::name_t(mylang::name_input)
+                )
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("return", 6) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall right;
+
+            go(node);
+
+            // TODO: exit current function?
+
+            return makeCall(
+                mylang::name_assign,
+                new libblock::CodeGet(
+                    libblock::name_t(mylang::name_result)
+                ),
+                right()
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("structure", 9) {
@@ -225,18 +300,28 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("expression list", 15) {
-        mylang::DelayedCall<void (libblock::CodeTuple *)>::put([=](
-            libblock::CodeTuple *tuple
-        ) {
-            for (const Node<> *child: node->getChildren()) {
-                ExpressionCall entry;
+        ExpressionCall::put([=]() -> libblock::Code * {
+            if (I == 0) {
+                // member:
+                ExpressionCall left;
 
-                child->runPass(this);
+                node->getChildren().front()->runPass(this);
 
-                if (entry) {
-                    // if is an expression
-                    tuple->add(entry());
-                }
+                // next:
+                ExpressionCall right;
+
+                node->getChildren().back()->runPass(this);
+
+                return libblock::Code::pack(left(), right());
+            } else if (I == 1) {
+                // member:
+                ExpressionCall left;
+
+                node->getChildren().front()->runPass(this);
+
+                return left();
+            } else {
+                return nullptr;
             }
         });
     }
@@ -264,14 +349,14 @@ public:
 
                 go(node);
 
-                auto func = new libblock::CodeGet(op());
-                auto arg = new libblock::CodeTuple(left(), right());
-
-                return new libblock::CodeCall(func, arg);
+                return makeCall(
+                    op(),
+                    left(),
+                    right()
+                );
             } else {
                 return left();
             }
-            return new libblock::Code();
         });
     }
 
@@ -294,10 +379,11 @@ public:
 
                 go(node);
 
-                auto func = new libblock::CodeGet(op());
-                auto arg = new libblock::CodeTuple(left(), right());
-
-                return new libblock::CodeCall(func, arg);
+                return makeCall(
+                    op(),
+                    left(),
+                    right()
+                );
             } else {
                 return left();
             }
@@ -323,10 +409,11 @@ public:
 
                 go(node);
 
-                auto func = new libblock::CodeGet(op());
-                auto arg = new libblock::CodeTuple(left(), right());
-
-                return new libblock::CodeCall(func, arg);
+                return makeCall(
+                    op(),
+                    left(),
+                    right()
+                );
             } else {
                 return left();
             }
@@ -352,10 +439,11 @@ public:
 
                 go(node);
 
-                auto func = new libblock::CodeGet(op());
-                auto arg = new libblock::CodeTuple(left(), right());
-
-                return new libblock::CodeCall(func, arg);
+                return makeCall(
+                    op(),
+                    left(),
+                    right()
+                );
             } else {
                 return left();
             }
@@ -369,11 +457,10 @@ public:
 
             go(node);
 
-            auto func = new libblock::CodeGet(op());
-            // auto arg = new libblock::CodeTuple(right());
-            auto arg = right();
-
-            return new libblock::CodeCall(func, arg);
+            return makeCall(
+                op(),
+                right()
+            );
         });
     }
 
@@ -561,47 +648,44 @@ public:
 
                     go(node);
 
-                    auto func = new libblock::CodeGet(
-                        libblock::name_t(mylang::name_array)
-                    );
-                    auto arg = new libblock::CodeTuple();
-
+                    libblock::Code *arg = nullptr;
                     const std::string data = value();
-                    for (const char i: data) {
-                        arg->add(new libblock::CodeLiteral<mylang::ml_byte>(
-                            mylang::ml_byte(i)
-                        ));
+
+                    for (auto iter = data.rbegin(); iter != data.rend(); ++iter) {
+                        libblock::Code *prev =
+                            new libblock::CodeLiteral<mylang::ml_byte>(
+                                mylang::ml_byte(*iter)
+                            );
+
+                        arg = libblock::Code::pack(prev, arg);
                     }
 
-                    return new libblock::CodeCall(func, arg);
+                    return makeCall(
+                        mylang::name_array,
+                        arg
+                    );
                 }
             case 5:
                 // <tuple>
                 {
-                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
+                    ExpressionCall tuple;
 
                     go(node);
 
-                    auto result = new libblock::CodeTuple();
-                    tuple(result);
-
-                    return result;
+                    // tuple is always inline
+                    return tuple();
                 }
             case 6:
                 // <array>
                 {
-                    mylang::DelayedCall<void (libblock::CodeTuple *)> tuple;
+                    ExpressionCall tuple;
 
                     go(node);
 
-                    auto func = new libblock::CodeGet(
-                        libblock::name_t(mylang::name_array)
+                    return makeCall(
+                        mylang::name_array,
+                        tuple()
                     );
-                    auto arg = new libblock::CodeTuple();
-
-                    tuple(arg);
-
-                    return new libblock::CodeCall(func, arg);
                 }
             default:
                 // never reach
