@@ -260,8 +260,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("structure", 9) {
-        // TODO
-        (void) node; // TODO
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("if structure", 12) {
@@ -295,8 +294,15 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("repeat", 6) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            ExpressionCall body;
+
+            go(node);
+
+            // TODO: return ???
+            // goto(?) / branch(cond, ?, ?)
+            // CodeLabel()
+        });
     }
 
     MYLANG_ANALYSIS_LIST("expression list", 15) {

@@ -45,12 +45,19 @@ const auto name_pos = "__pos";
 const auto name_neg = "__neg";
 const auto name_not = "__not";
 
-// code structure
+const auto name_prev = "__prev"; // TODO
+const auto name_next = "__next"; // TODO
+
+// builtin interfaces
 
 const auto name_array = "__array";
+const auto name_goto = "__goto";
+const auto name_branch = "__branch";
 
-// runtime
+// values
 
+const auto name_self = "__self"; // TODO
+const auto name_parent = "__parent"; // TODO
 const auto name_input = "__input";
 const auto name_result = "__result";
 
