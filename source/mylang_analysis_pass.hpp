@@ -48,7 +48,7 @@ private:
     }
 
     template <class T>
-    static inline libblock::Code *makeCall(
+    static inline libblock::Code *makeCall2(
         T name,
         libblock::Code *left,
         libblock::Code *right
@@ -69,6 +69,22 @@ private:
                 libblock::Code::pack(left, right)
             );
         }
+    }
+
+    template <class... ARG>
+    static inline libblock::Code *makeChain(
+        libblock::Code *first,
+        ARG... rest
+    ) {
+        return libblock::Code::pack(
+            first,
+            makeChain(rest...)
+        )
+    }
+
+    template <std::nullptr_t P = nullptr> // iteration finished
+    static inline libblock::Code *makeChain() {
+        return nullptr;
     }
 
 public:
@@ -227,7 +243,7 @@ public:
 
                 node->getChildren().back()->runPass(this);
 
-                return libblock::Code::pack(left(), right());
+                return makeChain(left(), right());
             } else {
                 return nullptr;
             }
@@ -244,7 +260,7 @@ public:
 
             go(node);
 
-            return makeCall(
+            return makeCall2(
                 mylang::name_assign,
                 left(),
                 new libblock::CodeGet(
@@ -262,7 +278,7 @@ public:
 
             // TODO: exit current function?
 
-            return makeCall(
+            return makeCall2(
                 mylang::name_assign,
                 new libblock::CodeGet(
                     libblock::name_t(mylang::name_result)
@@ -324,28 +340,10 @@ public:
 
             libblock::Code *jump = makeCall(
                 mylang::name_if,
-                libblock::Code::pack(
-                    cond(),
-                    libblock::Code::pack(
-                        goend,
-                        gobegin
-                    )
-                )
+                makeChain(cond(), goend, gobegin)
             );
 
-            return libblock::Code::pack(
-                begin,
-                libblock::Code::pack(
-                    body(),
-                    libblock::Code::pack(
-                        jump,
-                        end
-                    )
-                )
-            );
-            // TODO: return ???
-            // goto(?) / branch(cond, ?, ?)
-            // CodeLabel()
+            return makeChain(begin, body(), jump, end);
         });
     }
 
@@ -362,7 +360,7 @@ public:
 
                 node->getChildren().back()->runPass(this);
 
-                return libblock::Code::pack(left(), right());
+                return makeChain(left(), right());
             } else if (I == 1) {
                 // member:
                 ExpressionCall left;
@@ -399,7 +397,7 @@ public:
 
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -429,7 +427,7 @@ public:
 
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -459,7 +457,7 @@ public:
 
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -489,7 +487,7 @@ public:
 
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -707,7 +705,7 @@ public:
                                 mylang::ml_byte(*iter)
                             );
 
-                        arg = libblock::Code::pack(prev, arg);
+                        arg = makeChain(prev, arg);
                     }
 
                     return makeCall(
