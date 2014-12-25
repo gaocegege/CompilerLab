@@ -50,15 +50,19 @@ const auto name_next = "__next"; // TODO
 
 // builtin interfaces
 
-const auto name_array = "__array";
-const auto name_if = "__if";
+const auto name_array = "__array"; // arg: (...)
+// jump in the same block
+const auto name_goto = "__goto"; // arg: (tag)
+const auto name_branch = "__branch"; // arg: (tag, cond) // if !cond then goto(tag)
+// jump with block switch
+const auto name_call = "__call"; // arg: (obj)
 
 // values
 
 const auto name_self = "__self"; // TODO
 const auto name_parent = "__parent"; // TODO
-const auto name_input = "__input";
-const auto name_result = "__result";
+const auto name_input = "__input"; // receive
+const auto name_result = "__result"; // return
 
 }
 
