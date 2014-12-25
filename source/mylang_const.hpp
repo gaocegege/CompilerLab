@@ -51,8 +51,7 @@ const auto name_next = "__next"; // TODO
 // builtin interfaces
 
 const auto name_array = "__array";
-const auto name_goto = "__goto";
-const auto name_branch = "__branch";
+const auto name_if = "__if";
 
 // values
 

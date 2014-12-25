@@ -21,8 +21,21 @@ private:
         }
     }
 
+    using NodeIter = std::vector<Node<> *>::const_iterator;
+
+    inline NodeIter scanBegin(const NodeList<> *node) {
+        return node->getChildren().cbegin();
+    }
+
     template <class T>
-    inline libblock::Code *makeCall(
+    inline void scanFill(NodeIter &iter, T &target) {
+        for (; !target; ++iter) {
+            (*iter)->runPass(this);
+        }
+    }
+
+    template <class T>
+    static inline libblock::Code *makeCall(
         T name,
         libblock::Code *arg
     ) {
@@ -35,7 +48,7 @@ private:
     }
 
     template <class T>
-    inline libblock::Code *makeCall(
+    static inline libblock::Code *makeCall(
         T name,
         libblock::Code *left,
         libblock::Code *right
@@ -295,10 +308,41 @@ public:
 
     MYLANG_ANALYSIS_LIST("repeat", 6) {
         ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
             ExpressionCall body;
+            scanFill(iter, body);
 
-            go(node);
+            ExpressionCall cond;
+            scanFill(iter, cond);
 
+            libblock::CodeLabel *begin = new libblock::CodeLabel();
+            libblock::CodeLabel *end = new libblock::CodeLabel();
+
+            libblock::Code *gobegin = new libblock::CodeGoto(begin);
+            libblock::Code *goend = new libblock::CodeGoto(end);
+
+            libblock::Code *jump = makeCall(
+                mylang::name_if,
+                libblock::Code::pack(
+                    cond(),
+                    libblock::Code::pack(
+                        goend,
+                        gobegin
+                    )
+                )
+            );
+
+            return libblock::Code::pack(
+                begin,
+                libblock::Code::pack(
+                    body(),
+                    libblock::Code::pack(
+                        jump,
+                        end
+                    )
+                )
+            );
             // TODO: return ???
             // goto(?) / branch(cond, ?, ?)
             // CodeLabel()
