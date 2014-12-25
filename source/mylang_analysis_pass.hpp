@@ -55,11 +55,6 @@ private:
     ) {
         // TODO: if (!left || !right)
 
-        libblock::Code *func =
-            new libblock::CodeGet(
-                libblock::name_t(std::forward<T>(name))
-            );
-
         if (left->getNext() || right->getNext()) {
             // TODO: anonymous struct (tuple)
             return nullptr;
@@ -79,7 +74,7 @@ private:
         return libblock::Code::pack(
             first,
             makeChain(rest...)
-        )
+        );
     }
 
     template <std::nullptr_t P = nullptr> // iteration finished
@@ -293,28 +288,133 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("if structure", 12) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
+            ExpressionCall cond;
+            scanFill(iter, cond);
+
+            ExpressionCall body1;
+            scanFill(iter, body1);
+
+            ExpressionCall body2;
+            scanFill(iter, body2);
+
+            libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_mid), cond()
+                )
+            );
+
+            libblock::Code *fin = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_end)
+            );
+
+            return makeChain(
+                jump,
+                    body1(), fin,
+                lbl_mid,
+                    body2(),
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("for structure", 13) {
-        // TODO
-        (void) node; // TODO
+        // ExpressionCall::put([=]() -> libblock::Code * {
+        //     // TODO
+        // });
     }
 
     MYLANG_ANALYSIS_LIST("foreach structure", 17) {
-        // TODO
-        (void) node; // TODO
+        // ExpressionCall::put([=]() -> libblock::Code * {
+        //     // TODO
+        // });
     }
 
     MYLANG_ANALYSIS_LIST("while structure", 15) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
+            ExpressionCall cond;
+            scanFill(iter, cond);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_end), cond()
+                )
+            );
+
+            libblock::Code *loop = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_begin)
+            );
+
+            return makeChain(
+                lbl_begin, jump,
+                    body(), loop,
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("condition chain", 15) {
-        // TODO
-        (void) node; // TODO
+        if (I == 0) {
+            // the same as <if>
+            ExpressionCall::put([=]() -> libblock::Code * {
+                NodeIter iter = scanBegin(node);
+
+                ExpressionCall cond;
+                scanFill(iter, cond);
+
+                ExpressionCall body1;
+                scanFill(iter, body1);
+
+                ExpressionCall body2;
+                scanFill(iter, body2);
+
+                libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
+                libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+                libblock::Code *jump = makeCall(
+                    mylang::name_branch,
+                    makeChain(
+                        new libblock::CodeLabelRef(lbl_mid), cond()
+                    )
+                );
+
+                libblock::Code *fin = makeCall(
+                    mylang::name_goto,
+                    new libblock::CodeLabelRef(lbl_end)
+                );
+
+                return makeChain(
+                    jump,
+                        body1(), fin,
+                    lbl_mid,
+                        body2(),
+                    lbl_end
+                );
+            });
+        } else if (I == 1) {
+            go(node);
+        } else {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                return nullptr;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("to range", 8) {
@@ -332,18 +432,16 @@ public:
             ExpressionCall cond;
             scanFill(iter, cond);
 
-            libblock::CodeLabel *begin = new libblock::CodeLabel();
-            libblock::CodeLabel *end = new libblock::CodeLabel();
-
-            libblock::Code *gobegin = new libblock::CodeGoto(begin);
-            libblock::Code *goend = new libblock::CodeGoto(end);
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
 
             libblock::Code *jump = makeCall(
-                mylang::name_if,
-                makeChain(cond(), goend, gobegin)
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_begin), cond()
+                )
             );
 
-            return makeChain(begin, body(), jump, end);
+            return makeChain(lbl_begin, body(), jump);
         });
     }
 
