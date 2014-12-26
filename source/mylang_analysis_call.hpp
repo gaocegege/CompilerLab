@@ -2,7 +2,6 @@
 #define MYLANG_ANALYSIS_CALL_HPP
 
 #include "mylang_syntax_spec.hpp"
-#include "semantic/block.hpp"
 
 namespace mylang {
 

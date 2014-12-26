@@ -25,7 +25,7 @@ public:
             "is", "begin", "in", "out",
             "type", "extends", "enclose",
             "var", "const", "static", "fast", "receive", "return",
-            "default", "auto", "of", "pause",
+            "default", "auto", "of",
             "if", "then", "for", "do", "foreach", "while",
             "elif", "else", "to", "downto", "repeat", "until",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
