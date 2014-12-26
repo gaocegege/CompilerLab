@@ -35,16 +35,20 @@ private:
     }
 
     template <class T>
+    static inline libblock::Code *makeGet(T name) {
+        return new libblock::CodeGet(
+            libblock::name_t(std::forward<T>(name))
+        );
+    }
+
+    template <class T>
     static inline libblock::Code *makeCall(
         T name,
         libblock::Code *arg
     ) {
-        libblock::Code *func =
-            new libblock::CodeGet(
-                libblock::name_t(std::forward<T>(name))
-            );
-
-        return new libblock::CodeCall(func, arg);
+        return new libblock::CodeCall(
+            makeGet(std::forward<T>(name)), arg
+        );
     }
 
     template <class T>
@@ -53,11 +57,12 @@ private:
         libblock::Code *left,
         libblock::Code *right
     ) {
-        // TODO: if (!left || !right)
-
-        if (left->getNext() || right->getNext()) {
+        if (!left || !right) {
+            // TODO: ???
+            throw;
+        } else if (left->getNext() || right->getNext()) {
             // TODO: anonymous struct (tuple)
-            return nullptr;
+            throw;
         } else {
             return makeCall(
                 std::forward<T>(name),
@@ -258,9 +263,7 @@ public:
             return makeCall2(
                 mylang::name_assign,
                 left(),
-                new libblock::CodeGet(
-                    libblock::name_t(mylang::name_input)
-                )
+                makeGet(mylang::name_input)
             );
         });
     }
