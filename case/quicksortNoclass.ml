@@ -54,8 +54,7 @@ begin
 	i := 0;
 	while i < num do
 		i := i + 1;
-		scanf("%d",&tmp);
-		arr[i] := tmp;
+		arr[i] = num - i;
 	end while
 
 	quicksort(arr, 0, num - 1);
