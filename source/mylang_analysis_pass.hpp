@@ -92,9 +92,14 @@ public:
 
     // virtual ~Pass() {}
 
-    using ExpressionCall = mylang::DelayedCall<libblock::Code * ()>;
-    using OperationCall = mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
-    using IdCall = mylang::DelayedCall<libblock::name_t ()>;
+    using DefinitionCall =
+        mylang::DelayedCall<libblock::NameEntry * ()>;
+    using ExpressionCall =
+        mylang::DelayedCall<libblock::Code * ()>;
+    using OperationCall =
+        mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
+    using IdCall =
+        mylang::DelayedCall<libblock::name_t ()>;
 
     #define MYLANG_ANALYSIS_LIST(name, namelen) \
         template <size_t I>\
@@ -274,14 +279,16 @@ public:
 
             go(node);
 
-            // TODO: exit current function?
-
-            return makeCall2(
-                mylang::name_assign,
-                new libblock::CodeGet(
-                    libblock::name_t(mylang::name_result)
+            return makeChain(
+                makeCall2(
+                    mylang::name_assign,
+                    makeGet(mylang::name_result),
+                    right()
                 ),
-                right()
+                makeCall(
+                    mylang::name_call,
+                    makeGet(mylang::name_parent)
+                )
             );
         });
     }
@@ -420,9 +427,16 @@ public:
         }
     }
 
-    MYLANG_ANALYSIS_LIST("to range", 8) {
-        // TODO
-        (void) node; // TODO
+    MYLANG_ANALYSIS_LIST("to step", 7) {
+        IdCall::put([=]() {
+            if (I == 0) {
+                // to
+                return libblock::name_t(mylang::name_next);
+            } else {
+                // downto
+                return libblock::name_t(mylang::name_prev);
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("repeat", 6) {
