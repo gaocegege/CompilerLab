@@ -479,7 +479,9 @@ public RuleList<MP_STR("for structure", 13),
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("to range", 8)>,
+        RuleItemRef<MP_STR("to step", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("do", 2)>,
         RuleItemSpace<>,
@@ -556,17 +558,13 @@ public RuleList<MP_STR("condition chain", 15),
 > {};
 
 template<>
-class RuleDef<MP_STR("to range", 8)>:
-public RuleList<MP_STR("to range", 8),
+class RuleDef<MP_STR("to step", 7)>:
+public RuleList<MP_STR("to step", 7),
     RuleLine<
-        RuleItemKeyword<MP_STR("to", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>
+        RuleItemKeyword<MP_STR("to", 2)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("downto", 6)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>
+        RuleItemKeyword<MP_STR("downto", 6)>
     >
 > {};
 

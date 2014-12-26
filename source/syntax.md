@@ -204,7 +204,7 @@ if structure:
 
 for structure:
 
-    for <id> in <expression> <to range> do <statement list> end for
+    for <id> in <expression> <to step> <expression> do <statement list> end for
 
 foreach structure:
 
@@ -220,10 +220,10 @@ condition chain:
     else <statement list>
     <>
 
-to range:
+to step:
 
-    to <expression>
-    downto <expression>
+    to
+    downto
 
 repeat:
 
