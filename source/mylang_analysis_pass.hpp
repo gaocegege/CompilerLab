@@ -92,14 +92,16 @@ public:
 
     // virtual ~Pass() {}
 
+    using IdCall =
+        mylang::DelayedCall<libblock::name_t ()>;
+    using BlockCall =
+        mylang::DelayedCall<libblock::Block * ()>;
     using DefinitionCall =
-        mylang::DelayedCall<libblock::NameEntry * ()>;
+        mylang::DelayedCall<libblock::entry_t (libblock::Block *, bool)>;
     using ExpressionCall =
         mylang::DelayedCall<libblock::Code * ()>;
     using OperationCall =
         mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
-    using IdCall =
-        mylang::DelayedCall<libblock::name_t ()>;
 
     #define MYLANG_ANALYSIS_LIST(name, namelen) \
         template <size_t I>\
@@ -195,44 +197,24 @@ public:
         go(node);
     }
 
-    MYLANG_ANALYSIS_LIST("type definition", 15) {
-        // TODO
-        (void) node; // TODO
-    }
-
     MYLANG_ANALYSIS_LIST("field definition", 16) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("field deletion", 14) {
-        // TODO: get id, delete
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("field type", 10) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("id bind", 7) {
-        // TODO
-        (void) node; // TODO
+        // DefinitionCall::put([=](libblock::Block *block, bool hidden) {
+        //     // TODO
+        // });
     }
 
     MYLANG_ANALYSIS_LIST("default", 7) {
-        // TODO
-        (void) node; // TODO
-    }
+        ExpressionCall::put([=]() -> libblock::Code * {
+            if (I == 0) {
+                ExpressionCall value;
 
-    MYLANG_ANALYSIS_LIST("type", 4) {
-        // TODO
-        (void) node; // TODO
-    }
+                go(node);
 
-    MYLANG_ANALYSIS_LIST("type of", 7) {
-        // TODO
-        (void) node; // TODO
+                return value();
+            } else {
+                return nullptr;
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("statement list", 14) {
@@ -849,6 +831,15 @@ public:
                         mylang::name_array,
                         tuple()
                     );
+                }
+            case 7:
+                // <class>
+                {
+                    BlockCall block;
+
+                    go(node);
+
+                    return new libblock::CodeBlockId(block());
                 }
             default:
                 // never reach
