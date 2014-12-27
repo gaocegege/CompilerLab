@@ -94,65 +94,39 @@ definition list:
 
 definition:
 
-    <type definition>
     <field definition>
     <main structure> ;
     ;
 
-type definition:
-
-    type <id> is <type>
-    // the same as "expr <id> is typeid default <...>"
-
 field definition:
 
-    <field type> <id bind>
+    type <id> is <expression>
+    extends <expression> <default>
+    uses <expression> <default>
+    var <id> is <expression> <default>
+    static <id> is <expression> <default>
+    expr <id> is <expression> <default>
+    fast <id> is <expression> <default>
+    receive <expression> <default>
+    return <expression> <default>
+    // type: the same as "expr <id> is typeid default <...>"
+    // receive: id="__input", supported in program only
+    // return: id="__result", supported in function only
 
-field type:
-
-    extends
-    uses
-    var
-    static
-    expr
-    fast
-    receive
-    return
-    // receive is supported in program only
-    // return is supported in function only
-
-Type
----
-
-id bind:
-
-    <id> is <type> <default>
-    <type> <default>
-    // allow anonymous
-
-default:
-
-    default <expression>
-    <>
-
-type:
-
-    auto
-    <class>
-    <expression> <type of>
+    // type:
     // built-in:
     //     void typeid
     //     byte boolean (boolean is uint) integer
     //     real (double) string (pair of length and pchar)
     // compile-time generation:
-    //     array of <integer> <type>
-    //     pointer of <type>
-    //     reference of <type>
+    //     array of <integer> <expression>
+    //     pointer of <expression>
+    //     reference of <expression>
     // "array of 10 integer" is the same as "array(10, integer)"
 
-type of:
+default:
 
-    of <type>
+    default <expression>
     <>
 
 Statement
@@ -285,6 +259,7 @@ call expression:
 call operation:
 
     <call expression>
+    of <call expression>
     <>
 
 access expression:
@@ -358,8 +333,10 @@ value:
     <string>
     <tuple>
     <array>
+    <class>
     // expr boolean yes := -1
     //              no := 0
+    // class: allow inline class
 
 *real*:
 

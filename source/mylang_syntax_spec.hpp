@@ -24,10 +24,9 @@ public:
             "program", "function", "class", "end",
             "is", "begin", "in", "out", // "var",
             "type", "extends", "uses",
-            "var", "static", "expr", "fast", "receive", "return",
-            "default", "auto", "of",
+            "var", "static", "expr", "fast", "receive", "return", "default",
             "if", "then", "for", "do", "foreach", "while",
-            "elif", "else", "to", "downto", "repeat", "until",
+            "elif", "else", "to", "downto", "repeat", "until", "of",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 

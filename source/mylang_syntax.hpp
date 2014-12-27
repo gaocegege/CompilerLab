@@ -218,9 +218,6 @@ template<>
 class RuleDef<MP_STR("definition", 10)>:
 public RuleList<MP_STR("definition", 10),
     RuleLine<
-        RuleItemRef<MP_STR("type definition", 15)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("field definition", 16)>
     >,
     RuleLine<
@@ -234,8 +231,8 @@ public RuleList<MP_STR("definition", 10),
 > {};
 
 template<>
-class RuleDef<MP_STR("type definition", 15)>:
-public RuleList<MP_STR("type definition", 15),
+class RuleDef<MP_STR("field definition", 16)>:
+public RuleList<MP_STR("field definition", 16),
     RuleLine<
         RuleItemKeyword<MP_STR("type", 4)>,
         RuleItemSpace<>,
@@ -243,63 +240,77 @@ public RuleList<MP_STR("type definition", 15),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("field definition", 16)>:
-public RuleList<MP_STR("field definition", 16),
+        RuleItemRef<MP_STR("expression", 10)>
+    >,
     RuleLine<
-        RuleItemRef<MP_STR("field type", 10)>,
+        RuleItemKeyword<MP_STR("extends", 7)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("id bind", 7)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("field type", 10)>:
-public RuleList<MP_STR("field type", 10),
-    RuleLine<
-        RuleItemKeyword<MP_STR("extends", 7)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("uses", 4)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("var", 3)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("static", 6)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("expr", 4)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("fast", 4)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("receive", 7)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("return", 6)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("id bind", 7)>:
-public RuleList<MP_STR("id bind", 7),
-    RuleLine<
-        RuleItemRef<MP_STR("id", 2)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR("is", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>,
+        RuleItemRef<MP_STR("expression", 10)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("default", 7)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("type", 4)>,
+        RuleItemKeyword<MP_STR("uses", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("var", 3)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("static", 6)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("expr", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("fast", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR("is", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("receive", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("default", 7)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("return", 6)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("default", 7)>
     >
@@ -312,35 +323,6 @@ public RuleList<MP_STR("default", 7),
         RuleItemKeyword<MP_STR("default", 7)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
-    >,
-    RuleLine<
-        
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("type", 4)>:
-public RuleList<MP_STR("type", 4),
-    RuleLine<
-        RuleItemKeyword<MP_STR("auto", 4)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("class", 5)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type of", 7)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("type of", 7)>:
-public RuleList<MP_STR("type of", 7),
-    RuleLine<
-        RuleItemKeyword<MP_STR("of", 2)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("type", 4)>
     >,
     RuleLine<
         
@@ -717,6 +699,11 @@ public RuleList<MP_STR("call operation", 14),
         RuleItemRef<MP_STR("call expression", 15)>
     >,
     RuleLine<
+        RuleItemKeyword<MP_STR("of", 2)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("call expression", 15)>
+    >,
+    RuleLine<
         
     >
 > {};
@@ -870,6 +857,9 @@ public RuleList<MP_STR("value", 5),
     >,
     RuleLine<
         RuleItemRef<MP_STR("array", 5)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("class", 5)>
     >
 > {};
 
