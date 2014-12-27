@@ -96,34 +96,28 @@ definition:
 
     <type definition>
     <field definition>
-    <field deletion>
     <main structure> ;
     ;
 
 type definition:
 
     type <id> is <type>
-    // the same as "const <id> is typeid default <...>"
+    // the same as "expr <id> is typeid default <...>"
 
 field definition:
 
     <field type> <id bind>
 
-field deletion:
-
-    delete <id>
-
 field type:
 
     extends
-    enclose
+    uses
     var
-    const
     static
+    expr
     fast
     receive
     return
-    // fast is supported in program and function
     // receive is supported in program only
     // return is supported in function only
 
@@ -364,8 +358,8 @@ value:
     <string>
     <tuple>
     <array>
-    // const boolean yes := -1
-    //                no := 0
+    // expr boolean yes := -1
+    //              no := 0
 
 *real*:
 

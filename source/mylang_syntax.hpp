@@ -224,9 +224,6 @@ public RuleList<MP_STR("definition", 10),
         RuleItemRef<MP_STR("field definition", 16)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("field deletion", 14)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("main structure", 14)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
@@ -261,32 +258,22 @@ public RuleList<MP_STR("field definition", 16),
 > {};
 
 template<>
-class RuleDef<MP_STR("field deletion", 14)>:
-public RuleList<MP_STR("field deletion", 14),
-    RuleLine<
-        RuleItemKeyword<MP_STR("delete", 6)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("id", 2)>
-    >
-> {};
-
-template<>
 class RuleDef<MP_STR("field type", 10)>:
 public RuleList<MP_STR("field type", 10),
     RuleLine<
         RuleItemKeyword<MP_STR("extends", 7)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("enclose", 7)>
+        RuleItemKeyword<MP_STR("uses", 4)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("var", 3)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("const", 5)>
+        RuleItemKeyword<MP_STR("static", 6)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("static", 6)>
+        RuleItemKeyword<MP_STR("expr", 4)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("fast", 4)>

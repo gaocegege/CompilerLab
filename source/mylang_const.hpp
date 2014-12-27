@@ -60,7 +60,7 @@ const auto name_call = "__call"; // arg: (obj)
 // values
 
 const auto name_self = "__self"; // TODO
-const auto name_parent = "__parent"; // TODO
+const auto name_env = "__env"; // TODO
 const auto name_input = "__input"; // receive
 const auto name_result = "__result"; // return
 
