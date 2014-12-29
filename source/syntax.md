@@ -101,15 +101,14 @@ definition:
 field definition:
 
     type <id> is <expression>
-    extends <expression> <default>
-    uses <expression> <default>
-    var <id> is <expression> <default>
-    static <id> is <expression> <default>
-    expr <id> is <expression> <default>
-    fast <id> is <expression> <default>
-    receive <expression> <default>
-    return <expression> <default>
-    // type: the same as "expr <id> is typeid default <...>"
+    var <id> is <expression>
+    static <id> is <expression>
+    expr <id> is <expression>
+    fast <id> is <expression>
+    extends <expression>
+    uses <expression>
+    receive <expression>
+    return <expression>
     // receive: id="__input", supported in program only
     // return: id="__result", supported in function only
 
@@ -123,11 +122,6 @@ field definition:
     //     pointer of <expression>
     //     reference of <expression>
     // "array of 10 integer" is the same as "array(10, integer)"
-
-default:
-
-    default <expression>
-    <>
 
 Statement
 ---

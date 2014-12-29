@@ -23,8 +23,8 @@ public:
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
             "is", "begin", "in", "out", // "var",
-            "type", "extends", "uses",
-            "var", "static", "expr", "fast", "receive", "return", "default",
+            "type", "var", "static", "expr", "fast",
+            "extends", "uses", "receive", "return",
             "if", "then", "for", "do", "foreach", "while",
             "elif", "else", "to", "downto", "repeat", "until", "of",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"

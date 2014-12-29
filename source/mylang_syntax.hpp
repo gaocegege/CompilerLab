@@ -243,29 +243,13 @@ public RuleList<MP_STR("field definition", 16),
         RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("extends", 7)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("uses", 4)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
-    >,
-    RuleLine<
         RuleItemKeyword<MP_STR("var", 3)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
+        RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("static", 6)>,
@@ -274,9 +258,7 @@ public RuleList<MP_STR("field definition", 16),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
+        RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("expr", 4)>,
@@ -285,9 +267,7 @@ public RuleList<MP_STR("field definition", 16),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
+        RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("fast", 4)>,
@@ -296,36 +276,27 @@ public RuleList<MP_STR("field definition", 16),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("is", 2)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
+        RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
-        RuleItemKeyword<MP_STR("receive", 7)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("return", 6)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("default", 7)>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("default", 7)>:
-public RuleList<MP_STR("default", 7),
-    RuleLine<
-        RuleItemKeyword<MP_STR("default", 7)>,
+        RuleItemKeyword<MP_STR("extends", 7)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
-        
+        RuleItemKeyword<MP_STR("uses", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("receive", 7)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
+    >,
+    RuleLine<
+        RuleItemKeyword<MP_STR("return", 6)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
     >
 > {};
 
