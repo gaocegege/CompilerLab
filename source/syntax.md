@@ -100,18 +100,12 @@ definition:
 
 field definition:
 
-    type <id> is <expression>
-    var <id> is <expression>
-    static <id> is <expression>
-    expr <id> is <expression>
-    fast <id> is <expression>
-    extends <expression>
-    uses <expression>
-    receive <expression>
-    return <expression>
-    // receive: id="__input", supported in program only
-    // return: id="__result", supported in function only
-
+    type <field name> <expression>
+    var <field name> <expression>
+    static <field name> <expression>
+    expr <field name> <expression>
+    fast <field name> <expression>
+    <field name> <expression>
     // type:
     // built-in:
     //     void typeid
@@ -122,6 +116,17 @@ field definition:
     //     pointer of <expression>
     //     reference of <expression>
     // "array of 10 integer" is the same as "array(10, integer)"
+
+field name:
+
+    extends
+    refers
+    receive
+    return
+    <id> imports
+    <id> is
+    // receive: id="__input", supported in program only
+    // return: id="__result", supported in function only
 
 Statement
 ---

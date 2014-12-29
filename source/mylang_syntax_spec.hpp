@@ -24,7 +24,7 @@ public:
             "program", "function", "class", "end",
             "is", "begin", "in", "out", // "var",
             "type", "var", "static", "expr", "fast",
-            "extends", "uses", "receive", "return",
+            "extends", "refers", "receive", "return", "imports", // "is",
             "if", "then", "for", "do", "foreach", "while",
             "elif", "else", "to", "downto", "repeat", "until", "of",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
