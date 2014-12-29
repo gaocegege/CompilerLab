@@ -97,7 +97,7 @@ public:
     using BlockCall =
         mylang::DelayedCall<libblock::Block * ()>;
     using DefinitionCall =
-        mylang::DelayedCall<libblock::entry_t (libblock::Block *, bool)>;
+        mylang::DelayedCall<libblock::entry_t (bool)>;
     using ExpressionCall =
         mylang::DelayedCall<libblock::Code * ()>;
     using OperationCall =
@@ -198,24 +198,124 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("field definition", 16) {
-        // DefinitionCall::put([=](libblock::Block *block, bool hidden) {
-        //     // TODO
-        // });
-    }
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
 
-    MYLANG_ANALYSIS_LIST("default", 7) {
-        ExpressionCall::put([=]() -> libblock::Code * {
-            if (I == 0) {
-                ExpressionCall value;
+            libblock::name_t name = [&]() -> libblock::name_t {
+                switch (I) {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    // type <id> is <expression>
+                    // var <id> is <expression>
+                    // static <id> is <expression>
+                    // expr <id> is <expression>
+                    // fast <id> is <expression>
+                    {
+                        IdCall id;
+                        scanFill(iter, id);
 
-                go(node);
+                        return id();
+                    }
+                case 5:
+                    // extends <expression>
+                    return mylang::name_base;
+                case 6:
+                    // uses <expression>
+                    return mylang::name_env;
+                case 7:
+                    // receive <expression>
+                    return mylang::name_input;
+                case 8:
+                    // return <expression>
+                    return mylang::name_result;
+                default:
+                    // never reach
+                    return std::string();
+                }
+            } ();
 
-                return value();
-            } else {
-                return nullptr;
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            // TODO
+            switch (I) {
+            case 0:
+                // type <id> is <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_EXPR, // TODO!!!
+                    false, hidden, name, body()
+                );
+            case 1:
+                // var <id> is <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_VAR,
+                    false, hidden, name, body()
+                );
+            case 2:
+                // static <id> is <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_STATIC,
+                    false, hidden, name, body()
+                );
+            case 3:
+                // expr <id> is <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_EXPR,
+                    false, hidden, name, body()
+                );
+            case 4:
+                // fast <id> is <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_FAST,
+                    false, hidden, name, body()
+                );
+            case 5:
+                // extends <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_VAR, // TODO
+                    true, hidden, name, body()
+                );
+            case 6:
+                // uses <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_VAR, // TODO
+                    true, hidden, name, body()
+                );
+            case 7:
+                // receive <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_VAR, // TODO
+                    false, hidden, name, body()
+                );
+            case 8:
+                // return <expression>
+                return libblock::entry_t(
+                    libblock::entry_t::M_VAR, // TODO
+                    false, hidden, name, body()
+                );
+            default:
+                // never reach
+                break;
             }
+
         });
     }
+
+    // MYLANG_ANALYSIS_LIST("default", 7) {
+    //     ExpressionCall::put([=]() -> libblock::Code * {
+    //         if (I == 0) {
+    //             ExpressionCall value;
+    //             go(node);
+
+    //             return value();
+    //         } else {
+    //             return nullptr;
+    //         }
+    //     });
+    // }
 
     MYLANG_ANALYSIS_LIST("statement list", 14) {
         ExpressionCall::put([=]() -> libblock::Code * {
@@ -244,7 +344,6 @@ public:
     MYLANG_ANALYSIS_LIST("receive", 7) {
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
-
             go(node);
 
             return makeCall2(
@@ -258,7 +357,6 @@ public:
     MYLANG_ANALYSIS_LIST("return", 6) {
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall right;
-
             go(node);
 
             return makeChain(
@@ -318,9 +416,63 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("for structure", 13) {
-        // ExpressionCall::put([=]() -> libblock::Code * {
-        //     // TODO
-        // });
+        ExpressionCall::put([=]() -> libblock::Code * {
+            // notice: need debug!!!
+
+            NodeIter iter = scanBegin(node);
+
+            IdCall target;
+            scanFill(iter, target);
+
+            ExpressionCall initval;
+            scanFill(iter, initval);
+
+            IdCall step;
+            scanFill(iter, step);
+
+            ExpressionCall finval;
+            scanFill(iter, finval);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::name_t targetname = target();
+
+            libblock::Code *init = makeCall2(
+                mylang::name_assign, makeGet(targetname), initval()
+            );
+
+            libblock::Code *cond = makeCall2(
+                mylang::name_not_equal, makeGet(targetname), finval()
+            )
+
+            libblock::Code *dostep = makeCall(
+                step(), makeGet(targetname)
+            )
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_end),
+                    cond
+                )
+            );
+
+            libblock::Code *loop = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_begin)
+            );
+
+            return makeChain(
+                init,
+                lbl_begin, jump,
+                    body(), dostep, loop,
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("foreach structure", 17) {
@@ -401,7 +553,7 @@ public:
                 );
             });
         } else if (I == 1) {
-            go(node);
+            go(node); // call the only member
         } else {
             ExpressionCall::put([=]() -> libblock::Code * {
                 return nullptr;
@@ -479,7 +631,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -491,7 +642,6 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
                 return makeCall2(
@@ -509,7 +659,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -521,7 +670,6 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
                 return makeCall2(
@@ -539,7 +687,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -551,7 +698,6 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
                 return makeCall2(
@@ -569,7 +715,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -581,7 +726,6 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
                 return makeCall2(
@@ -599,7 +743,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             IdCall op;
             ExpressionCall right;
-
             go(node);
 
             return makeCall(
@@ -613,7 +756,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -624,7 +766,6 @@ public:
         OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
-
                 go(node);
 
                 return new libblock::CodeCall(left(), right());
@@ -638,7 +779,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -649,7 +789,6 @@ public:
         OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
-
                 go(node);
 
                 return new libblock::CodeWith(left(), right());
@@ -754,7 +893,6 @@ public:
                 // <id>
                 {
                     IdCall value;
-
                     go(node);
 
                     return new libblock::CodeGet(value());
@@ -763,7 +901,6 @@ public:
                 // <real>
                 {
                     mylang::DelayedCall<mylang::ml_real ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_real>(value());
@@ -772,7 +909,6 @@ public:
                 // <integer>
                 {
                     mylang::DelayedCall<mylang::ml_integer ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_integer>(value());
@@ -781,7 +917,6 @@ public:
                 // <byte>
                 {
                     mylang::DelayedCall<mylang::ml_byte ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_byte>(value());
@@ -790,7 +925,6 @@ public:
                 // <string>
                 {
                     mylang::DelayedCall<std::string ()> value;
-
                     go(node);
 
                     libblock::Code *arg = nullptr;
@@ -814,7 +948,6 @@ public:
                 // <tuple>
                 {
                     ExpressionCall tuple;
-
                     go(node);
 
                     // tuple is always inline
@@ -824,7 +957,6 @@ public:
                 // <array>
                 {
                     ExpressionCall tuple;
-
                     go(node);
 
                     return makeCall(
@@ -836,7 +968,6 @@ public:
                 // <class>
                 {
                     BlockCall block;
-
                     go(node);
 
                     return new libblock::CodeBlockId(block());
