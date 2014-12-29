@@ -62,7 +62,7 @@ const std::string name_call = "__call"; // arg: (obj)
 const std::string name_self = "__self"; // TODO: var list
 const std::string name_code = "__code"; // TODO: code (as constexpr)
 const std::string name_base = "__base"; // extends
-const std::string name_env = "__env"; // uses
+const std::string name_env = "__env"; // refers
 const std::string name_input = "__input"; // receive
 const std::string name_result = "__result"; // return
 

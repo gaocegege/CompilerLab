@@ -94,6 +94,8 @@ public:
 
     using IdCall =
         mylang::DelayedCall<libblock::name_t ()>;
+    using IdFieldCall =
+        mylang::DelayedCall<std::pair<libblock::name_t, bool> ()>;
     using BlockCall =
         mylang::DelayedCall<libblock::Block * ()>;
     using DefinitionCall =
@@ -201,121 +203,68 @@ public:
         DefinitionCall::put([=](bool hidden) {
             NodeIter iter = scanBegin(node);
 
-            libblock::name_t name = [&]() -> libblock::name_t {
-                switch (I) {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    // type <id> is <expression>
-                    // var <id> is <expression>
-                    // static <id> is <expression>
-                    // expr <id> is <expression>
-                    // fast <id> is <expression>
-                    {
-                        IdCall id;
-                        scanFill(iter, id);
-
-                        return id();
-                    }
-                case 5:
-                    // extends <expression>
-                    return mylang::name_base;
-                case 6:
-                    // uses <expression>
-                    return mylang::name_env;
-                case 7:
-                    // receive <expression>
-                    return mylang::name_input;
-                case 8:
-                    // return <expression>
-                    return mylang::name_result;
-                default:
-                    // never reach
-                    return std::string();
-                }
-            } ();
+            IdFieldCall info;
+            scanFill(iter, info);
 
             ExpressionCall body;
             scanFill(iter, body);
 
-            // TODO
-            switch (I) {
-            case 0:
-                // type <id> is <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_EXPR, // TODO!!!
-                    false, hidden, name, body()
-                );
-            case 1:
-                // var <id> is <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_VAR,
-                    false, hidden, name, body()
-                );
-            case 2:
-                // static <id> is <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_STATIC,
-                    false, hidden, name, body()
-                );
-            case 3:
-                // expr <id> is <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_EXPR,
-                    false, hidden, name, body()
-                );
-            case 4:
-                // fast <id> is <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_FAST,
-                    false, hidden, name, body()
-                );
-            case 5:
-                // extends <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_VAR, // TODO
-                    true, hidden, name, body()
-                );
-            case 6:
-                // uses <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_VAR, // TODO
-                    true, hidden, name, body()
-                );
-            case 7:
-                // receive <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_VAR, // TODO
-                    false, hidden, name, body()
-                );
-            case 8:
-                // return <expression>
-                return libblock::entry_t(
-                    libblock::entry_t::M_VAR, // TODO
-                    false, hidden, name, body()
-                );
-            default:
-                // never reach
-                break;
-            }
+            std::pair<libblock::name_t, bool> infopair = info();
 
+            // assert I < 6
+            libblock::entry_t::Mode mode[] = {
+                libblock::entry_t::M_TYPE,
+                libblock::entry_t::M_VAR,
+                libblock::entry_t::M_STATIC,
+                libblock::entry_t::M_EXPR,
+                libblock::entry_t::M_FAST,
+                libblock::entry_t::M_VAR,
+            };
+
+            return libblock::entry_t(
+                mode[I], infopair.second, hidden,
+                std::move(infopair.first), body()
+            );
         });
     }
 
-    // MYLANG_ANALYSIS_LIST("default", 7) {
-    //     ExpressionCall::put([=]() -> libblock::Code * {
-    //         if (I == 0) {
-    //             ExpressionCall value;
-    //             go(node);
+    MYLANG_ANALYSIS_LIST("field name", 10) {
+        IdFieldCall::put([=]() -> std::pair<libblock::name_t, bool> {
+            switch (I) {
+            case 0:
+                // extends
+                return {mylang::name_base, true};
+            case 1:
+                // refers
+                return {mylang::name_env, true};
+            case 2:
+                // receive
+                return {mylang::name_input, false};
+            case 3:
+                // return
+                return {mylang::name_result, false};
+            case 4:
+                // <id> imports
+                {
+                    IdCall id;
+                    go(node);
 
-    //             return value();
-    //         } else {
-    //             return nullptr;
-    //         }
-    //     });
-    // }
+                    return {id(), true};
+                }
+            case 5:
+                // <id> is
+                {
+                    IdCall id;
+                    go(node);
+
+                    return {id(), false};
+                }
+            default:
+                // never reach
+                throw;
+            }
+        });
+    }
 
     MYLANG_ANALYSIS_LIST("statement list", 14) {
         ExpressionCall::put([=]() -> libblock::Code * {
@@ -447,11 +396,11 @@ public:
 
             libblock::Code *cond = makeCall2(
                 mylang::name_not_equal, makeGet(targetname), finval()
-            )
+            );
 
             libblock::Code *dostep = makeCall(
                 step(), makeGet(targetname)
-            )
+            );
 
             libblock::Code *jump = makeCall(
                 mylang::name_branch,
@@ -974,7 +923,7 @@ public:
                 }
             default:
                 // never reach
-                return nullptr;
+                throw;
             }
         });
     }
@@ -1049,8 +998,9 @@ public:
 
     template <class N, class E>
     void run(const NodeTyped<N, NodeError<E>> *node) {
-        // TODO: never reach if no parsing error
+        // never reach if no parsing error
         (void) node;
+        throw;
     }
 };
 
