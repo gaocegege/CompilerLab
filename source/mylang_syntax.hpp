@@ -241,6 +241,13 @@ public RuleList<MP_STR("field definition", 16),
         RuleItemRef<MP_STR("expression", 10)>
     >,
     RuleLine<
+        RuleItemKeyword<MP_STR("expr", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("field name", 10)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("expression", 10)>
+    >,
+    RuleLine<
         RuleItemKeyword<MP_STR("var", 3)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("field name", 10)>,
@@ -249,13 +256,6 @@ public RuleList<MP_STR("field definition", 16),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("static", 6)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("field name", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>
-    >,
-    RuleLine<
-        RuleItemKeyword<MP_STR("expr", 4)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("field name", 10)>,
         RuleItemSpace<>,

@@ -138,19 +138,71 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
-        // TODO: proto?
-        // create new block and call gowith()
-        //mylang::putCall([=]() {
-            //mylang::DelayedCall<Proto *()> proto;
-        //    return (libblock::Block *) nullptr;
-        //});
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
+
+            ProtoCall proto;
+            scanFill(iter, proto);
+
+            BlockCall block;
+            scanFill(iter, block);
+
+            IdCall checking;
+            scanFill(iter, checking);
+
+            std::pair<
+                libblock::name_t,
+                libblock::Proto *
+            > defpair = proto();
+            libblock::Block *inner = block();
+            libblock::name_t checkid = checking();
+
+            if (checkid.id != "" && checkid.id != defpair.first.id) {
+                // TODO: error
+                throw;
+            }
+
+            inner->setProto(defpair.second);
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, false, hidden,
+                std::move(defpair.first), new libblock::CodeBlock(block())
+            ));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
-        // TODO: proto?
-        // create new block and call gowith()
-        go(node);
-        // TODO: end?
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
+
+            ProtoCall proto;
+            scanFill(iter, proto);
+
+            BlockCall block;
+            scanFill(iter, block);
+
+            IdCall checking;
+            scanFill(iter, checking);
+
+            std::pair<
+                libblock::name_t,
+                libblock::Proto *
+            > defpair = proto();
+            libblock::Block *inner = block();
+            libblock::name_t checkid = checking();
+
+            if (checkid.id != "" && checkid.id != defpair.first.id) {
+                // TODO: error
+                throw;
+            }
+
+            inner->setProto(defpair.second);
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, false, hidden,
+                std::move(defpair.first), new libblock::CodeBlock(block())
+            ));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
@@ -215,7 +267,7 @@ public:
 
         nowenv->addField(libblock::field_t(
             libblock::field_t::M_EXPR, false, true,
-            , body()
+            libblock::name_t(mylang::name_code), body()
         ));
     }
 
@@ -232,7 +284,7 @@ public:
             ArgumentCall arg;
             scanFill(iter, arg);
 
-            libblock::Proto *proto = new libblock::Proto()
+            libblock::Proto *proto = new libblock::Proto();
 
             arg(proto);
 
@@ -411,20 +463,27 @@ public:
 
     MYLANG_ANALYSIS_LIST("return", 6) {
         ExpressionCall::put([=]() -> libblock::Code * {
-            ExpressionCall right;
-            go(node);
+            if (I == 0) {
+                ExpressionCall right;
+                go(node);
 
-            return makeChain(
-                makeCall2(
-                    mylang::name_assign,
-                    makeGet(mylang::name_result),
-                    right()
-                ),
-                makeCall(
+                return makeChain(
+                    makeCall2(
+                        mylang::name_assign,
+                        makeGet(mylang::name_result),
+                        right()
+                    ),
+                    makeCall(
+                        mylang::name_call,
+                        makeGet(mylang::name_env)
+                    )
+                );
+            } else {
+                return makeCall(
                     mylang::name_call,
                     makeGet(mylang::name_env)
-                )
-            );
+                );
+            }
         });
     }
 
@@ -534,6 +593,7 @@ public:
         // ExpressionCall::put([=]() -> libblock::Code * {
         //     // TODO
         // });
+        (void) node;
     }
 
     MYLANG_ANALYSIS_LIST("while structure", 15) {
@@ -617,6 +677,8 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("to step", 7) {
+        (void) node;
+
         IdCall::put([=]() {
             if (I == 0) {
                 // to
