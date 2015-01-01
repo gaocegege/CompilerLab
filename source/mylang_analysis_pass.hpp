@@ -15,10 +15,17 @@ enum {
 template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
+    libblock::Block *nowenv;
+
     inline void go(const NodeList<> *node) {
         for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
+    }
+
+    inline void gowith(const NodeList<> *node, libblock::Block *env) {
+        Pass<PASS_ANALYSIS> pass(env);
+        pass.go(node);
     }
 
     using NodeIter = std::vector<Node<> *>::const_iterator;
@@ -88,18 +95,27 @@ private:
     }
 
 public:
-    // inline Pass(libblock::Block *base): in_block{base} {} // TODO
+    inline Pass(libblock::Block *env): nowenv(env) {}
 
     // virtual ~Pass() {}
 
     using IdCall =
         mylang::DelayedCall<libblock::name_t ()>;
-    using IdFieldCall =
-        mylang::DelayedCall<std::pair<libblock::name_t, bool> ()>;
+    using ArgumentCall =
+        mylang::DelayedCall<void (libblock::Proto *)>;
+    using ProtoCall =
+        mylang::DelayedCall<std::pair<
+            libblock::name_t,
+            libblock::Proto *
+        > ()>;
     using BlockCall =
         mylang::DelayedCall<libblock::Block * ()>;
+    using FieldCall =
+        mylang::DelayedCall<std::pair<
+            libblock::name_t, bool
+        > ()>;
     using DefinitionCall =
-        mylang::DelayedCall<libblock::entry_t (bool)>;
+        mylang::DelayedCall<void (bool)>;
     using ExpressionCall =
         mylang::DelayedCall<libblock::Code * ()>;
     using OperationCall =
@@ -122,6 +138,8 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
+        // TODO: proto?
+        // create new block and call gowith()
         //mylang::putCall([=]() {
             //mylang::DelayedCall<Proto *()> proto;
         //    return (libblock::Block *) nullptr;
@@ -130,69 +148,157 @@ public:
 
     MYLANG_ANALYSIS_LIST("function", 8) {
         // TODO: proto?
-        //enterBlock();
+        // create new block and call gowith()
         go(node);
-        //exitBlock();
         // TODO: end?
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
-        //enterBlock();
         go(node);
-        //exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
-        go(node);
+        if (I == 0) {
+            go(node); // no delayed call
+        } else {
+            // notice: return "" if no checking
+            IdCall::put([=]() {
+                return libblock::name_t(std::string(""));
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("end function", 12) {
-        go(node);
+        if (I == 0) {
+            go(node); // no delayed call
+        } else {
+            // notice: return "" if no checking
+            IdCall::put([=]() {
+                return libblock::name_t(std::string(""));
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
-        go(node);
+        BlockCall::put([=]() -> libblock::Block * {
+            // new pass object
+            libblock::Block *block = new libblock::Block();
+            gowith(node, block);
+
+            return block;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("public block", 12) {
-        //auto visibility = libblock::Name::V_PUBLIC;
+        // no delayed call
 
-        //in_visibility = &visibility;
-        // TODO: pass1 - create name; pass2 - compile
+        DefinitionCall def;
         go(node);
-        //in_visibility = nullptr;
+
+        def(true);
     }
 
     MYLANG_ANALYSIS_LIST("private block", 13) {
-        //auto visibility = libblock::Name::V_PRIVATE;
+        // no delayed call
 
-        //in_visibility = &visibility;
-        // TODO: pass1 - create name; pass2 - compile
+        DefinitionCall def;
         go(node);
-        //in_visibility = nullptr;
+
+        def(false);
     }
 
     MYLANG_ANALYSIS_LIST("code block", 10) {
-        // TODO: entry = code_main
+        // no delayed call
+
+        ExpressionCall body;
         go(node);
+
+        nowenv->addField(libblock::field_t(
+            libblock::field_t::M_EXPR, false, true,
+            , body()
+        ));
     }
 
     MYLANG_ANALYSIS_LIST("function proto", 14) {
-        // TODO: get name & arg list
-        go(node);
+        ProtoCall::put([=]() -> std::pair<
+            libblock::name_t,
+            libblock::Proto *
+        > {
+            NodeIter iter = scanBegin(node);
+
+            IdCall id;
+            scanFill(iter, id);
+
+            ArgumentCall arg;
+            scanFill(iter, arg);
+
+            libblock::Proto *proto = new libblock::Proto()
+
+            arg(proto);
+
+            return {id(), proto};
+        });
     }
 
     MYLANG_ANALYSIS_LIST("argument list", 13) {
-        go(node);
+        ArgumentCall::put([=](libblock::Proto *proto) {
+            if (I == 0) {
+                // member:
+                ArgumentCall left;
+                node->getChildren().front()->runPass(this);
+
+                // next:
+                ArgumentCall right;
+                node->getChildren().back()->runPass(this);
+
+                left(proto);
+                right(proto);
+            } else if (I == 1) {
+                // member:
+                ArgumentCall left;
+                node->getChildren().front()->runPass(this);
+
+                left(proto);
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("argument", 8) {
-        // TODO
-        (void) node; // TODO
+        ArgumentCall::put([=](libblock::Proto *proto) {
+            IdCall id;
+            go(node);
+
+            // assert I < 4
+            libblock::argument_t::Mode mode[] = {
+                libblock::argument_t::M_IN,
+                libblock::argument_t::M_OUT,
+                libblock::argument_t::M_VAR,
+                libblock::argument_t::M_IN
+            };
+
+            proto->putArgument(libblock::argument_t(mode[I], id()));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("definition list", 15) {
-        go(node);
+        DefinitionCall::put([=](bool hidden) {
+            if (I == 0) {
+                // member:
+                DefinitionCall left;
+                node->getChildren().front()->runPass(this);
+
+                // next:
+                DefinitionCall right;
+                node->getChildren().back()->runPass(this);
+
+                left(hidden);
+                right(hidden);
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("definition", 10) {
@@ -203,7 +309,7 @@ public:
         DefinitionCall::put([=](bool hidden) {
             NodeIter iter = scanBegin(node);
 
-            IdFieldCall info;
+            FieldCall info;
             scanFill(iter, info);
 
             ExpressionCall body;
@@ -212,24 +318,26 @@ public:
             std::pair<libblock::name_t, bool> infopair = info();
 
             // assert I < 6
-            libblock::entry_t::Mode mode[] = {
-                libblock::entry_t::M_TYPE,
-                libblock::entry_t::M_VAR,
-                libblock::entry_t::M_STATIC,
-                libblock::entry_t::M_EXPR,
-                libblock::entry_t::M_FAST,
-                libblock::entry_t::M_VAR,
+            libblock::field_t::Mode mode[] = {
+                libblock::field_t::M_TYPE,
+                libblock::field_t::M_EXPR,
+                libblock::field_t::M_VAR,
+                libblock::field_t::M_STATIC,
+                libblock::field_t::M_FAST,
+                libblock::field_t::M_VAR
             };
 
-            return libblock::entry_t(
+            nowenv->addField(libblock::field_t(
                 mode[I], infopair.second, hidden,
                 std::move(infopair.first), body()
-            );
+            ));
         });
     }
 
     MYLANG_ANALYSIS_LIST("field name", 10) {
-        IdFieldCall::put([=]() -> std::pair<libblock::name_t, bool> {
+        FieldCall::put([=]() -> std::pair<
+            libblock::name_t, bool
+        > {
             switch (I) {
             case 0:
                 // extends
@@ -271,12 +379,10 @@ public:
             if (I == 0) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 // next:
                 ExpressionCall right;
-
                 node->getChildren().back()->runPass(this);
 
                 return makeChain(left(), right());
@@ -502,7 +608,7 @@ public:
                 );
             });
         } else if (I == 1) {
-            go(node); // call the only member
+            go(node); // call the only member // no delayed call
         } else {
             ExpressionCall::put([=]() -> libblock::Code * {
                 return nullptr;
@@ -550,19 +656,16 @@ public:
             if (I == 0) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 // next:
                 ExpressionCall right;
-
                 node->getChildren().back()->runPass(this);
 
                 return makeChain(left(), right());
             } else if (I == 1) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 return left();
@@ -919,7 +1022,7 @@ public:
                     BlockCall block;
                     go(node);
 
-                    return new libblock::CodeBlockId(block());
+                    return new libblock::CodeBlock(block());
                 }
             default:
                 // never reach
