@@ -45,8 +45,8 @@ const std::string name_pos = "__pos";
 const std::string name_neg = "__neg";
 const std::string name_not = "__not";
 
-const std::string name_prev = "__prev"; // TODO
-const std::string name_next = "__next"; // TODO
+const std::string name_prev = "__prev";
+const std::string name_next = "__next";
 
 // builtin interfaces
 
@@ -61,6 +61,7 @@ const std::string name_call = "__call"; // arg: (obj)
 
 const std::string name_self = "__self"; // TODO: var list
 const std::string name_code = "__code"; // TODO: code (as constexpr)
+
 const std::string name_base = "__base"; // extends
 const std::string name_env = "__env"; // refers
 const std::string name_input = "__input"; // receive

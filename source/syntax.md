@@ -101,9 +101,9 @@ definition:
 field definition:
 
     type <field name> <expression>
+    expr <field name> <expression>
     var <field name> <expression>
     static <field name> <expression>
-    expr <field name> <expression>
     fast <field name> <expression>
     <field name> <expression>
     // type:
