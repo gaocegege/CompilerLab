@@ -12,19 +12,8 @@ class RuleDef<MP_STR("root", 4)>:
 public RuleList<MP_STR("root", 4),
     RuleLine<
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("main structure", 14)>,
+        RuleItemRef<MP_STR("program", 7)>,
         RuleItemSpace<>
-    >
-> {};
-
-template<>
-class RuleDef<MP_STR("main structure", 14)>:
-public RuleList<MP_STR("main structure", 14),
-    RuleLine<
-        RuleItemRef<MP_STR("program", 7)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("function", 8)>
     >
 > {};
 
@@ -221,7 +210,7 @@ public RuleList<MP_STR("definition", 10),
         RuleItemRef<MP_STR("field definition", 16)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("main structure", 14)>,
+        RuleItemRef<MP_STR("function", 8)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
     >,

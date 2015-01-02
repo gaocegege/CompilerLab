@@ -6,17 +6,9 @@ File
 
 **root**:
 
-    <> <main structure> <>
+    <> <program> <>
     // allow spaces before and after
     // ignore tail
-
-main structure:
-
-    <program>
-    <function>
-    // <class> not allowed here
-    // <program> like l-value: has receive / no return
-    // <function> like r-value: has return / no receive
 
 Main Structure
 ---
@@ -95,7 +87,7 @@ definition list:
 definition:
 
     <field definition>
-    <main structure> ;
+    <function> ;
     ;
 
 field definition:

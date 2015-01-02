@@ -67,6 +67,8 @@ const std::string name_env = "__env"; // refers
 const std::string name_input = "__input"; // receive
 const std::string name_result = "__result"; // return
 
+const std::string name_caller = "__caller";
+
 }
 
 #endif
