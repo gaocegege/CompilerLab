@@ -38,10 +38,13 @@ void test() {
 
     // x2->runPass(&rf1);
     // std::cout << std::endl << std::endl;
-    x2->runPass(&rf);
-    std::cout << std::endl << std::endl;
+    // x2->runPass(&rf);
+    // std::cout << std::endl << std::endl;
     x2->runPass(&hl);
     std::cout << std::endl << std::endl;
+
+    PassAnalysis<> an;
+    x2->runPass(&an);
 
     delete x2;
 }

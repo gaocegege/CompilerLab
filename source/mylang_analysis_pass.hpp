@@ -1,10 +1,9 @@
 #ifndef MYLANG_ANALYSIS_PASS_HPP
 #define MYLANG_ANALYSIS_PASS_HPP
 
-#include "mylang_const.hpp"
 #include "mylang_syntax_spec.hpp"
+#include "mylang_env.hpp"
 #include "mylang_analysis_call.hpp"
-#include "semantic/block.hpp"
 
 namespace myparser {
 
@@ -21,11 +20,6 @@ private:
         for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
-    }
-
-    inline void gowith(const NodeList<> *node, libblock::Block *env) {
-        Pass<PASS_ANALYSIS> pass(env);
-        pass.go(node);
     }
 
     using NodeIter = std::vector<Node<> *>::const_iterator;
@@ -95,6 +89,8 @@ private:
     }
 
 public:
+    inline Pass(): nowenv(mylang::makeEnv()) {}
+
     inline Pass(libblock::Block *env): nowenv(env) {}
 
     // virtual ~Pass() {}
@@ -130,10 +126,6 @@ public:
         void run(const NodeTypedText<MP_STR(name, namelen)> *node)
 
     MYLANG_ANALYSIS_LIST("root", 4) {
-        go(node);
-    }
-
-    MYLANG_ANALYSIS_LIST("main structure", 14) {
         go(node);
     }
 
@@ -233,9 +225,14 @@ public:
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
         BlockCall::put([=]() -> libblock::Block * {
-            // new pass object
+            // new block
             libblock::Block *block = new libblock::Block();
-            gowith(node, block);
+
+            // analysis AST with a new Pass object
+            Pass<PASS_ANALYSIS> pass(block);
+            pass.go(node);
+
+            block->finish();
 
             return block;
         });
