@@ -46,11 +46,12 @@ public:
     }
 
     inline operator bool() const {
-        return exec != nullptr;
+        return bool(exec);
     }
 
     inline OUT operator()(IN... arg) const {
         // TODO: if exec == nullptr, error
+        // notice: exec once and *only* once
         return exec(std::forward<IN>(arg)...);
     }
 };

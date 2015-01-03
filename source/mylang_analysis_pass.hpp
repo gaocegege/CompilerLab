@@ -611,7 +611,6 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("foreach structure", 17) {
-        // TODO
         ExpressionCall::put([=]() -> libblock::Code * {
             // TODO
             (void) node;
