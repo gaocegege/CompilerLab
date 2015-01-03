@@ -6,17 +6,9 @@ File
 
 **root**:
 
-    <> <main structure> <>
+    <> <program> <>
     // allow spaces before and after
     // ignore tail
-
-main structure:
-
-    <program>
-    <function>
-    // <class> not allowed here
-    // <program> like l-value: has receive / no return
-    // <function> like r-value: has return / no receive
 
 Main Structure
 ---
@@ -94,72 +86,39 @@ definition list:
 
 definition:
 
-    <type definition>
     <field definition>
-    <field deletion>
-    <main structure> ;
+    <function> ;
     ;
-
-type definition:
-
-    type <id> is <type>
-    // the same as "const <id> is typeid default <...>"
 
 field definition:
 
-    <field type> <id bind>
-
-field deletion:
-
-    delete <id>
-
-field type:
-
-    extends
-    enclose
-    var
-    const
-    static
-    fast
-    receive
-    return
-    // fast is supported in program and function
-    // receive is supported in program only
-    // return is supported in function only
-
-Type
----
-
-id bind:
-
-    <id> is <type> <default>
-    <type> <default>
-    // allow anonymous
-
-default:
-
-    default <expression>
-    <>
-
-type:
-
-    auto
-    <class>
-    <expression> <type of>
+    type <field name> <expression>
+    expr <field name> <expression>
+    var <field name> <expression>
+    static <field name> <expression>
+    fast <field name> <expression>
+    <field name> <expression>
+    // type:
     // built-in:
     //     void typeid
     //     byte boolean (boolean is uint) integer
     //     real (double) string (pair of length and pchar)
     // compile-time generation:
-    //     array of <integer> <type>
-    //     pointer of <type>
-    //     reference of <type>
+    //     array of <integer> <expression>
+    //     pointer of <expression>
+    //     reference of <expression>
     // "array of 10 integer" is the same as "array(10, integer)"
 
-type of:
+field name:
 
-    of <type>
-    <>
+    extends
+    refers
+    receive
+    return
+    <id> imports
+    <id> is
+    // receive: id="__input", supported in program only
+    // return: id="__result", supported in function only
 
 Statement
 ---
@@ -204,7 +163,7 @@ if structure:
 
 for structure:
 
-    for <id> in <expression> <to range> do <statement list> end for
+    for <id> in <expression> <to step> <expression> do <statement list> end for
 
 foreach structure:
 
@@ -220,10 +179,10 @@ condition chain:
     else <statement list>
     <>
 
-to range:
+to step:
 
-    to <expression>
-    downto <expression>
+    to
+    downto
 
 repeat:
 
@@ -291,6 +250,7 @@ call expression:
 call operation:
 
     <call expression>
+    of <call expression>
     <>
 
 access expression:
@@ -364,8 +324,10 @@ value:
     <string>
     <tuple>
     <array>
-    // const boolean yes := -1
-    //                no := 0
+    <class>
+    // expr boolean yes := -1
+    //              no := 0
+    // class: allow inline class
 
 *real*:
 

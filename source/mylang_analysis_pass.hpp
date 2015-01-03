@@ -1,10 +1,9 @@
 #ifndef MYLANG_ANALYSIS_PASS_HPP
 #define MYLANG_ANALYSIS_PASS_HPP
 
-#include "mylang_const.hpp"
 #include "mylang_syntax_spec.hpp"
+#include "mylang_env.hpp"
 #include "mylang_analysis_call.hpp"
-#include "semantic/block.hpp"
 
 namespace myparser {
 
@@ -15,41 +14,56 @@ enum {
 template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
+    libblock::Block *nowenv;
+
     inline void go(const NodeList<> *node) {
         for (const Node<> *child: node->getChildren()) {
             child->runPass(this);
         }
     }
 
-    template <class T>
-    inline libblock::Code *makeCall(
-        T name,
-        libblock::Code *arg
-    ) {
-        libblock::Code *func =
-            new libblock::CodeGet(
-                libblock::name_t(std::forward<T>(name))
-            );
+    using NodeIter = std::vector<Node<> *>::const_iterator;
 
-        return new libblock::CodeCall(func, arg);
+    inline NodeIter scanBegin(const NodeList<> *node) {
+        return node->getChildren().cbegin();
     }
 
     template <class T>
-    inline libblock::Code *makeCall(
+    inline void scanFill(NodeIter &iter, T &target) {
+        for (; !target; ++iter) {
+            (*iter)->runPass(this);
+        }
+    }
+
+    template <class T>
+    static inline libblock::Code *makeGet(T name) {
+        return new libblock::CodeGet(
+            libblock::name_t(std::forward<T>(name))
+        );
+    }
+
+    template <class T>
+    static inline libblock::Code *makeCall(
+        T name,
+        libblock::Code *arg
+    ) {
+        return new libblock::CodeCall(
+            makeGet(std::forward<T>(name)), arg
+        );
+    }
+
+    template <class T>
+    static inline libblock::Code *makeCall2(
         T name,
         libblock::Code *left,
         libblock::Code *right
     ) {
-        // TODO: if (!left || !right)
-
-        libblock::Code *func =
-            new libblock::CodeGet(
-                libblock::name_t(std::forward<T>(name))
-            );
-
-        if (left->getNext() || right->getNext()) {
+        if (!left || !right) {
+            // TODO: ???
+            throw;
+        } else if (left->getNext() || right->getNext()) {
             // TODO: anonymous struct (tuple)
-            return nullptr;
+            throw;
         } else {
             return makeCall(
                 std::forward<T>(name),
@@ -58,14 +72,50 @@ private:
         }
     }
 
+    template <class... ARG>
+    static inline libblock::Code *makeChain(
+        libblock::Code *first,
+        ARG... rest
+    ) {
+        return libblock::Code::pack(
+            first,
+            makeChain(rest...)
+        );
+    }
+
+    template <std::nullptr_t P = nullptr> // iteration finished
+    static inline libblock::Code *makeChain() {
+        return nullptr;
+    }
+
 public:
-    // inline Pass(libblock::Block *base): in_block{base} {} // TODO
+    inline Pass(): nowenv(mylang::makeEnv()) {}
+
+    inline Pass(libblock::Block *env): nowenv(env) {}
 
     // virtual ~Pass() {}
 
-    using ExpressionCall = mylang::DelayedCall<libblock::Code * ()>;
-    using OperationCall = mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
-    using IdCall = mylang::DelayedCall<libblock::name_t ()>;
+    using IdCall =
+        mylang::DelayedCall<libblock::name_t ()>;
+    using ArgumentCall =
+        mylang::DelayedCall<void (libblock::Proto *)>;
+    using ProtoCall =
+        mylang::DelayedCall<std::pair<
+            libblock::name_t,
+            libblock::Proto *
+        > ()>;
+    using BlockCall =
+        mylang::DelayedCall<libblock::Block * ()>;
+    using FieldCall =
+        mylang::DelayedCall<std::pair<
+            libblock::name_t, bool
+        > ()>;
+    using DefinitionCall =
+        mylang::DelayedCall<void (bool)>;
+    using ExpressionCall =
+        mylang::DelayedCall<libblock::Code * ()>;
+    using OperationCall =
+        mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
 
     #define MYLANG_ANALYSIS_LIST(name, namelen) \
         template <size_t I>\
@@ -76,129 +126,319 @@ public:
         void run(const NodeTypedText<MP_STR(name, namelen)> *node)
 
     MYLANG_ANALYSIS_LIST("root", 4) {
+        DefinitionCall def;
         go(node);
-    }
 
-    MYLANG_ANALYSIS_LIST("main structure", 14) {
-        go(node);
+        def(true); // TODO: ???
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
-        //mylang::putCall([=]() {
-            //mylang::DelayedCall<Proto *()> proto;
-        //    return (libblock::Block *) nullptr;
-        //});
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
+
+            ProtoCall proto;
+            scanFill(iter, proto);
+
+            BlockCall block;
+            scanFill(iter, block);
+
+            IdCall checking;
+            scanFill(iter, checking);
+
+            std::pair<
+                libblock::name_t,
+                libblock::Proto *
+            > defpair = proto();
+            libblock::Block *inner = block();
+            libblock::name_t checkid = checking();
+
+            if (checkid.id != "" && checkid.id != defpair.first.id) {
+                // TODO: error
+                throw;
+            }
+
+            inner->setProto(defpair.second);
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, false, hidden,
+                std::move(defpair.first), new libblock::CodeBlock(block())
+            ));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
-        // TODO: proto?
-        //enterBlock();
-        go(node);
-        //exitBlock();
-        // TODO: end?
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
+
+            ProtoCall proto;
+            scanFill(iter, proto);
+
+            BlockCall block;
+            scanFill(iter, block);
+
+            IdCall checking;
+            scanFill(iter, checking);
+
+            std::pair<
+                libblock::name_t,
+                libblock::Proto *
+            > defpair = proto();
+            libblock::Block *inner = block();
+            libblock::name_t checkid = checking();
+
+            if (checkid.id != "" && checkid.id != defpair.first.id) {
+                // TODO: error
+                throw;
+            }
+
+            inner->setProto(defpair.second);
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, false, hidden,
+                std::move(defpair.first), new libblock::CodeBlock(block())
+            ));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("class", 5) {
-        //enterBlock();
         go(node);
-        //exitBlock();
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
-        go(node);
+        if (I == 0) {
+            go(node); // no delayed call
+        } else {
+            // notice: return "" if no checking
+            IdCall::put([=]() {
+                return libblock::name_t(std::string(""));
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("end function", 12) {
-        go(node);
+        if (I == 0) {
+            go(node); // no delayed call
+        } else {
+            // notice: return "" if no checking
+            IdCall::put([=]() {
+                return libblock::name_t(std::string(""));
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
-        go(node);
+        BlockCall::put([=]() -> libblock::Block * {
+            // new block
+            libblock::Block *block = new libblock::Block();
+
+            // analysis AST with a new Pass object
+            Pass<PASS_ANALYSIS> pass(block);
+            pass.go(node);
+
+            block->finish();
+
+            return block;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("public block", 12) {
-        //auto visibility = libblock::Name::V_PUBLIC;
-
-        //in_visibility = &visibility;
-        // TODO: pass1 - create name; pass2 - compile
+        // no delayed call
+        DefinitionCall def;
         go(node);
-        //in_visibility = nullptr;
+
+        def(true);
     }
 
     MYLANG_ANALYSIS_LIST("private block", 13) {
-        //auto visibility = libblock::Name::V_PRIVATE;
+        if (I == 0) {
+            // no delayed call
 
-        //in_visibility = &visibility;
-        // TODO: pass1 - create name; pass2 - compile
-        go(node);
-        //in_visibility = nullptr;
+            DefinitionCall def;
+            go(node);
+
+            def(false);
+        } else {
+            // nothing
+        }
     }
 
     MYLANG_ANALYSIS_LIST("code block", 10) {
-        // TODO: entry = code_main
-        go(node);
+        if (I == 0) {
+            // no delayed call
+
+            ExpressionCall body;
+            go(node);
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_EXPR, false, true,
+                libblock::name_t(mylang::name_code), body()
+            ));
+        } else {
+            // nothing
+        }
     }
 
     MYLANG_ANALYSIS_LIST("function proto", 14) {
-        // TODO: get name & arg list
-        go(node);
+        ProtoCall::put([=]() -> std::pair<
+            libblock::name_t,
+            libblock::Proto *
+        > {
+            NodeIter iter = scanBegin(node);
+
+            IdCall id;
+            scanFill(iter, id);
+
+            ArgumentCall arg;
+            scanFill(iter, arg);
+
+            libblock::Proto *proto = new libblock::Proto();
+
+            arg(proto);
+
+            return {id(), proto};
+        });
     }
 
     MYLANG_ANALYSIS_LIST("argument list", 13) {
-        go(node);
+        ArgumentCall::put([=](libblock::Proto *proto) {
+            if (I == 0) {
+                // member:
+                ArgumentCall left;
+                node->getChildren().front()->runPass(this);
+
+                // next:
+                ArgumentCall right;
+                node->getChildren().back()->runPass(this);
+
+                left(proto);
+                right(proto);
+            } else if (I == 1) {
+                // member:
+                ArgumentCall left;
+                node->getChildren().front()->runPass(this);
+
+                left(proto);
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("argument", 8) {
-        // TODO
-        (void) node; // TODO
+        ArgumentCall::put([=](libblock::Proto *proto) {
+            IdCall id;
+            go(node);
+
+            // assert I < 4
+            libblock::argument_t::Mode mode[] = {
+                libblock::argument_t::M_IN,
+                libblock::argument_t::M_OUT,
+                libblock::argument_t::M_VAR,
+                libblock::argument_t::M_IN
+            };
+
+            proto->putArgument(libblock::argument_t(mode[I], id()));
+        });
     }
 
     MYLANG_ANALYSIS_LIST("definition list", 15) {
-        go(node);
+        DefinitionCall::put([=](bool hidden) {
+            if (I == 0) {
+                // member:
+                DefinitionCall left;
+                node->getChildren().front()->runPass(this);
+
+                // next:
+                DefinitionCall right;
+                node->getChildren().back()->runPass(this);
+
+                left(hidden);
+                right(hidden);
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("definition", 10) {
-        go(node);
-    }
+        if (I != 2) {
+            go(node); // no delayed call
+        } else {
+            DefinitionCall::put([=](bool hidden) {
+                (void) hidden;
 
-    MYLANG_ANALYSIS_LIST("type definition", 15) {
-        // TODO
-        (void) node; // TODO
+                return;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("field definition", 16) {
-        // TODO
-        (void) node; // TODO
+        DefinitionCall::put([=](bool hidden) {
+            NodeIter iter = scanBegin(node);
+
+            FieldCall info;
+            scanFill(iter, info);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            std::pair<libblock::name_t, bool> infopair = info();
+
+            // assert I < 6
+            libblock::field_t::Mode mode[] = {
+                libblock::field_t::M_TYPE,
+                libblock::field_t::M_EXPR,
+                libblock::field_t::M_VAR,
+                libblock::field_t::M_STATIC,
+                libblock::field_t::M_FAST,
+                libblock::field_t::M_VAR
+            };
+
+            nowenv->addField(libblock::field_t(
+                mode[I], infopair.second, hidden,
+                std::move(infopair.first), body()
+            ));
+        });
     }
 
-    MYLANG_ANALYSIS_LIST("field deletion", 14) {
-        // TODO: get id, delete
-        (void) node; // TODO
-    }
+    MYLANG_ANALYSIS_LIST("field name", 10) {
+        FieldCall::put([=]() -> std::pair<
+            libblock::name_t, bool
+        > {
+            switch (I) {
+            case 0:
+                // extends
+                return {mylang::name_base, true};
+            case 1:
+                // refers
+                return {mylang::name_env, true};
+            case 2:
+                // receive
+                return {mylang::name_input, false};
+            case 3:
+                // return
+                return {mylang::name_result, false};
+            case 4:
+                // <id> imports
+                {
+                    IdCall id;
+                    go(node);
 
-    MYLANG_ANALYSIS_LIST("field type", 10) {
-        // TODO
-        (void) node; // TODO
-    }
+                    return {id(), true};
+                }
+            case 5:
+                // <id> is
+                {
+                    IdCall id;
+                    go(node);
 
-    MYLANG_ANALYSIS_LIST("id bind", 7) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("default", 7) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("type", 4) {
-        // TODO
-        (void) node; // TODO
-    }
-
-    MYLANG_ANALYSIS_LIST("type of", 7) {
-        // TODO
-        (void) node; // TODO
+                    return {id(), false};
+                }
+            default:
+                // never reach
+                throw;
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("statement list", 14) {
@@ -206,15 +446,13 @@ public:
             if (I == 0) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 // next:
                 ExpressionCall right;
-
                 node->getChildren().back()->runPass(this);
 
-                return libblock::Code::pack(left(), right());
+                return makeChain(left(), right());
             } else {
                 return nullptr;
             }
@@ -222,81 +460,279 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("statement", 9) {
-        go(node);
+        if (I != 5) {
+            go(node); // no delayed call
+        } else {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                return nullptr;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
-
             go(node);
 
-            return makeCall(
+            return makeCall2(
                 mylang::name_assign,
                 left(),
-                new libblock::CodeGet(
-                    libblock::name_t(mylang::name_input)
-                )
+                makeGet(mylang::name_input)
             );
         });
     }
 
     MYLANG_ANALYSIS_LIST("return", 6) {
         ExpressionCall::put([=]() -> libblock::Code * {
-            ExpressionCall right;
+            if (I == 0) {
+                ExpressionCall right;
+                go(node);
 
-            go(node);
-
-            // TODO: exit current function?
-
-            return makeCall(
-                mylang::name_assign,
-                new libblock::CodeGet(
-                    libblock::name_t(mylang::name_result)
-                ),
-                right()
-            );
+                return makeChain(
+                    makeCall2(
+                        mylang::name_assign,
+                        makeGet(mylang::name_result),
+                        right()
+                    ),
+                    makeCall(
+                        mylang::name_call,
+                        makeGet(mylang::name_caller)
+                    )
+                );
+            } else {
+                return makeCall(
+                    mylang::name_call,
+                    makeGet(mylang::name_caller)
+                );
+            }
         });
     }
 
     MYLANG_ANALYSIS_LIST("structure", 9) {
-        // TODO
-        (void) node; // TODO
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("if structure", 12) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
+            ExpressionCall cond;
+            scanFill(iter, cond);
+
+            ExpressionCall body1;
+            scanFill(iter, body1);
+
+            ExpressionCall body2;
+            scanFill(iter, body2);
+
+            libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_mid), cond()
+                )
+            );
+
+            libblock::Code *fin = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_end)
+            );
+
+            return makeChain(
+                jump,
+                    body1(), fin,
+                lbl_mid,
+                    body2(),
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("for structure", 13) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            // notice: need debug!!!
+
+            NodeIter iter = scanBegin(node);
+
+            IdCall target;
+            scanFill(iter, target);
+
+            ExpressionCall initval;
+            scanFill(iter, initval);
+
+            IdCall step;
+            scanFill(iter, step);
+
+            ExpressionCall finval;
+            scanFill(iter, finval);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::name_t targetname = target();
+
+            libblock::Code *init = makeCall2(
+                mylang::name_assign, makeGet(targetname), initval()
+            );
+
+            libblock::Code *cond = makeCall2(
+                mylang::name_not_equal, makeGet(targetname), finval()
+            );
+
+            libblock::Code *dostep = makeCall(
+                step(), makeGet(targetname)
+            );
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_end),
+                    cond
+                )
+            );
+
+            libblock::Code *loop = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_begin)
+            );
+
+            return makeChain(
+                init,
+                lbl_begin, jump,
+                    body(), dostep, loop,
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("foreach structure", 17) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            // TODO
+            (void) node;
+            return nullptr;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("while structure", 15) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
+            ExpressionCall cond;
+            scanFill(iter, cond);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_end), cond()
+                )
+            );
+
+            libblock::Code *loop = makeCall(
+                mylang::name_goto,
+                new libblock::CodeLabelRef(lbl_begin)
+            );
+
+            return makeChain(
+                lbl_begin, jump,
+                    body(), loop,
+                lbl_end
+            );
+        });
     }
 
     MYLANG_ANALYSIS_LIST("condition chain", 15) {
-        // TODO
-        (void) node; // TODO
+        if (I == 0) {
+            // the same as <if>
+            ExpressionCall::put([=]() -> libblock::Code * {
+                NodeIter iter = scanBegin(node);
+
+                ExpressionCall cond;
+                scanFill(iter, cond);
+
+                ExpressionCall body1;
+                scanFill(iter, body1);
+
+                ExpressionCall body2;
+                scanFill(iter, body2);
+
+                libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
+                libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+
+                libblock::Code *jump = makeCall(
+                    mylang::name_branch,
+                    makeChain(
+                        new libblock::CodeLabelRef(lbl_mid), cond()
+                    )
+                );
+
+                libblock::Code *fin = makeCall(
+                    mylang::name_goto,
+                    new libblock::CodeLabelRef(lbl_end)
+                );
+
+                return makeChain(
+                    jump,
+                        body1(), fin,
+                    lbl_mid,
+                        body2(),
+                    lbl_end
+                );
+            });
+        } else if (I == 1) {
+            go(node); // call the only member // no delayed call
+        } else {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                return nullptr;
+            });
+        }
     }
 
-    MYLANG_ANALYSIS_LIST("to range", 8) {
-        // TODO
-        (void) node; // TODO
+    MYLANG_ANALYSIS_LIST("to step", 7) {
+        (void) node;
+
+        IdCall::put([=]() {
+            if (I == 0) {
+                // to
+                return libblock::name_t(mylang::name_next);
+            } else {
+                // downto
+                return libblock::name_t(mylang::name_prev);
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("repeat", 6) {
-        // TODO
-        (void) node; // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            NodeIter iter = scanBegin(node);
+
+            ExpressionCall body;
+            scanFill(iter, body);
+
+            ExpressionCall cond;
+            scanFill(iter, cond);
+
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+
+            libblock::Code *jump = makeCall(
+                mylang::name_branch,
+                makeChain(
+                    new libblock::CodeLabelRef(lbl_begin), cond()
+                )
+            );
+
+            return makeChain(lbl_begin, body(), jump);
+        });
     }
 
     MYLANG_ANALYSIS_LIST("expression list", 15) {
@@ -304,19 +740,16 @@ public:
             if (I == 0) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 // next:
                 ExpressionCall right;
-
                 node->getChildren().back()->runPass(this);
 
-                return libblock::Code::pack(left(), right());
+                return makeChain(left(), right());
             } else if (I == 1) {
                 // member:
                 ExpressionCall left;
-
                 node->getChildren().front()->runPass(this);
 
                 return left();
@@ -334,7 +767,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -346,10 +778,9 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -364,7 +795,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -376,10 +806,9 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -394,7 +823,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -406,10 +834,9 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -424,7 +851,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -436,10 +862,9 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
-
                 go(node);
 
-                return makeCall(
+                return makeCall2(
                     op(),
                     left(),
                     right()
@@ -451,24 +876,26 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("unary expression", 16) {
-        ExpressionCall::put([=]() -> libblock::Code * {
-            IdCall op;
-            ExpressionCall right;
+        if (I == 0) {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                IdCall op;
+                ExpressionCall right;
+                go(node);
 
-            go(node);
-
-            return makeCall(
-                op(),
-                right()
-            );
-        });
+                return makeCall(
+                    op(),
+                    right()
+                );
+            });
+        } else {
+            go(node); // no delayed call
+        }
     }
 
     MYLANG_ANALYSIS_LIST("call expression", 15) {
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -479,7 +906,6 @@ public:
         OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
-
                 go(node);
 
                 return new libblock::CodeCall(left(), right());
@@ -493,7 +919,6 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             ExpressionCall left;
             OperationCall root;
-
             go(node);
 
             return root(left);
@@ -504,7 +929,6 @@ public:
         OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
-
                 go(node);
 
                 return new libblock::CodeWith(left(), right());
@@ -609,7 +1033,6 @@ public:
                 // <id>
                 {
                     IdCall value;
-
                     go(node);
 
                     return new libblock::CodeGet(value());
@@ -618,7 +1041,6 @@ public:
                 // <real>
                 {
                     mylang::DelayedCall<mylang::ml_real ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_real>(value());
@@ -627,7 +1049,6 @@ public:
                 // <integer>
                 {
                     mylang::DelayedCall<mylang::ml_integer ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_integer>(value());
@@ -636,7 +1057,6 @@ public:
                 // <byte>
                 {
                     mylang::DelayedCall<mylang::ml_byte ()> value;
-
                     go(node);
 
                     return new libblock::CodeLiteral<mylang::ml_byte>(value());
@@ -645,7 +1065,6 @@ public:
                 // <string>
                 {
                     mylang::DelayedCall<std::string ()> value;
-
                     go(node);
 
                     libblock::Code *arg = nullptr;
@@ -657,7 +1076,7 @@ public:
                                 mylang::ml_byte(*iter)
                             );
 
-                        arg = libblock::Code::pack(prev, arg);
+                        arg = makeChain(prev, arg);
                     }
 
                     return makeCall(
@@ -669,7 +1088,6 @@ public:
                 // <tuple>
                 {
                     ExpressionCall tuple;
-
                     go(node);
 
                     // tuple is always inline
@@ -679,7 +1097,6 @@ public:
                 // <array>
                 {
                     ExpressionCall tuple;
-
                     go(node);
 
                     return makeCall(
@@ -687,9 +1104,17 @@ public:
                         tuple()
                     );
                 }
+            case 7:
+                // <class>
+                {
+                    BlockCall block;
+                    go(node);
+
+                    return new libblock::CodeBlock(block());
+                }
             default:
                 // never reach
-                return nullptr;
+                throw;
             }
         });
     }
@@ -764,8 +1189,9 @@ public:
 
     template <class N, class E>
     void run(const NodeTyped<N, NodeError<E>> *node) {
-        // TODO: never reach if no parsing error
+        // never reach if no parsing error
         (void) node;
+        throw;
     }
 };
 

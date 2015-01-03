@@ -22,12 +22,11 @@ public:
     ): NodeTextOrError<E>(input, end) {
         static const std::set<std::string> keywords = {
             "program", "function", "class", "end",
-            "is", "begin", "in", "out",
-            "type", "extends", "enclose",
-            "var", "const", "static", "fast", "receive", "return",
-            "default", "auto", "of", "pause",
+            "is", "begin", "in", "out", // "var",
+            "type", "expr", "var", "static", "fast",
+            "extends", "refers", "receive", "return", "imports", // "is",
             "if", "then", "for", "do", "foreach", "while",
-            "elif", "else", "to", "downto", "repeat", "until",
+            "elif", "else", "to", "downto", "repeat", "until", "of",
             "or", "xor", "div", "mod", "and", "shl", "shr", "rol", "ror", "not"
         };
 
