@@ -115,7 +115,7 @@ public:
     using ExpressionCall =
         mylang::DelayedCall<libblock::Code * ()>;
     using OperationCall =
-        mylang::DelayedCall<libblock::Code * (ExpressionCall &)>;
+        mylang::DelayedCall<libblock::Code * (libblock::Code *)>;
 
     #define MYLANG_ANALYSIS_LIST(name, namelen) \
         template <size_t I>\
@@ -769,12 +769,12 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("assign operation", 16) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
@@ -782,11 +782,11 @@ public:
 
                 return makeCall2(
                     op(),
-                    left(),
+                    left,
                     right()
                 );
             } else {
-                return left();
+                return left;
             }
         });
     }
@@ -797,12 +797,12 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("relative operation", 18) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
@@ -810,11 +810,11 @@ public:
 
                 return makeCall2(
                     op(),
-                    left(),
+                    left,
                     right()
                 );
             } else {
-                return left();
+                return left;
             }
         });
     }
@@ -825,12 +825,12 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("additive operation", 18) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
@@ -838,11 +838,11 @@ public:
 
                 return makeCall2(
                     op(),
-                    left(),
+                    left,
                     right()
                 );
             } else {
-                return left();
+                return left;
             }
         });
     }
@@ -853,12 +853,12 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("multiplicative operation", 24) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
@@ -866,11 +866,11 @@ public:
 
                 return makeCall2(
                     op(),
-                    left(),
+                    left,
                     right()
                 );
             } else {
-                return left();
+                return left;
             }
         });
     }
@@ -898,19 +898,19 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("call operation", 14) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
                 go(node);
 
-                return new libblock::CodeCall(left(), right());
+                return new libblock::CodeCall(left, right());
             } else {
-                return left();
+                return left;
             }
         });
     }
@@ -921,19 +921,19 @@ public:
             OperationCall root;
             go(node);
 
-            return root(left);
+            return root(left());
         });
     }
 
     MYLANG_ANALYSIS_LIST("access operation", 16) {
-        OperationCall::put([=](ExpressionCall &left) -> libblock::Code * {
+        OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
                 go(node);
 
-                return new libblock::CodeWith(left(), right());
+                return new libblock::CodeWith(left, right());
             } else {
-                return left();
+                return left;
             }
         });
     }
