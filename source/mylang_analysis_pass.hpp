@@ -126,7 +126,10 @@ public:
         void run(const NodeTypedText<MP_STR(name, namelen)> *node)
 
     MYLANG_ANALYSIS_LIST("root", 4) {
+        DefinitionCall def;
         go(node);
+
+        def(true); // TODO: ???
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
@@ -240,7 +243,6 @@ public:
 
     MYLANG_ANALYSIS_LIST("public block", 12) {
         // no delayed call
-
         DefinitionCall def;
         go(node);
 
@@ -248,24 +250,32 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("private block", 13) {
-        // no delayed call
+        if (I == 0) {
+            // no delayed call
 
-        DefinitionCall def;
-        go(node);
+            DefinitionCall def;
+            go(node);
 
-        def(false);
+            def(false);
+        } else {
+            // nothing
+        }
     }
 
     MYLANG_ANALYSIS_LIST("code block", 10) {
-        // no delayed call
+        if (I == 0) {
+            // no delayed call
 
-        ExpressionCall body;
-        go(node);
+            ExpressionCall body;
+            go(node);
 
-        nowenv->addField(libblock::field_t(
-            libblock::field_t::M_EXPR, false, true,
-            libblock::name_t(mylang::name_code), body()
-        ));
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_EXPR, false, true,
+                libblock::name_t(mylang::name_code), body()
+            ));
+        } else {
+            // nothing
+        }
     }
 
     MYLANG_ANALYSIS_LIST("function proto", 14) {
@@ -351,7 +361,15 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("definition", 10) {
-        go(node);
+        if (I != 2) {
+            go(node); // no delayed call
+        } else {
+            DefinitionCall::put([=](bool hidden) {
+                (void) hidden;
+
+                return;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("field definition", 16) {
@@ -442,7 +460,13 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("statement", 9) {
-        go(node);
+        if (I != 5) {
+            go(node); // no delayed call
+        } else {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                return nullptr;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {
@@ -587,10 +611,12 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("foreach structure", 17) {
-        // ExpressionCall::put([=]() -> libblock::Code * {
-        //     // TODO
-        // });
-        (void) node;
+        // TODO
+        ExpressionCall::put([=]() -> libblock::Code * {
+            // TODO
+            (void) node;
+            return nullptr;
+        });
     }
 
     MYLANG_ANALYSIS_LIST("while structure", 15) {
@@ -851,16 +877,20 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("unary expression", 16) {
-        ExpressionCall::put([=]() -> libblock::Code * {
-            IdCall op;
-            ExpressionCall right;
-            go(node);
+        if (I == 0) {
+            ExpressionCall::put([=]() -> libblock::Code * {
+                IdCall op;
+                ExpressionCall right;
+                go(node);
 
-            return makeCall(
-                op(),
-                right()
-            );
-        });
+                return makeCall(
+                    op(),
+                    right()
+                );
+            });
+        } else {
+            go(node); // no delayed call
+        }
     }
 
     MYLANG_ANALYSIS_LIST("call expression", 15) {
