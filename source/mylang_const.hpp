@@ -51,16 +51,15 @@ const std::string name_next = "__next";
 // builtin interfaces
 
 const std::string name_array = "__array"; // arg: (...)
-// jump in the same block
-const std::string name_goto = "__goto"; // arg: (tag)
-const std::string name_branch = "__branch"; // arg: (tag, cond) // if !cond then goto(tag)
-// jump with block switch
+const std::string name_label = "__label"; // arg: (lbl)
+const std::string name_goto = "__goto"; // arg: (lbl)
+const std::string name_branch = "__branch"; // arg: (lbl, cond) // if !cond then goto(lbl)
 const std::string name_call = "__call"; // arg: (obj)
 
 // builtin values
 
 const std::string name_self = "__self"; // TODO: var list
-const std::string name_code = "__code"; // TODO: code (as constexpr)
+const std::string name_code = "__code";
 
 const std::string name_base = "__base"; // extends
 const std::string name_env = "__env"; // refers

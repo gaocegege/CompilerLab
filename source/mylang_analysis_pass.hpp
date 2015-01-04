@@ -88,9 +88,38 @@ private:
         return nullptr;
     }
 
-public:
-    inline Pass(): nowenv(mylang::makeEnv()) {}
+    static inline libblock::Code *makeCallLabel(
+        libblock::Code *lbl
+    ) {
+        return makeCall(
+            mylang::name_label,
+            lbl
+        );
+    }
 
+    static inline libblock::Code *makeCallGoto(
+        libblock::Code *lbl
+    ) {
+        return makeCall(
+            mylang::name_goto,
+            new libblock::CodeRef(lbl)
+        );
+    }
+
+    static inline libblock::Code *makeCallBranch(
+        libblock::Code *lbl,
+        libblock::Code *cond
+    ) {
+        return makeCall(
+            mylang::name_branch,
+            makeChain(
+                new libblock::CodeRef(lbl),
+                cond
+            )
+        );
+    }
+
+public:
     inline Pass(libblock::Block *env): nowenv(env) {}
 
     // virtual ~Pass() {}
@@ -134,16 +163,10 @@ public:
 
     MYLANG_ANALYSIS_LIST("program", 7) {
         DefinitionCall::put([=](bool hidden) {
-            NodeIter iter = scanBegin(node);
-
             ProtoCall proto;
-            scanFill(iter, proto);
-
             BlockCall block;
-            scanFill(iter, block);
-
             IdCall checking;
-            scanFill(iter, checking);
+            go(node);
 
             std::pair<
                 libblock::name_t,
@@ -161,23 +184,17 @@ public:
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first), new libblock::CodeBlock(block())
+                std::move(defpair.first), new libblock::CodeBlock(inner)
             ));
         });
     }
 
     MYLANG_ANALYSIS_LIST("function", 8) {
         DefinitionCall::put([=](bool hidden) {
-            NodeIter iter = scanBegin(node);
-
             ProtoCall proto;
-            scanFill(iter, proto);
-
             BlockCall block;
-            scanFill(iter, block);
-
             IdCall checking;
-            scanFill(iter, checking);
+            go(node);
 
             std::pair<
                 libblock::name_t,
@@ -195,7 +212,7 @@ public:
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first), new libblock::CodeBlock(block())
+                std::move(defpair.first), new libblock::CodeBlock(inner)
             ));
         });
     }
@@ -230,6 +247,7 @@ public:
         BlockCall::put([=]() -> libblock::Block * {
             // new block
             libblock::Block *block = new libblock::Block();
+            // TODO: add field "self" and "parent"?
 
             // analysis AST with a new Pass object
             Pass<PASS_ANALYSIS> pass(block);
@@ -283,13 +301,9 @@ public:
             libblock::name_t,
             libblock::Proto *
         > {
-            NodeIter iter = scanBegin(node);
-
             IdCall id;
-            scanFill(iter, id);
-
             ArgumentCall arg;
-            scanFill(iter, arg);
+            go(node);
 
             libblock::Proto *proto = new libblock::Proto();
 
@@ -374,13 +388,9 @@ public:
 
     MYLANG_ANALYSIS_LIST("field definition", 16) {
         DefinitionCall::put([=](bool hidden) {
-            NodeIter iter = scanBegin(node);
-
             FieldCall info;
-            scanFill(iter, info);
-
             ExpressionCall body;
-            scanFill(iter, body);
+            go(node);
 
             std::pair<libblock::name_t, bool> infopair = info();
 
@@ -528,24 +538,18 @@ public:
             libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
             libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
 
-            libblock::Code *jump = makeCall(
-                mylang::name_branch,
-                makeChain(
-                    new libblock::CodeLabelRef(lbl_mid), cond()
-                )
-            );
+            libblock::Code *mid = makeCallLabel(lbl_mid);
+            libblock::Code *end = makeCallLabel(lbl_end);
 
-            libblock::Code *fin = makeCall(
-                mylang::name_goto,
-                new libblock::CodeLabelRef(lbl_end)
-            );
+            libblock::Code *jump = makeCallBranch(lbl_mid, cond());
+            libblock::Code *fin = makeCallGoto(lbl_end);
 
             return makeChain(
                 jump,
                     body1(), fin,
-                lbl_mid,
+                mid,
                     body2(),
-                lbl_end
+                end
             );
         });
     }
@@ -571,9 +575,6 @@ public:
             ExpressionCall body;
             scanFill(iter, body);
 
-            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
-            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
-
             libblock::name_t targetname = target();
 
             libblock::Code *init = makeCall2(
@@ -588,24 +589,20 @@ public:
                 step(), makeGet(targetname)
             );
 
-            libblock::Code *jump = makeCall(
-                mylang::name_branch,
-                makeChain(
-                    new libblock::CodeLabelRef(lbl_end),
-                    cond
-                )
-            );
+            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
 
-            libblock::Code *loop = makeCall(
-                mylang::name_goto,
-                new libblock::CodeLabelRef(lbl_begin)
-            );
+            libblock::Code *begin = makeCallLabel(lbl_begin);
+            libblock::Code *end = makeCallLabel(lbl_end);
+
+            libblock::Code *jump = makeCallBranch(lbl_end, cond);
+            libblock::Code *loop = makeCallGoto(lbl_begin);
 
             return makeChain(
                 init,
-                lbl_begin, jump,
+                begin, jump,
                     body(), dostep, loop,
-                lbl_end
+                end
             );
         });
     }
@@ -631,22 +628,16 @@ public:
             libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
             libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
 
-            libblock::Code *jump = makeCall(
-                mylang::name_branch,
-                makeChain(
-                    new libblock::CodeLabelRef(lbl_end), cond()
-                )
-            );
+            libblock::Code *begin = makeCallLabel(lbl_begin);
+            libblock::Code *end = makeCallLabel(lbl_end);
 
-            libblock::Code *loop = makeCall(
-                mylang::name_goto,
-                new libblock::CodeLabelRef(lbl_begin)
-            );
+            libblock::Code *jump = makeCallBranch(lbl_end, cond());
+            libblock::Code *loop = makeCallGoto(lbl_begin);
 
             return makeChain(
-                lbl_begin, jump,
+                begin, jump,
                     body(), loop,
-                lbl_end
+                end
             );
         });
     }
@@ -669,24 +660,18 @@ public:
                 libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
                 libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
 
-                libblock::Code *jump = makeCall(
-                    mylang::name_branch,
-                    makeChain(
-                        new libblock::CodeLabelRef(lbl_mid), cond()
-                    )
-                );
+                libblock::Code *mid = makeCallLabel(lbl_mid);
+                libblock::Code *end = makeCallLabel(lbl_end);
 
-                libblock::Code *fin = makeCall(
-                    mylang::name_goto,
-                    new libblock::CodeLabelRef(lbl_end)
-                );
+                libblock::Code *jump = makeCallBranch(lbl_mid, cond());
+                libblock::Code *fin = makeCallGoto(lbl_end);
 
                 return makeChain(
                     jump,
                         body1(), fin,
-                    lbl_mid,
+                    mid,
                         body2(),
-                    lbl_end
+                    end
                 );
             });
         } else if (I == 1) {
@@ -724,14 +709,11 @@ public:
 
             libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
 
-            libblock::Code *jump = makeCall(
-                mylang::name_branch,
-                makeChain(
-                    new libblock::CodeLabelRef(lbl_begin), cond()
-                )
-            );
+            libblock::Code *begin = makeCallLabel(lbl_begin);
 
-            return makeChain(lbl_begin, body(), jump);
+            libblock::Code *jump = makeCallBranch(lbl_begin, cond());
+
+            return makeChain(begin, body(), jump);
         });
     }
 
