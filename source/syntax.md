@@ -217,8 +217,11 @@ relative expression:
 
 relative operation:
 
-    <relation> <relative expression>
+    <relation> <additive expression> <relative operation>
     <>
+    // left-asso
+    // <relation> <relative expression>
+    // <>
 
 additive expression:
 
@@ -226,8 +229,11 @@ additive expression:
 
 additive operation:
 
-    <addition> <additive expression>
+    <addition> <multiplicative expression> <additive operation>
     <>
+    // left-asso
+    // <addition> <additive expression>
+    // <>
 
 multiplicative expression:
 
@@ -235,8 +241,11 @@ multiplicative expression:
 
 multiplicative operation:
 
-    <multiplication> <multiplicative expression>
+    <multiplication> <unary expression> <multiplicative operation>
     <>
+    // left-asso
+    // <multiplication> <multiplicative expression>
+    // <>
 
 unary expression:
 
@@ -259,8 +268,11 @@ access expression:
 
 access operation:
 
-    . <access expression>
+    . <value> <access operation>
     <>
+    // left-asso
+    // . <access expression>
+    // <>
 
 Operator
 ---

@@ -806,13 +806,14 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
+                OperationCall next;
                 go(node);
 
-                return makeCall2(
+                return next(makeCall2(
                     op(),
                     left,
                     right()
-                );
+                ));
             } else {
                 return left;
             }
@@ -834,13 +835,14 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
+                OperationCall next;
                 go(node);
 
-                return makeCall2(
+                return next(makeCall2(
                     op(),
                     left,
                     right()
-                );
+                ));
             } else {
                 return left;
             }
@@ -862,13 +864,14 @@ public:
             if (I == 0) {
                 IdCall op;
                 ExpressionCall right;
+                OperationCall next;
                 go(node);
 
-                return makeCall2(
+                return next(makeCall2(
                     op(),
                     left,
                     right()
-                );
+                ));
             } else {
                 return left;
             }
@@ -929,9 +932,10 @@ public:
         OperationCall::put([=](libblock::Code *left) -> libblock::Code * {
             if (I == 0) {
                 ExpressionCall right;
+                OperationCall next;
                 go(node);
 
-                return new libblock::CodeWith(left, right());
+                return next(new libblock::CodeWith(left, right()));
             } else {
                 return left;
             }

@@ -578,7 +578,9 @@ public RuleList<MP_STR("relative operation", 18),
     RuleLine<
         RuleItemRef<MP_STR("relation", 8)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("relative expression", 19)>
+        RuleItemRef<MP_STR("additive expression", 19)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("relative operation", 18)>
     >,
     RuleLine<
         
@@ -601,7 +603,9 @@ public RuleList<MP_STR("additive operation", 18),
     RuleLine<
         RuleItemRef<MP_STR("addition", 8)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("additive expression", 19)>
+        RuleItemRef<MP_STR("multiplicative expression", 25)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("additive operation", 18)>
     >,
     RuleLine<
         
@@ -624,7 +628,9 @@ public RuleList<MP_STR("multiplicative operation", 24),
     RuleLine<
         RuleItemRef<MP_STR("multiplication", 14)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("multiplicative expression", 25)>
+        RuleItemRef<MP_STR("unary expression", 16)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("multiplicative operation", 24)>
     >,
     RuleLine<
         
@@ -686,7 +692,9 @@ public RuleList<MP_STR("access operation", 16),
     RuleLine<
         RuleItemKeyword<MP_STR(".", 1)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("access expression", 17)>
+        RuleItemRef<MP_STR("value", 5)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("access operation", 16)>
     >,
     RuleLine<
         
