@@ -43,8 +43,13 @@ void test() {
     x2->runPass(&hl);
     std::cout << std::endl << std::endl;
 
-    PassAnalysis<> an;
+
+    auto env = mylang::makeEnv();
+    PassAnalysis<> an(env);
+
     x2->runPass(&an);
+
+    delete env;
 
     delete x2;
 }
