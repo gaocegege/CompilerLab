@@ -63,16 +63,16 @@ const std::string name_label = "__label"; // arg: (lbl)
 const std::string name_goto = "__goto"; // arg: (lbl)
 const std::string name_branch = "__branch"; // arg: (lbl, cond) // if !cond then goto(lbl)
 const std::string name_call = "__call"; // arg: (obj)
+const std::string name_env = "__env"; // arg: () // get current env
 
 // builtin values
 
-const std::string name_self = "__self"; // TODO
 const std::string name_code = "__code";
 
 const std::string name_base = "__base"; // extends
-const std::string name_env = "__env"; // refers
-const std::string name_input = "__input"; // receive
-const std::string name_result = "__result"; // return
+const std::string name_parent = "__parent"; // refers
+const std::string name_input = "__input"; // receive // "left/get" call
+const std::string name_result = "__result"; // return // "right/set" call
 
 const std::string name_caller = "__caller";
 

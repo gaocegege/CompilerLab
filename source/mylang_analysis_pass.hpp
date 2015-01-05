@@ -182,9 +182,12 @@ public:
 
             inner->setProto(defpair.second);
 
+            inner->finish();
+
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first), new libblock::CodeBlock(inner)
+                std::move(defpair.first),
+                new libblock::CodeBlock(inner)
             ));
         });
     }
@@ -210,9 +213,23 @@ public:
 
             inner->setProto(defpair.second);
 
+            // auto query = inner->query(mylang::name_parent);
+            // if (query.first == query.second) {
+            //     // not defined
+
+            //     inner->addField(libblock::field_t(
+            //         libblock::field_t::M_FAST, false, true,
+            //         libblock::name_t(mylang::name_parent),
+            //         new libblock::CodeBlock(nowenv) // TODO: ref????
+            //     ));
+            // }
+
+            inner->finish();
+
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first), new libblock::CodeBlock(inner)
+                std::move(defpair.first),
+                new libblock::CodeBlock(inner)
             ));
         });
     }
@@ -247,13 +264,10 @@ public:
         BlockCall::put([=]() -> libblock::Block * {
             // new block
             libblock::Block *block = new libblock::Block();
-            // TODO: add field "self" and "env"?
 
             // analysis AST with a new Pass object
             Pass<PASS_ANALYSIS> pass(block);
             pass.go(node);
-
-            block->finish();
 
             return block;
         });
@@ -345,6 +359,7 @@ public:
 
             // assert I < 4
             libblock::argument_t::Mode mode[] = {
+                libblock::argument_t::M_TYPE,
                 libblock::argument_t::M_IN,
                 libblock::argument_t::M_OUT,
                 libblock::argument_t::M_VAR,
@@ -421,7 +436,7 @@ public:
                 return {mylang::name_base, true};
             case 1:
                 // refers
-                return {mylang::name_env, true};
+                return {mylang::name_parent, true};
             case 2:
                 // receive
                 return {mylang::name_input, false};
@@ -1101,7 +1116,10 @@ public:
                     BlockCall block;
                     go(node);
 
-                    return new libblock::CodeBlock(block());
+                    libblock::Block *inner = block();
+                    inner->finish();
+
+                    return new libblock::CodeBlock(inner);
                 }
             default:
                 // never reach
