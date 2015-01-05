@@ -171,6 +171,11 @@ template<>
 class RuleDef<MP_STR("argument", 8)>:
 public RuleList<MP_STR("argument", 8),
     RuleLine<
+        RuleItemKeyword<MP_STR("type", 4)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("id", 2)>
+    >,
+    RuleLine<
         RuleItemKeyword<MP_STR("in", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("id", 2)>
