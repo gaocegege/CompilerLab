@@ -1031,26 +1031,26 @@ public:
             case 1:
                 // <real>
                 {
-                    mylang::DelayedCall<mylang::ml_real ()> value;
+                    mylang::DelayedCall<mylang::LangSpec::real ()> value;
                     go(node);
 
-                    return new libblock::CodeLiteral<mylang::ml_real>(value());
+                    return new libblock::CodeLiteral<mylang::LangSpec::real>(value());
                 }
             case 2:
                 // <integer>
                 {
-                    mylang::DelayedCall<mylang::ml_integer ()> value;
+                    mylang::DelayedCall<mylang::LangSpec::integer ()> value;
                     go(node);
 
-                    return new libblock::CodeLiteral<mylang::ml_integer>(value());
+                    return new libblock::CodeLiteral<mylang::LangSpec::integer>(value());
                 }
             case 3:
                 // <byte>
                 {
-                    mylang::DelayedCall<mylang::ml_byte ()> value;
+                    mylang::DelayedCall<mylang::LangSpec::byte ()> value;
                     go(node);
 
-                    return new libblock::CodeLiteral<mylang::ml_byte>(value());
+                    return new libblock::CodeLiteral<mylang::LangSpec::byte>(value());
                 }
             case 4:
                 // <string>
@@ -1063,8 +1063,8 @@ public:
 
                     for (auto iter = data.rbegin(); iter != data.rend(); ++iter) {
                         libblock::Code *prev =
-                            new libblock::CodeLiteral<mylang::ml_byte>(
-                                mylang::ml_byte(*iter)
+                            new libblock::CodeLiteral<mylang::LangSpec::byte>(
+                                mylang::LangSpec::byte(*iter)
                             );
 
                         arg = makeChain(prev, arg);
@@ -1111,19 +1111,19 @@ public:
     }
 
     MYLANG_ANALYSIS_TEXT("real", 4) {
-        mylang::DelayedCall<mylang::ml_real ()>::put([=]() {
+        mylang::DelayedCall<mylang::LangSpec::real ()>::put([=]() {
             return node->getData();
         });
     }
 
     MYLANG_ANALYSIS_TEXT("integer", 7) {
-        mylang::DelayedCall<mylang::ml_integer ()>::put([=]() {
+        mylang::DelayedCall<mylang::LangSpec::integer ()>::put([=]() {
             return node->getData();
         });
     }
 
     MYLANG_ANALYSIS_TEXT("byte", 4) {
-        mylang::DelayedCall<mylang::ml_byte ()>::put([=]() {
+        mylang::DelayedCall<mylang::LangSpec::byte ()>::put([=]() {
             return node->getRaw()[0];
         });
     }

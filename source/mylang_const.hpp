@@ -7,9 +7,17 @@ namespace mylang {
 
 // type
 
-using ml_real = double;
-using ml_integer = long;
-using ml_byte = char;
+class LangSpec {
+private:
+    inline LangSpec() = delete; // force static
+
+    // virtual ~LangSpec() = delete;
+
+public:
+    using real = double;
+    using integer = long;
+    using byte = char;
+};
 
 // operators
 

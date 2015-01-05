@@ -53,14 +53,14 @@ template <>
 class NodeBaseText<MP_STR("real", 4)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<mylang::ml_real, ErrorLiteral>;
+    using Type = NodeData<mylang::LangSpec::real, ErrorLiteral>;
 };
 
 template <>
 class NodeBaseText<MP_STR("integer", 7)> {
 public:
     template <class TX = void> // actually not a template
-    using Type = NodeData<mylang::ml_integer, ErrorLiteral>;
+    using Type = NodeData<mylang::LangSpec::integer, ErrorLiteral>;
 };
 
 template <>
