@@ -1,8 +1,8 @@
 #ifndef MYLANG_ANALYSIS_PASS_HPP
 #define MYLANG_ANALYSIS_PASS_HPP
 
+#include "semantic/block.hpp"
 #include "mylang_syntax_spec.hpp"
-#include "mylang_env.hpp"
 #include "mylang_analysis_call.hpp"
 
 namespace myparser {
@@ -48,7 +48,7 @@ private:
         libblock::Code *arg
     ) {
         return new libblock::CodeCall(
-            makeGet(std::forward<T>(name)), arg
+            makeGet(std::forward<T>(name)), arg, true
         );
     }
 
@@ -893,7 +893,12 @@ public:
                 ExpressionCall right;
                 go(node);
 
-                return new libblock::CodeCall(left, right());
+                return new libblock::CodeCall(left, right(), true);
+            } else if (I == 1) {
+                ExpressionCall right;
+                go(node);
+
+                return new libblock::CodeCall(left, right(), false);
             } else {
                 return left;
             }

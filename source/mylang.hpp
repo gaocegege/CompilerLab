@@ -5,6 +5,7 @@
 #include "mylang_syntax_spec.hpp"
 #include "mylang_syntax.hpp"
 #include "mylang_analysis_pass.hpp"
+#include "mylang_env.hpp"
 
 namespace mylang {
 
