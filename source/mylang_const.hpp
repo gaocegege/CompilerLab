@@ -66,7 +66,7 @@ const std::string name_call = "__call"; // arg: (obj)
 
 // builtin values
 
-const std::string name_self = "__self"; // TODO: var list
+const std::string name_self = "__self"; // TODO
 const std::string name_code = "__code";
 
 const std::string name_base = "__base"; // extends

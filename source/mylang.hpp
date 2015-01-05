@@ -22,6 +22,8 @@ using myparser::Parser;
 template <class TX = void> // actually not a template
 using PassAnalysis = myparser::Pass<myparser::PASS_ANALYSIS>;
 
+using libblock::CodeVisitorRepr;
+
 }
 
 #endif

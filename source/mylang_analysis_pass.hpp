@@ -247,7 +247,7 @@ public:
         BlockCall::put([=]() -> libblock::Block * {
             // new block
             libblock::Block *block = new libblock::Block();
-            // TODO: add field "self" and "parent"?
+            // TODO: add field "self" and "env"?
 
             // analysis AST with a new Pass object
             Pass<PASS_ANALYSIS> pass(block);

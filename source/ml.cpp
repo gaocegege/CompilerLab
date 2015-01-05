@@ -49,6 +49,8 @@ void test() {
 
     x2->runPass(&an);
 
+    (void) CodeVisitorRepr(env, std::cout);
+
     delete env;
 
     delete x2;
