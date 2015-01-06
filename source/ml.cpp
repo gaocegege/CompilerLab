@@ -1,14 +1,28 @@
 #if 0
 python gen_parser.py
-# g++ -std=c++11 -Wall -Wextra -pedantic -O0 *.cpp -o ml_gcc $@ &&\
-#     strip ml_gcc &&\
-#     ./ml_gcc
-# clang++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O0 *.cpp -o ml_clang $@ &&\
-#     strip ml_clang &&\
-#     ./ml_clang
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O0 *.cpp -o ml_clang $@ &&\
-#    strip ml_clang &&\
-    ./ml_clang
+
+# === gcc ===
+# g++ -std=c++11 -Wall -Wextra -pedantic -O0\
+#     *.cpp -o ml_gcc $@ &&\
+# ./ml_gcc
+
+# === clang libstdc++ ===
+# clang++ -std=c++11 -stdlib=libstdc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
+#     *.cpp -o ml_clang $@ &&\
+# ./ml_clang
+
+# === clang libc++ ===
+clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
+    *.cpp -o ml_clang $@ &&\
+./ml_clang
+
+# === (TODO) clang libc++ pch ===
+# clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
+#     -x c++-header parser/myparser.hpp -o parser/myparser.hpp.pch $@ &&\
+# clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
+#     -include parser/myparser.hpp *.cpp -o ml_clang $@ &&\
+# ./ml_clang
+
 exit
 #endif
 
