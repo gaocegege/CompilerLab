@@ -1,18 +1,16 @@
 program quick()
-	// global variable
-	type arr is array of 100 int;
+	// global fastiable
+	static arr is array of 100 int;
 
 	// quicksort
-	function quicksort(a,left,right)
-		var a is array of int;
-		var left is int;
-		var right is int;
-		return void;
+	function quicksort(left,right)
+		fast left is int;
+		fast right is int;
 	is
-		var pivot is int;
-		var j is int;
-		var k is int;
-		var temp is int;
+		fast pivot is int;
+		fast j is int;
+		fast k is int;
+		fast temp is int;
 	begin
 		if left<right then
 			pivot := left;
@@ -20,31 +18,30 @@ program quick()
 			k := right + 1;
 
 			while j < k do
-				if a[j] < a[left] then
+				if arr[j] < arr[left] then
 					pivot := pivot + 1;
-					temp := a[pivot];
-					a[pivot] := a[j];
-					a[j] := temp;
+					temp := arr[pivot];
+					arr[pivot] := arr[j];
+					arr[j] := temp;
 				end if
 
 				j := j + 1;
 			end while 
 
-			temp := a[pivot];
-			a[pivot] := a[left];
-			a[left] := temp;
+			temp := arr[pivot];
+			arr[pivot] := arr[left];
+			arr[left] := temp;
 
-			quicksort(a, left, pivot - 1);
-        	quicksort(a, pivot + 1 , right);
+			quicksort(left, pivot - 1);
+        	quicksort(pivot + 1 , right);
 
 		end if
-		return void;
 	end
 
 is
-	var i 	is int;
-	var num is int;
-	var tmp is int;
+	fast i 	is int;
+	fast num is int;
+	fast tmp is int;
 
 begin
 	// limit numbers;
@@ -54,8 +51,7 @@ begin
 	i := 0;
 	while i < num do
 		i := i + 1;
-		scanf("%d",&tmp);
-		arr[i] := tmp;
+		arr[i] = num - i;
 	end while
 
 	quicksort(arr, 0, num - 1);
@@ -67,4 +63,3 @@ begin
 	end while
 
 end
-
