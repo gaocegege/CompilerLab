@@ -15,6 +15,11 @@ template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
     libblock::Block *nowenv;
+    size_t unique;
+
+    inline size_t getUnique() {
+        return unique++; // return then add
+    }
 
     inline void go(const NodeList<> *node) {
         for (const Node<> *child: node->getChildren()) {
@@ -87,38 +92,37 @@ private:
     }
 
     static inline libblock::Code *makeCallLabel(
-        libblock::Code *lbl
+        size_t id
     ) {
         return makeCall(
             mylang::name_label,
-            lbl
+            new libblock::CodeLabel(id)
         );
     }
 
     static inline libblock::Code *makeCallGoto(
-        libblock::Code *lbl
+        size_t id
     ) {
         return makeCall(
             mylang::name_goto,
-            new libblock::CodeRef(lbl)
+            new libblock::CodeLabel(id)
         );
     }
 
     static inline libblock::Code *makeCallBranch(
-        libblock::Code *lbl,
-        libblock::Code *cond
+        size_t id, libblock::Code *cond
     ) {
         return makeCall(
             mylang::name_branch,
             makeChain(
-                new libblock::CodeRef(lbl),
+                new libblock::CodeLabel(id),
                 cond
             )
         );
     }
 
 public:
-    inline Pass(libblock::Block *env): nowenv(env) {}
+    inline Pass(libblock::Block *env): nowenv(env), unique(0) {}
 
     // virtual ~Pass() {}
 
@@ -546,14 +550,14 @@ public:
             ExpressionCall body2;
             scanFill(iter, body2);
 
-            libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
-            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+            size_t id_mid = getUnique();
+            size_t id_end = getUnique();
 
-            libblock::Code *mid = makeCallLabel(lbl_mid);
-            libblock::Code *end = makeCallLabel(lbl_end);
+            libblock::Code *mid = makeCallLabel(id_mid);
+            libblock::Code *end = makeCallLabel(id_end);
 
-            libblock::Code *jump = makeCallBranch(lbl_mid, cond());
-            libblock::Code *fin = makeCallGoto(lbl_end);
+            libblock::Code *jump = makeCallBranch(id_mid, cond());
+            libblock::Code *fin = makeCallGoto(id_end);
 
             return makeChain(
                 jump,
@@ -600,14 +604,14 @@ public:
                 step(), makeGet(targetname)
             );
 
-            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
-            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+            size_t id_begin = getUnique();
+            size_t id_end = getUnique();
 
-            libblock::Code *begin = makeCallLabel(lbl_begin);
-            libblock::Code *end = makeCallLabel(lbl_end);
+            libblock::Code *begin = makeCallLabel(id_begin);
+            libblock::Code *end = makeCallLabel(id_end);
 
-            libblock::Code *jump = makeCallBranch(lbl_end, cond);
-            libblock::Code *loop = makeCallGoto(lbl_begin);
+            libblock::Code *jump = makeCallBranch(id_end, cond);
+            libblock::Code *loop = makeCallGoto(id_begin);
 
             return makeChain(
                 init,
@@ -636,14 +640,14 @@ public:
             ExpressionCall body;
             scanFill(iter, body);
 
-            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
-            libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+            size_t id_begin = getUnique();
+            size_t id_end = getUnique();
 
-            libblock::Code *begin = makeCallLabel(lbl_begin);
-            libblock::Code *end = makeCallLabel(lbl_end);
+            libblock::Code *begin = makeCallLabel(id_begin);
+            libblock::Code *end = makeCallLabel(id_end);
 
-            libblock::Code *jump = makeCallBranch(lbl_end, cond());
-            libblock::Code *loop = makeCallGoto(lbl_begin);
+            libblock::Code *jump = makeCallBranch(id_end, cond());
+            libblock::Code *loop = makeCallGoto(id_begin);
 
             return makeChain(
                 begin, jump,
@@ -668,14 +672,14 @@ public:
                 ExpressionCall body2;
                 scanFill(iter, body2);
 
-                libblock::CodeLabel *lbl_mid = new libblock::CodeLabel();
-                libblock::CodeLabel *lbl_end = new libblock::CodeLabel();
+                size_t id_mid = getUnique();
+                size_t id_end = getUnique();
 
-                libblock::Code *mid = makeCallLabel(lbl_mid);
-                libblock::Code *end = makeCallLabel(lbl_end);
+                libblock::Code *mid = makeCallLabel(id_mid);
+                libblock::Code *end = makeCallLabel(id_end);
 
-                libblock::Code *jump = makeCallBranch(lbl_mid, cond());
-                libblock::Code *fin = makeCallGoto(lbl_end);
+                libblock::Code *jump = makeCallBranch(id_mid, cond());
+                libblock::Code *fin = makeCallGoto(id_end);
 
                 return makeChain(
                     jump,
@@ -718,11 +722,11 @@ public:
             ExpressionCall cond;
             scanFill(iter, cond);
 
-            libblock::CodeLabel *lbl_begin = new libblock::CodeLabel();
+            size_t id_begin = getUnique();
 
-            libblock::Code *begin = makeCallLabel(lbl_begin);
+            libblock::Code *begin = makeCallLabel(id_begin);
 
-            libblock::Code *jump = makeCallBranch(lbl_begin, cond());
+            libblock::Code *jump = makeCallBranch(id_begin, cond());
 
             return makeChain(begin, body(), jump);
         });
