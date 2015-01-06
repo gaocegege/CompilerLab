@@ -50,8 +50,8 @@ public:
     }
 
     inline OUT operator()(IN... arg) const {
-        // TODO: if exec == nullptr, error
-        // notice: exec once and *only* once
+        // if exec == nullptr, error
+        // exec could be called once and *only* once
         return exec(std::forward<IN>(arg)...);
     }
 };

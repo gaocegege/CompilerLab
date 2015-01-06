@@ -1,12 +1,12 @@
 #if 0
 python gen_parser.py
-# g++ -std=c++11 -Wall -Wextra -pedantic -O1 *.cpp -o ml_gcc $@ &&\
+# g++ -std=c++11 -Wall -Wextra -pedantic -O0 *.cpp -o ml_gcc $@ &&\
 #     strip ml_gcc &&\
 #     ./ml_gcc
-# clang++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O1 *.cpp -o ml_clang $@ &&\
+# clang++ -std=c++11 -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O0 *.cpp -o ml_clang $@ &&\
 #     strip ml_clang &&\
 #     ./ml_clang
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O1 *.cpp -o ml_clang $@ &&\
+clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -pedantic -fno-rtti -ferror-limit=1 -O0 *.cpp -o ml_clang $@ &&\
 #    strip ml_clang &&\
     ./ml_clang
 exit
@@ -47,7 +47,12 @@ void test() {
     auto env = mylang::makeEnv();
     PassAnalysis<> an(env);
 
-    x2->runPass(&an);
+    try {
+        x2->runPass(&an);
+    } catch (const libblock::error_t &e) {
+        std::cout << "ERROR: " << e.info;
+    }
+    std::cout << std::endl;
 
     (void) CodeVisitorRepr(env, std::cout);
 

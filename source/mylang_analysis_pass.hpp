@@ -59,11 +59,9 @@ private:
         libblock::Code *right
     ) {
         if (!left || !right) {
-            // TODO: ???
-            throw;
+            throw libblock::error_t("tuple is not allowed in binary-operator");
         } else if (left->getNext() || right->getNext()) {
-            // TODO: anonymous struct (tuple)
-            throw;
+            throw libblock::error_t("tuple is not allowed in binary-operator");
         } else {
             return makeCall(
                 std::forward<T>(name),
@@ -176,8 +174,7 @@ public:
             libblock::name_t checkid = checking();
 
             if (checkid.id != "" && checkid.id != defpair.first.id) {
-                // TODO: error
-                throw;
+                throw libblock::error_t("bad program id");
             }
 
             inner->setProto(defpair.second);
@@ -207,8 +204,7 @@ public:
             libblock::name_t checkid = checking();
 
             if (checkid.id != "" && checkid.id != defpair.first.id) {
-                // TODO: error
-                throw;
+                throw libblock::error_t("bad function id");
             }
 
             inner->setProto(defpair.second);
@@ -461,7 +457,7 @@ public:
                 }
             default:
                 // never reach
-                throw;
+                throw libblock::error_t("internal error");
             }
         });
     }
@@ -1123,7 +1119,7 @@ public:
                 }
             default:
                 // never reach
-                throw;
+                throw libblock::error_t("internal error");
             }
         });
     }
@@ -1200,7 +1196,7 @@ public:
     void run(const NodeTyped<N, NodeError<E>> *node) {
         // never reach if no parsing error
         (void) node;
-        throw;
+        throw libblock::error_t("syntax error");
     }
 };
 
