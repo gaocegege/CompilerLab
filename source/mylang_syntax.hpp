@@ -347,9 +347,14 @@ public RuleList<MP_STR("receive", 7),
         RuleItemKeyword<MP_STR("receive", 7)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
-    >,
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("restart", 7)>:
+public RuleList<MP_STR("restart", 7),
     RuleLine<
-        RuleItemKeyword<MP_STR("receive", 7)>
+        RuleItemKeyword<MP_STR("restart", 7)>
     >
 > {};
 
@@ -831,7 +836,7 @@ public RuleList<MP_STR("value", 5),
         RuleItemRef<MP_STR("tuple", 5)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("array", 5)>
+        RuleItemRef<MP_STR("list", 4)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("class", 5)>
@@ -875,8 +880,8 @@ public RuleList<MP_STR("tuple", 5),
 > {};
 
 template<>
-class RuleDef<MP_STR("array", 5)>:
-public RuleList<MP_STR("array", 5),
+class RuleDef<MP_STR("list", 4)>:
+public RuleList<MP_STR("list", 4),
     RuleLine<
         RuleItemKeyword<MP_STR("[", 1)>,
         RuleItemSpace<>,

@@ -99,16 +99,6 @@ field definition:
     static <field name> <expression>
     fast <field name> <expression>
     <field name> <expression>
-    // type:
-    // built-in:
-    //     void typeid
-    //     byte boolean (boolean is uint) integer
-    //     real (double) string (pair of length and pchar)
-    // compile-time generation:
-    //     array of <integer> <expression>
-    //     pointer of <expression>
-    //     reference of <expression>
-    // "array of 10 integer" is the same as "array(10, integer)"
 
 field name:
 
@@ -141,7 +131,10 @@ statement:
 receive:
 
     receive <expression>
-    receive
+
+restart:
+
+    restart
 
 return:
 
@@ -336,7 +329,7 @@ value:
     <byte>
     <string>
     <tuple>
-    <array>
+    <list>
     <class>
     // expr boolean yes := -1
     //              no := 0
@@ -362,7 +355,7 @@ tuple:
 
     ( <expression list> )
 
-array:
+list:
 
     [ <expression list> ]
 
