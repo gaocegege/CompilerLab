@@ -122,11 +122,24 @@ statement list:
 statement:
 
     <expression> ;
-    <receive> ;
-    <return> ;
+    <jump> ;
     <structure>
     <repeat> ;
     ;
+
+Jump Statement
+---
+
+jump:
+
+    <receive>
+    <restart>
+    <return>
+    // TODO:
+    // <continue>
+    // <break>
+    // <label>
+    // <goto>
 
 receive:
 

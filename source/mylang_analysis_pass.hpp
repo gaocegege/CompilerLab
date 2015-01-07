@@ -265,7 +265,7 @@ public:
                 new libblock::CodeBlock(block, false)
             ));
             block->addField(libblock::field_t(
-                libblock::field_t::M_TYPE, true, false,
+                libblock::field_t::M_TYPE, false, false,
                 libblock::name_t(mylang::name_parent_type),
                 new libblock::CodeBlock(nowenv, false)
             ));
@@ -277,7 +277,7 @@ public:
             if (query.first == query.second) {
                 // if __parent not defined
                 block->addField(libblock::field_t(
-                    libblock::field_t::M_VAR, false, false,
+                    libblock::field_t::M_VAR, true, false,
                     libblock::name_t(mylang::name_parent),
                     new libblock::CodeCall(
                         makeGet(mylang::name_link),
@@ -524,13 +524,17 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("statement", 9) {
-        if (I != 5) {
+        if (I != 4) {
             go(node); // no delayed call
         } else {
             ExpressionCall::put([=]() -> libblock::Code * {
                 return nullptr;
             });
         }
+    }
+
+    MYLANG_ANALYSIS_LIST("jump", 4) {
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("receive", 7) {

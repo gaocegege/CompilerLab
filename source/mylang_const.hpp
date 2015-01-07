@@ -62,8 +62,8 @@ const std::string name_list = "__list"; // arg: (...)
 const std::string name_label = "__label"; // arg: (lbl)
 const std::string name_goto = "__goto"; // arg: (lbl)
 const std::string name_branch = "__branch"; // arg: (lbl, cond) // if !cond then goto(lbl)
-const std::string name_call = "__call"; // arg: (obj)
-const std::string name_self = "__self"; // arg: () // get self env
+// const std::string name_call = "__call"; // arg: (obj)
+// const std::string name_self = "__self"; // arg: () // get self env
 
 // builtin values
 

@@ -318,12 +318,7 @@ public RuleList<MP_STR("statement", 9),
         RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("receive", 7)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
-    >,
-    RuleLine<
-        RuleItemRef<MP_STR("return", 6)>,
+        RuleItemRef<MP_STR("jump", 4)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(";", 1)>
     >,
@@ -337,6 +332,20 @@ public RuleList<MP_STR("statement", 9),
     >,
     RuleLine<
         RuleItemKeyword<MP_STR(";", 1)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("jump", 4)>:
+public RuleList<MP_STR("jump", 4),
+    RuleLine<
+        RuleItemRef<MP_STR("receive", 7)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("restart", 7)>
+    >,
+    RuleLine<
+        RuleItemRef<MP_STR("return", 6)>
     >
 > {};
 
