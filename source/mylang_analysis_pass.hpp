@@ -188,7 +188,7 @@ public:
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
                 std::move(defpair.first),
-                new libblock::CodeBlock(inner)
+                new libblock::CodeBlock(inner, true)
             ));
         });
     }
@@ -218,7 +218,7 @@ public:
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
                 std::move(defpair.first),
-                new libblock::CodeBlock(inner)
+                new libblock::CodeBlock(inner, true)
             ));
         });
     }
@@ -258,6 +258,35 @@ public:
             Pass<PASS_ANALYSIS> pass(block);
             pass.go(node);
 
+            // add types
+            block->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, false, false,
+                libblock::name_t(mylang::name_self_type),
+                new libblock::CodeBlock(block, false)
+            ));
+            block->addField(libblock::field_t(
+                libblock::field_t::M_TYPE, true, false,
+                libblock::name_t(mylang::name_parent_type),
+                new libblock::CodeBlock(nowenv, false)
+            ));
+
+            // add parent (ref by default)
+            // TODO: add __parent to proto
+            // TODO: bind parent if __parent is at the first of arguments
+            auto query = block->queryAll(mylang::name_parent);
+            if (query.first == query.second) {
+                // if __parent not defined
+                block->addField(libblock::field_t(
+                    libblock::field_t::M_VAR, false, false,
+                    libblock::name_t(mylang::name_parent),
+                    new libblock::CodeCall(
+                        makeGet(mylang::name_link),
+                        makeGet(mylang::name_parent_type),
+                        false
+                    )
+                ));
+            }
+
             return block;
         });
     }
@@ -290,9 +319,30 @@ public:
             ExpressionCall body;
             go(node);
 
+            // __begin and __end
+            size_t id_begin = getUnique();
+            size_t id_end = getUnique();
+
+            libblock::Code *begin = makeCallLabel(id_begin);
+            libblock::Code *end = makeCallLabel(id_end);
+
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_EXPR, false, true,
-                libblock::name_t(mylang::name_code), body()
+                libblock::name_t(mylang::name_begin),
+                new libblock::CodeLabel(id_begin)
+            ));
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_EXPR, false, true,
+                libblock::name_t(mylang::name_end),
+                new libblock::CodeLabel(id_end)
+            ));
+
+            nowenv->addField(libblock::field_t(
+                libblock::field_t::M_EXPR, false, true,
+                libblock::name_t(mylang::name_code),
+                makeChain(
+                    begin, body(), end
+                )
             ));
         } else {
             // nothing
@@ -520,14 +570,14 @@ public:
                         right()
                     ),
                     makeCall(
-                        mylang::name_call,
-                        makeGet(mylang::name_caller)
+                        mylang::name_goto,
+                        makeGet(mylang::name_end)
                     )
                 );
             } else {
-                return makeCall(
-                    mylang::name_call,
-                    makeGet(mylang::name_caller)
+                    return makeCall(
+                        mylang::name_goto,
+                        makeGet(mylang::name_end)
                 );
             }
         });
@@ -1119,7 +1169,7 @@ public:
                     libblock::Block *inner = block();
                     inner->finish();
 
-                    return new libblock::CodeBlock(inner);
+                    return new libblock::CodeBlock(inner, true);
                 }
             default:
                 // never reach

@@ -74,7 +74,13 @@ const std::string name_parent = "__parent"; // refers
 const std::string name_input = "__input"; // receive // "left/get" call
 const std::string name_result = "__result"; // return // "right/set" call
 
-const std::string name_caller = "__caller";
+const std::string name_self_type = "__self_type";
+const std::string name_parent_type = "__parent_type";
+
+const std::string name_begin = "__begin"; // label
+const std::string name_end = "__end"; // label
+
+// native types // TODO
 
 const std::string name_void = "void";
 const std::string name_real = "real";
