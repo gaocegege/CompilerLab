@@ -160,7 +160,7 @@ public:
         DefinitionCall def;
         go(node);
 
-        def(true); // TODO: ???
+        def(true); // notice: modules are public by default
     }
 
     MYLANG_ANALYSIS_LIST("program", 7) {
@@ -212,17 +212,6 @@ public:
             }
 
             inner->setProto(defpair.second);
-
-            // auto query = inner->query(mylang::name_parent);
-            // if (query.first == query.second) {
-            //     // not defined
-
-            //     inner->addField(libblock::field_t(
-            //         libblock::field_t::M_FAST, false, true,
-            //         libblock::name_t(mylang::name_parent),
-            //         new libblock::CodeBlock(nowenv) // TODO: ref????
-            //     ));
-            // }
 
             inner->finish();
 
@@ -503,6 +492,17 @@ public:
                 mylang::name_assign,
                 left(),
                 makeGet(mylang::name_input)
+            );
+        });
+    }
+
+    MYLANG_ANALYSIS_LIST("restart", 7) {
+        ExpressionCall::put([=]() -> libblock::Code * {
+            (void) node;
+
+            return makeCall(
+                mylang::name_goto,
+                makeGet(mylang::name_begin)
             );
         });
     }
@@ -1086,7 +1086,7 @@ public:
                     }
 
                     return makeCall(
-                        mylang::name_array,
+                        mylang::name_list,
                         arg
                     );
                 }
@@ -1100,13 +1100,13 @@ public:
                     return tuple();
                 }
             case 6:
-                // <array>
+                // <list>
                 {
                     ExpressionCall tuple;
                     go(node);
 
                     return makeCall(
-                        mylang::name_array,
+                        mylang::name_list,
                         tuple()
                     );
                 }
@@ -1156,7 +1156,7 @@ public:
         go(node);
     }
 
-    MYLANG_ANALYSIS_LIST("array", 5) {
+    MYLANG_ANALYSIS_LIST("list", 4) {
         go(node);
     }
 

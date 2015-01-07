@@ -58,12 +58,12 @@ const std::string name_next = "__next";
 
 // builtin interfaces
 
-const std::string name_array = "__array"; // arg: (...)
+const std::string name_list = "__list"; // arg: (...)
 const std::string name_label = "__label"; // arg: (lbl)
 const std::string name_goto = "__goto"; // arg: (lbl)
 const std::string name_branch = "__branch"; // arg: (lbl, cond) // if !cond then goto(lbl)
 const std::string name_call = "__call"; // arg: (obj)
-const std::string name_env = "__env"; // arg: () // get current env
+const std::string name_self = "__self"; // arg: () // get self env
 
 // builtin values
 
@@ -75,6 +75,17 @@ const std::string name_input = "__input"; // receive // "left/get" call
 const std::string name_result = "__result"; // return // "right/set" call
 
 const std::string name_caller = "__caller";
+
+const std::string name_void = "void";
+const std::string name_real = "real";
+const std::string name_integer = "integer";
+const std::string name_cardinal = "cardinal";
+const std::string name_byte = "byte";
+const std::string name_string = "string";
+const std::string name_typeid = "typeid";
+const std::string name_array = "array"; // array of <integer> <expression>
+const std::string name_pointer = "pointer"; // pointer of <expression>
+const std::string name_link = "link"; // link of <expression>
 
 }
 
