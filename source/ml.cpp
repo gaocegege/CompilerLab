@@ -47,7 +47,8 @@ int main(int argc, char **argv) {
     if (argc > 1) {
         s = argv[1];
     } else {
-        s = "example.ml";
+        char s1[] = "example.ml";
+        s = s1;
     }
     std::ifstream t(s);
 
