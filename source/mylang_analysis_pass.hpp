@@ -174,6 +174,7 @@ public:
                 libblock::name_t,
                 libblock::Proto *
             > defpair = proto();
+
             libblock::Block *inner = block();
             libblock::name_t checkid = checking();
 
@@ -204,6 +205,7 @@ public:
                 libblock::name_t,
                 libblock::Proto *
             > defpair = proto();
+
             libblock::Block *inner = block();
             libblock::name_t checkid = checking();
 
@@ -282,7 +284,7 @@ public:
                     libblock::name_t(mylang::name_parent),
                     new libblock::CodeCall(
                         makeGet(mylang::name_link),
-                        makeGet(mylang::name_parent_type),
+                        makeGet(mylang::name_parent),
                         false
                     )
                 ));
@@ -350,7 +352,7 @@ public:
         }
     }
 
-    MYLANG_ANALYSIS_LIST("function proto", 14) {
+    MYLANG_ANALYSIS_LIST("proto", 5) {
         ProtoCall::put([=]() -> std::pair<
             libblock::name_t,
             libblock::Proto *
@@ -365,6 +367,18 @@ public:
 
             return {id(), proto};
         });
+    }
+
+    MYLANG_ANALYSIS_LIST("argument tuple", 14) {
+        if (I != 1) {
+            go(node); // no delayed call
+        } else {
+            ArgumentCall::put([=](libblock::Proto *proto) {
+                (void) proto;
+
+                return;
+            });
+        }
     }
 
     MYLANG_ANALYSIS_LIST("argument list", 13) {
@@ -1168,10 +1182,17 @@ public:
             case 7:
                 // <class>
                 {
+                    ArgumentCall arg;
                     BlockCall block;
                     go(node);
 
+                    libblock::Proto *proto = new libblock::Proto();
+                    arg(proto);
+
                     libblock::Block *inner = block();
+
+                    inner->setProto(proto);
+
                     inner->finish();
 
                     return new libblock::CodeBlock(inner, true);

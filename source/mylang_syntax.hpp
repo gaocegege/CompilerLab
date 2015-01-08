@@ -23,7 +23,7 @@ public RuleList<MP_STR("program", 7),
     RuleLine<
         RuleItemKeyword<MP_STR("program", 7)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("function proto", 14)>,
+        RuleItemRef<MP_STR("proto", 5)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("main body", 9)>,
         RuleItemSpace<>,
@@ -37,7 +37,7 @@ public RuleList<MP_STR("function", 8),
     RuleLine<
         RuleItemKeyword<MP_STR("function", 8)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("function proto", 14)>,
+        RuleItemRef<MP_STR("proto", 5)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("main body", 9)>,
         RuleItemSpace<>,
@@ -50,6 +50,8 @@ class RuleDef<MP_STR("class", 5)>:
 public RuleList<MP_STR("class", 5),
     RuleLine<
         RuleItemKeyword<MP_STR("class", 5)>,
+        RuleItemSpace<>,
+        RuleItemRef<MP_STR("argument tuple", 14)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("main body", 9)>,
         RuleItemSpace<>,
@@ -136,16 +138,27 @@ public RuleList<MP_STR("code block", 10),
 > {};
 
 template<>
-class RuleDef<MP_STR("function proto", 14)>:
-public RuleList<MP_STR("function proto", 14),
+class RuleDef<MP_STR("proto", 5)>:
+public RuleList<MP_STR("proto", 5),
     RuleLine<
         RuleItemRef<MP_STR("id", 2)>,
         RuleItemSpace<>,
+        RuleItemRef<MP_STR("argument tuple", 14)>
+    >
+> {};
+
+template<>
+class RuleDef<MP_STR("argument tuple", 14)>:
+public RuleList<MP_STR("argument tuple", 14),
+    RuleLine<
         RuleItemKeyword<MP_STR("(", 1)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("argument list", 13)>,
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR(")", 1)>
+    >,
+    RuleLine<
+        
     >
 > {};
 

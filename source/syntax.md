@@ -15,15 +15,15 @@ Main Structure
 
 program:
 
-    program <function proto> <main body> <end program>
+    program <proto> <main body> <end program>
 
 function:
 
-    function <function proto> <main body> <end function>
+    function <proto> <main body> <end function>
 
 class:
 
-    class <main body> end class
+    class <argument tuple> <main body> end class
 
 end program:
 
@@ -59,9 +59,14 @@ code block:
 Proto
 ---
 
-function proto:
+proto:
 
-    <id> ( <argument list> )
+    <id> <argument tuple>
+
+argument tuple:
+
+    ( <argument list> )
+    <>
 
 argument list:
 
