@@ -34,7 +34,7 @@ exit
 
 using namespace mylang;
 
-void test() {
+int main(int argc, char **argv) {
     PassReprFull<> rf(std::cout);
     PassReprFull<> rf1(std::cout, true);
     PassReprSimple<> rf2(std::cout);
@@ -42,7 +42,15 @@ void test() {
     PassReprJSON<> rf4(std::cout);
     PassHighlight<> hl(std::cout);
 
-    std::ifstream t("example.ml");
+    char *s;
+
+    if (argc > 1) {
+        s = argv[1];
+    } else {
+        s = "example.ml";
+    }
+    std::ifstream t(s);
+
     std::string s1(
         (std::istreambuf_iterator<char>(t)),
         std::istreambuf_iterator<char>()
@@ -73,11 +81,6 @@ void test() {
     delete env;
 
     delete x2;
-}
-
-int main() {
-    // for (int i = 0; i < 100; ++i)
-    test();
 
     return 0;
 }

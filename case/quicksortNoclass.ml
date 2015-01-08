@@ -36,7 +36,7 @@ program quick()
         	quicksort(pivot + 1 , right);
 
 		end if
-	end
+	end;
 
 is
 	fast i 	is int;
@@ -51,7 +51,7 @@ begin
 	i := 0;
 	while i < num do
 		i := i + 1;
-		arr[i] = num - i;
+		arr[i] := num - i;
 	end while
 
 	quicksort(arr, 0, num - 1);
