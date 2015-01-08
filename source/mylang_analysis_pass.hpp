@@ -15,10 +15,23 @@ template <>
 class Pass<PASS_ANALYSIS>: public PassProto<PASS_ANALYSIS> {
 private:
     libblock::Block *nowenv;
+
     size_t unique;
+    std::vector<size_t> id_begin;
+    std::vector<size_t> id_end;
 
     inline size_t getUnique() {
         return unique++; // return then add
+    }
+
+    inline void enterZone() {
+        id_begin.push_back(getUnique());
+        id_end.push_back(getUnique());
+    }
+
+    inline void leaveZone() {
+        id_begin.pop_back();
+        id_end.pop_back();
     }
 
     inline void go(const NodeList<> *node) {
@@ -91,11 +104,11 @@ private:
         return nullptr;
     }
 
-    static inline libblock::Code *makeCallLabel(
+    static inline libblock::Code *makeCallLocate(
         size_t id
     ) {
         return makeCall(
-            mylang::name_label,
+            mylang::name_locate,
             new libblock::CodeLabel(id)
         );
     }
@@ -260,19 +273,6 @@ public:
             Pass<PASS_ANALYSIS> pass(block);
             pass.go(node);
 
-            // add types
-            // TODO: decltype(...) ?
-            // block->addField(libblock::field_t(
-            //     libblock::field_t::M_TYPE, false, false,
-            //     libblock::name_t(mylang::name_self_type),
-            //     new libblock::CodeBlock(block, false)
-            // ));
-            // block->addField(libblock::field_t(
-            //     libblock::field_t::M_TYPE, false, false,
-            //     libblock::name_t(mylang::name_parent_type),
-            //     new libblock::CodeBlock(nowenv, false)
-            // ));
-
             // add parent (ref by default)
             // TODO: add __parent to proto
             // TODO: bind parent if __parent is at the first of arguments
@@ -322,23 +322,10 @@ public:
             ExpressionCall body;
             go(node);
 
-            // __begin and __end
-            size_t id_begin = getUnique();
-            size_t id_end = getUnique();
+            enterZone();
 
-            libblock::Code *begin = makeCallLabel(id_begin);
-            libblock::Code *end = makeCallLabel(id_end);
-
-            nowenv->addField(libblock::field_t(
-                libblock::field_t::M_EXPR, false, true,
-                libblock::name_t(mylang::name_begin),
-                new libblock::CodeLabel(id_begin)
-            ));
-            nowenv->addField(libblock::field_t(
-                libblock::field_t::M_EXPR, false, true,
-                libblock::name_t(mylang::name_end),
-                new libblock::CodeLabel(id_end)
-            ));
+            libblock::Code *begin = makeCallLocate(id_begin.front());
+            libblock::Code *end = makeCallLocate(id_end.front());
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_EXPR, false, true,
@@ -347,6 +334,8 @@ public:
                     begin, body(), end
                 )
             ));
+
+            leaveZone();
         } else {
             // nothing
         }
@@ -569,10 +558,7 @@ public:
         ExpressionCall::put([=]() -> libblock::Code * {
             (void) node;
 
-            return makeCall(
-                mylang::name_goto,
-                makeGet(mylang::name_begin)
-            );
+            return makeCallGoto(id_begin.front());
         });
     }
 
@@ -588,16 +574,10 @@ public:
                         makeGet(mylang::name_result),
                         right()
                     ),
-                    makeCall(
-                        mylang::name_goto,
-                        makeGet(mylang::name_end)
-                    )
+                    makeCallGoto(id_end.front())
                 );
             } else {
-                    return makeCall(
-                        mylang::name_goto,
-                        makeGet(mylang::name_end)
-                );
+                return makeCallGoto(id_end.front());
             }
         });
     }
@@ -619,22 +599,24 @@ public:
             ExpressionCall body2;
             scanFill(iter, body2);
 
-            size_t id_mid = getUnique();
-            size_t id_end = getUnique();
+            size_t id_local_mid = getUnique();
+            size_t id_local_end = getUnique();
 
-            libblock::Code *mid = makeCallLabel(id_mid);
-            libblock::Code *end = makeCallLabel(id_end);
+            libblock::Code *mid = makeCallLocate(id_local_mid);
+            libblock::Code *end = makeCallLocate(id_local_end);
 
-            libblock::Code *jump = makeCallBranch(id_mid, cond());
-            libblock::Code *fin = makeCallGoto(id_end);
+            libblock::Code *jump = makeCallBranch(id_local_mid, cond());
+            libblock::Code *fin = makeCallGoto(id_local_end);
 
-            return makeChain(
+            libblock::Code *all = makeChain(
                 jump,
                     body1(), fin,
                 mid,
                     body2(),
                 end
             );
+
+            return all;
         });
     }
 
@@ -659,6 +641,8 @@ public:
             ExpressionCall body;
             scanFill(iter, body);
 
+            enterZone();
+
             libblock::name_t targetname = target();
 
             libblock::Code *init = makeCall2(
@@ -673,21 +657,22 @@ public:
                 step(), makeGet(targetname)
             );
 
-            size_t id_begin = getUnique();
-            size_t id_end = getUnique();
+            libblock::Code *begin = makeCallLocate(id_begin.back());
+            libblock::Code *end = makeCallLocate(id_end.back());
 
-            libblock::Code *begin = makeCallLabel(id_begin);
-            libblock::Code *end = makeCallLabel(id_end);
+            libblock::Code *jump = makeCallBranch(id_end.back(), cond);
+            libblock::Code *loop = makeCallGoto(id_begin.back());
 
-            libblock::Code *jump = makeCallBranch(id_end, cond);
-            libblock::Code *loop = makeCallGoto(id_begin);
-
-            return makeChain(
+            libblock::Code *all = makeChain(
                 init,
                 begin, jump,
                     body(), dostep, loop,
                 end
             );
+
+            leaveZone();
+
+            return all;
         });
     }
 
@@ -709,20 +694,23 @@ public:
             ExpressionCall body;
             scanFill(iter, body);
 
-            size_t id_begin = getUnique();
-            size_t id_end = getUnique();
+            enterZone();
 
-            libblock::Code *begin = makeCallLabel(id_begin);
-            libblock::Code *end = makeCallLabel(id_end);
+            libblock::Code *begin = makeCallLocate(id_begin.back());
+            libblock::Code *end = makeCallLocate(id_end.back());
 
-            libblock::Code *jump = makeCallBranch(id_end, cond());
-            libblock::Code *loop = makeCallGoto(id_begin);
+            libblock::Code *jump = makeCallBranch(id_end.back(), cond());
+            libblock::Code *loop = makeCallGoto(id_begin.back());
 
-            return makeChain(
+            libblock::Code *all = makeChain(
                 begin, jump,
                     body(), loop,
                 end
             );
+
+            leaveZone();
+
+            return all;
         });
     }
 
@@ -741,14 +729,14 @@ public:
                 ExpressionCall body2;
                 scanFill(iter, body2);
 
-                size_t id_mid = getUnique();
-                size_t id_end = getUnique();
+                size_t id_local_mid = getUnique();
+                size_t id_local_end = getUnique();
 
-                libblock::Code *mid = makeCallLabel(id_mid);
-                libblock::Code *end = makeCallLabel(id_end);
+                libblock::Code *mid = makeCallLocate(id_local_mid);
+                libblock::Code *end = makeCallLocate(id_local_end);
 
-                libblock::Code *jump = makeCallBranch(id_mid, cond());
-                libblock::Code *fin = makeCallGoto(id_end);
+                libblock::Code *jump = makeCallBranch(id_local_mid, cond());
+                libblock::Code *fin = makeCallGoto(id_local_end);
 
                 return makeChain(
                     jump,
@@ -791,13 +779,18 @@ public:
             ExpressionCall cond;
             scanFill(iter, cond);
 
-            size_t id_begin = getUnique();
+            enterZone();
 
-            libblock::Code *begin = makeCallLabel(id_begin);
+            libblock::Code *begin = makeCallLocate(id_begin.back());
+            libblock::Code *end = makeCallLocate(id_end.back());
 
-            libblock::Code *jump = makeCallBranch(id_begin, cond());
+            libblock::Code *jump = makeCallBranch(id_begin.back(), cond());
 
-            return makeChain(begin, body(), jump);
+            libblock::Code *all = makeChain(begin, body(), jump, end);
+
+            leaveZone();
+
+            return all;
         });
     }
 

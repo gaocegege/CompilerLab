@@ -59,7 +59,7 @@ const std::string name_next = "__next";
 // builtin interfaces
 
 const std::string name_list = "__list"; // arg: (...)
-const std::string name_label = "__label"; // arg: (lbl)
+const std::string name_locate = "__locate"; // arg: (lbl)
 const std::string name_goto = "__goto"; // arg: (lbl)
 const std::string name_branch = "__branch"; // arg: (lbl, cond) // if !cond then goto(lbl)
 // const std::string name_call = "__call"; // arg: (obj)
@@ -73,12 +73,6 @@ const std::string name_base = "__base"; // extends
 const std::string name_parent = "__parent"; // refers
 const std::string name_input = "__input"; // receive // "left/get" call
 const std::string name_result = "__result"; // return // "right/set" call
-
-// const std::string name_self_type = "__self_type";
-// const std::string name_parent_type = "__parent_type";
-
-const std::string name_begin = "__begin"; // label
-const std::string name_end = "__end"; // label
 
 // native types // TODO
 
