@@ -259,16 +259,17 @@ public:
             pass.go(node);
 
             // add types
-            block->addField(libblock::field_t(
-                libblock::field_t::M_TYPE, false, false,
-                libblock::name_t(mylang::name_self_type),
-                new libblock::CodeBlock(block, false)
-            ));
-            block->addField(libblock::field_t(
-                libblock::field_t::M_TYPE, false, false,
-                libblock::name_t(mylang::name_parent_type),
-                new libblock::CodeBlock(nowenv, false)
-            ));
+            // TODO: decltype(...) ?
+            // block->addField(libblock::field_t(
+            //     libblock::field_t::M_TYPE, false, false,
+            //     libblock::name_t(mylang::name_self_type),
+            //     new libblock::CodeBlock(block, false)
+            // ));
+            // block->addField(libblock::field_t(
+            //     libblock::field_t::M_TYPE, false, false,
+            //     libblock::name_t(mylang::name_parent_type),
+            //     new libblock::CodeBlock(nowenv, false)
+            // ));
 
             // add parent (ref by default)
             // TODO: add __parent to proto
