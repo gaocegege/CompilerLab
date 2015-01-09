@@ -3,27 +3,34 @@ python gen_parser.py
 
 # === gcc ===
 # g++ -std=c++11 -Wall -Wextra -pedantic -O0\
-#     *.cpp -o ml_gcc $@ &&\
-# ./ml_gcc
+#     *.cpp -o ml_gcc $@ &&
+# ./ml_gcc &&
 
 # === clang libstdc++ ===
 # clang++ -std=c++11 -stdlib=libstdc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
-#     *.cpp -o ml_clang $@ &&\
-# ./ml_clang
+#     *.cpp -o ml_clang $@ &&
+# ./ml_clang &&
 
 # === clang libc++ ===
-clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
-    *.cpp -o ml_clang $@ &&\
-./ml_clang
+# clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
+#     *.cpp -o ml_clang $@ &&
+# ./ml_clang &&
 
-# === (TODO) clang libc++ pch ===
-# clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
-#     -x c++-header parser/myparser.hpp -o parser/myparser.hpp.pch $@ &&\
-# clang++ -std=c++11 -stdlib=libc++ -Wall -Wextra -Wbind-to-temporary-copy -pedantic -fno-rtti -ferror-limit=1 -O0\
-#     -include parser/myparser.hpp *.cpp -o ml_clang $@ &&\
-# ./ml_clang
+# === with LLVM Generator ===
+clang++ -std=c++11 -Wall -Wextra -Wbind-to-temporary-copy -pedantic -ferror-limit=1 -O0\
+    -c ml.cpp -o ml.o $@ &&
+clang++ -std=c++11 -Wall -Wbind-to-temporary-copy -pedantic -ferror-limit=1 -O0\
+    LLVM-Simple-Wrapper/llvmgenerator.cpp ml.o\
+    -lncurses `llvm-config --ldflags --system-libs`\
+    `llvm-config --cxxflags --libs core support jit native`\
+    -o ml_clang $@ &&
+./ml_clang &&
+
+# === ok ===
+echo fin
 
 exit
+
 #endif
 
 #include <iostream>
@@ -33,55 +40,69 @@ exit
 #include "mylang.hpp"
 
 using namespace mylang;
+using namespace llvmgenerator;
 
 int main(int argc, char **argv) {
-    PassReprFull<> rf(std::cout);
-    PassReprFull<> rf1(std::cout, true);
-    PassReprSimple<> rf2(std::cout);
-    PassReprText<> rf3(std::cout);
-    PassReprJSON<> rf4(std::cout);
-    PassHighlight<> hl(std::cout);
-
-    char *s;
+    char *filename;
 
     if (argc > 1) {
-        s = argv[1];
+        filename = argv[1];
     } else {
         char s1[] = "example.ml";
-        s = s1;
+        filename = s1;
     }
-    std::ifstream t(s);
+    std::ifstream fs(filename);
 
-    std::string s1(
-        (std::istreambuf_iterator<char>(t)),
+    std::string input(
+        (std::istreambuf_iterator<char>(fs)),
         std::istreambuf_iterator<char>()
     );
 
-    auto x2 = Parser<>::parse(s1, false);
+    PassReprFull<> rf(std::cout);
+    PassHighlight<> hl(std::cout);
 
-    // x2->runPass(&rf1);
-    // std::cout << std::endl << std::endl;
-    // x2->runPass(&rf);
-    // std::cout << std::endl << std::endl;
-    x2->runPass(&hl);
+    auto parsed = Parser<>::parse(input, false);
+
+    parsed->runPass(&hl);
     std::cout << std::endl << std::endl;
-
 
     auto env = mylang::makeEnv();
     PassAnalysis<> an(env);
 
     try {
-        x2->runPass(&an);
+        parsed->runPass(&an);
     } catch (const libblock::error_t &e) {
         std::cout << "ERROR: " << e.info;
     }
     std::cout << std::endl;
 
-    (void) CodeVisitorRepr(env, std::cout);
+    CodeVisitorRepr(env, std::cout);
+    std::cout << std::endl << std::endl;
 
+    // test
+    std::vector<std::string> proto_arg;
+    proto_arg.push_back("n");
+
+    llvm::Function *func = instance().func("test", proto_arg, "int"); 
+    instance().ret(
+        instance().expression(
+            '>', instance().nvt["n"], instance().integerNum(1)
+        )
+    );
+
+    instance().mainProto();
+    std::vector<llvm::Value *> arg;
+    arg.push_back(instance().integerNum(4));
+    instance().ret(
+        instance().call(func, arg)
+    );
+
+    // LLVM
+    instance().dump();
+
+    // fin
     delete env;
-
-    delete x2;
+    delete parsed;
 
     return 0;
 }
