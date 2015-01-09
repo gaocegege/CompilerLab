@@ -113,8 +113,8 @@ field name:
     return
     <id> imports
     <id> is
-    // receive: id="__input", supported in program only
-    // return: id="__result", supported in function only
+    // receive: id="__input"
+    // return: id="__result"
 
 Statement
 ---
@@ -403,5 +403,5 @@ Special
 
 *ignored*:
 
-    (\/\/.*|[ \t\r\n])*
+    (\/\/[^\n]*|[ \t\r\n])*
     // including comments

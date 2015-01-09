@@ -953,7 +953,7 @@ public RuleRegex<MP_STR("sign", 4),
 template<>
 class RuleDef<MP_STR("ignored", 7)>:
 public RuleRegex<MP_STR("ignored", 7),
-    MP_STR("(\\/\\/.*|[ \\t\\r\\n])*", 19)
+    MP_STR("(\\/\\/[^\\n]*|[ \\t\\r\\n])*", 23)
 > {};
 
 

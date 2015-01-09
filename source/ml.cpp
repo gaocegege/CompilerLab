@@ -79,11 +79,14 @@ int main(int argc, char **argv) {
     CodeVisitorRepr(env, std::cout);
     std::cout << std::endl << std::endl;
 
-    // test
-    std::vector<std::string> proto_arg;
-    proto_arg.push_back("n");
+    auto trans = CodeVisitorTranslateLLVM(env);
+    (void) trans;
 
-    llvm::Function *func = instance().func("test", proto_arg, "int");
+    // // test
+    // std::vector<std::string> proto_arg;
+    // proto_arg.push_back("n");
+
+    // llvm::Function *func = instance().func("test", proto_arg, "int");
 
     // LLVM
     instance().dump();
