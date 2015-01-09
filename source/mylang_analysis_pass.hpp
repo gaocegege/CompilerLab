@@ -134,6 +134,33 @@ private:
         );
     }
 
+    static inline libblock::Block *makeBlock() {
+        libblock::Block *inner = new libblock::Block();
+
+        return inner;
+    }
+
+    static inline void finishBlock(libblock::Block *inner) {
+        // add parent (ref by default)
+        // TODO: add __parent to proto
+        // TODO: bind parent if __parent is at the first of arguments
+        // auto query = nowenv->queryAll(mylang::name_parent);
+        // if (query.first == query.second) {
+        //     // if __parent not defined
+        //     nowenv->addField(libblock::field_t(
+        //         libblock::field_t::M_VAR, true, false,
+        //         libblock::name_t(mylang::name_parent),
+        //         new libblock::CodeCall(
+        //             makeGet(mylang::name_link),
+        //             makeGet(mylang::name_parent),
+        //             false
+        //         )
+        //     ));
+        // }
+
+        inner->finish();
+    }
+
 public:
     inline Pass(libblock::Block *env): nowenv(env), unique(0) {}
 
@@ -174,7 +201,7 @@ public:
     MYLANG_ANALYSIS_LIST("program", 7) {
         DefinitionCall::put([=](bool hidden) {
             // new block
-            libblock::Block *inner = new libblock::Block();
+            libblock::Block *inner = makeBlock();
 
             IdCall id;
             BodyCall body;
@@ -185,11 +212,10 @@ public:
             pass.go(node);
 
             libblock::name_t name = id();
+            body();
             checking(name);
 
-            body();
-
-            inner->finish();
+            finishBlock(inner);
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
@@ -202,7 +228,7 @@ public:
     MYLANG_ANALYSIS_LIST("function", 8) {
         DefinitionCall::put([=](bool hidden) {
             // new block
-            libblock::Block *inner = new libblock::Block();
+            libblock::Block *inner = makeBlock();
 
             IdCall id;
             BodyCall body;
@@ -213,11 +239,10 @@ public:
             pass.go(node);
 
             libblock::name_t name = id();
+            body();
             checking(name);
 
-            body();
-
-            inner->finish();
+            finishBlock(inner);
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
@@ -263,23 +288,6 @@ public:
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
         BodyCall::put([=]() {
-            // add parent (ref by default)
-            // TODO: add __parent to proto
-            // TODO: bind parent if __parent is at the first of arguments
-            // auto query = nowenv->queryAll(mylang::name_parent);
-            // if (query.first == query.second) {
-            //     // if __parent not defined
-            //     nowenv->addField(libblock::field_t(
-            //         libblock::field_t::M_VAR, true, false,
-            //         libblock::name_t(mylang::name_parent),
-            //         new libblock::CodeCall(
-            //             makeGet(mylang::name_link),
-            //             makeGet(mylang::name_parent),
-            //             false
-            //         )
-            //     ));
-            // }
-
             go(node);
         });
     }
@@ -1127,7 +1135,7 @@ public:
                 // <class>
                 {
                     // new block
-                    libblock::Block *inner = new libblock::Block();
+                    libblock::Block *inner = makeBlock();
 
                     BodyCall body;
 
@@ -1137,7 +1145,7 @@ public:
 
                     body();
 
-                    inner->finish();
+                    finishBlock(inner);
 
                     return new libblock::CodeBlock(inner, true);
                 }
