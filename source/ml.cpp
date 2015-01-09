@@ -83,19 +83,7 @@ int main(int argc, char **argv) {
     std::vector<std::string> proto_arg;
     proto_arg.push_back("n");
 
-    llvm::Function *func = instance().func("test", proto_arg, "int"); 
-    instance().ret(
-        instance().expression(
-            '>', instance().nvt["n"], instance().integerNum(1)
-        )
-    );
-
-    instance().mainProto();
-    std::vector<llvm::Value *> arg;
-    arg.push_back(instance().integerNum(4));
-    instance().ret(
-        instance().call(func, arg)
-    );
+    llvm::Function *func = instance().func("test", proto_arg, "int");
 
     // LLVM
     instance().dump();
@@ -103,6 +91,8 @@ int main(int argc, char **argv) {
     // fin
     delete env;
     delete parsed;
+
+    std::cout << "ok!" << std::endl;
 
     return 0;
 }
