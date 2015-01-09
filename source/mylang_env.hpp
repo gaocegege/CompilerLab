@@ -10,12 +10,7 @@ libblock::Block *makeEnv() {
     // root block
     libblock::Block *block = new libblock::Block();
 
-    // empty proto
-    libblock::Proto *proto = new libblock::Proto();
-
     // TODO: add builtin
-
-    block->setProto(proto);
 
     block->finish();
 

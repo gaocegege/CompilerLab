@@ -141,15 +141,10 @@ public:
 
     using IdCall =
         mylang::DelayedCall<libblock::name_t ()>;
-    using ArgumentCall =
-        mylang::DelayedCall<void (libblock::Proto *)>;
-    using ProtoCall =
-        mylang::DelayedCall<std::pair<
-            libblock::name_t,
-            libblock::Proto *
-        > ()>;
-    using BlockCall =
-        mylang::DelayedCall<libblock::Block * ()>;
+    using IdCheckCall =
+        mylang::DelayedCall<void (libblock::name_t &)>;
+    using BodyCall =
+        mylang::DelayedCall<void ()>;
     using FieldCall =
         mylang::DelayedCall<std::pair<
             libblock::name_t, bool
@@ -178,30 +173,27 @@ public:
 
     MYLANG_ANALYSIS_LIST("program", 7) {
         DefinitionCall::put([=](bool hidden) {
-            ProtoCall proto;
-            BlockCall block;
-            IdCall checking;
-            go(node);
+            // new block
+            libblock::Block *inner = new libblock::Block();
 
-            std::pair<
-                libblock::name_t,
-                libblock::Proto *
-            > defpair = proto();
+            IdCall id;
+            BodyCall body;
+            IdCheckCall checking;
 
-            libblock::Block *inner = block();
-            libblock::name_t checkid = checking();
+            // analysis AST with a new Pass object
+            Pass<PASS_ANALYSIS> pass(inner);
+            pass.go(node);
 
-            if (checkid.id != "" && checkid.id != defpair.first.id) {
-                throw libblock::error_t("bad program id");
-            }
+            libblock::name_t name = id();
+            checking(name);
 
-            inner->setProto(defpair.second);
+            body();
 
             inner->finish();
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first),
+                std::move(name),
                 new libblock::CodeBlock(inner, true)
             ));
         });
@@ -209,30 +201,27 @@ public:
 
     MYLANG_ANALYSIS_LIST("function", 8) {
         DefinitionCall::put([=](bool hidden) {
-            ProtoCall proto;
-            BlockCall block;
-            IdCall checking;
-            go(node);
+            // new block
+            libblock::Block *inner = new libblock::Block();
 
-            std::pair<
-                libblock::name_t,
-                libblock::Proto *
-            > defpair = proto();
+            IdCall id;
+            BodyCall body;
+            IdCheckCall checking;
 
-            libblock::Block *inner = block();
-            libblock::name_t checkid = checking();
+            // analysis AST with a new Pass object
+            Pass<PASS_ANALYSIS> pass(inner);
+            pass.go(node);
 
-            if (checkid.id != "" && checkid.id != defpair.first.id) {
-                throw libblock::error_t("bad function id");
-            }
+            libblock::name_t name = id();
+            checking(name);
 
-            inner->setProto(defpair.second);
+            body();
 
             inner->finish();
 
             nowenv->addField(libblock::field_t(
                 libblock::field_t::M_TYPE, false, hidden,
-                std::move(defpair.first),
+                std::move(name),
                 new libblock::CodeBlock(inner, true)
             ));
         });
@@ -243,54 +232,55 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("end program", 11) {
-        if (I == 0) {
-            go(node); // no delayed call
-        } else {
-            // notice: return "" if no checking
-            IdCall::put([=]() {
-                return libblock::name_t(std::string(""));
-            });
-        }
+        IdCheckCall::put([=](libblock::name_t &name) {
+            if (I == 0) {
+                IdCall chk;
+                go(node);
+
+                if (name.id != chk().id) {
+                    throw libblock::error_t("bad program id");
+                }
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("end function", 12) {
-        if (I == 0) {
-            go(node); // no delayed call
-        } else {
-            // notice: return "" if no checking
-            IdCall::put([=]() {
-                return libblock::name_t(std::string(""));
-            });
-        }
+        IdCheckCall::put([=](libblock::name_t &name) {
+            if (I == 0) {
+                IdCall chk;
+                go(node);
+
+                if (name.id != chk().id) {
+                    throw libblock::error_t("bad function id");
+                }
+            } else {
+                // nothing
+            }
+        });
     }
 
     MYLANG_ANALYSIS_LIST("main body", 9) {
-        BlockCall::put([=]() -> libblock::Block * {
-            // new block
-            libblock::Block *block = new libblock::Block();
-
-            // analysis AST with a new Pass object
-            Pass<PASS_ANALYSIS> pass(block);
-            pass.go(node);
-
+        BodyCall::put([=]() {
             // add parent (ref by default)
             // TODO: add __parent to proto
             // TODO: bind parent if __parent is at the first of arguments
-            auto query = block->queryAll(mylang::name_parent);
-            if (query.first == query.second) {
-                // if __parent not defined
-                block->addField(libblock::field_t(
-                    libblock::field_t::M_VAR, true, false,
-                    libblock::name_t(mylang::name_parent),
-                    new libblock::CodeCall(
-                        makeGet(mylang::name_link),
-                        makeGet(mylang::name_parent),
-                        false
-                    )
-                ));
-            }
+            // auto query = nowenv->queryAll(mylang::name_parent);
+            // if (query.first == query.second) {
+            //     // if __parent not defined
+            //     nowenv->addField(libblock::field_t(
+            //         libblock::field_t::M_VAR, true, false,
+            //         libblock::name_t(mylang::name_parent),
+            //         new libblock::CodeCall(
+            //             makeGet(mylang::name_link),
+            //             makeGet(mylang::name_parent),
+            //             false
+            //         )
+            //     ));
+            // }
 
-            return block;
+            go(node);
         });
     }
 
@@ -342,75 +332,36 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("proto", 5) {
-        ProtoCall::put([=]() -> std::pair<
-            libblock::name_t,
-            libblock::Proto *
-        > {
+        IdCall::put([=]() {
             IdCall id;
-            ArgumentCall arg;
             go(node);
 
-            libblock::Proto *proto = new libblock::Proto();
-
-            arg(proto);
-
-            return {id(), proto};
+            return id();
         });
     }
 
     MYLANG_ANALYSIS_LIST("argument tuple", 14) {
-        if (I != 1) {
-            go(node); // no delayed call
-        } else {
-            ArgumentCall::put([=](libblock::Proto *proto) {
-                (void) proto;
-
-                return;
-            });
-        }
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("argument list", 13) {
-        ArgumentCall::put([=](libblock::Proto *proto) {
-            if (I == 0) {
-                // member:
-                ArgumentCall left;
-                node->getChildren().front()->runPass(this);
-
-                // next:
-                ArgumentCall right;
-                node->getChildren().back()->runPass(this);
-
-                left(proto);
-                right(proto);
-            } else if (I == 1) {
-                // member:
-                ArgumentCall left;
-                node->getChildren().front()->runPass(this);
-
-                left(proto);
-            } else {
-                // nothing
-            }
-        });
+        go(node);
     }
 
     MYLANG_ANALYSIS_LIST("argument", 8) {
-        ArgumentCall::put([=](libblock::Proto *proto) {
-            IdCall id;
-            go(node);
+        IdCall id;
+        go(node);
 
-            // assert I < 4
-            libblock::argument_t::Mode mode[] = {
-                libblock::argument_t::M_TYPE,
-                libblock::argument_t::M_IN,
-                libblock::argument_t::M_OUT,
-                libblock::argument_t::M_VAR,
-                libblock::argument_t::M_IN
-            };
+        // assert I < 4
+        libblock::argument_t::Mode mode[] = {
+            libblock::argument_t::M_TYPE,
+            libblock::argument_t::M_IN,
+            libblock::argument_t::M_OUT,
+            libblock::argument_t::M_VAR,
+            libblock::argument_t::M_IN
+        };
 
-            proto->putArgument(libblock::argument_t(mode[I], id()));
-        });
+        nowenv->addArgument(libblock::argument_t(mode[I], id()));
     }
 
     MYLANG_ANALYSIS_LIST("definition list", 15) {
@@ -1175,16 +1126,16 @@ public:
             case 7:
                 // <class>
                 {
-                    ArgumentCall arg;
-                    BlockCall block;
-                    go(node);
+                    // new block
+                    libblock::Block *inner = new libblock::Block();
 
-                    libblock::Proto *proto = new libblock::Proto();
-                    arg(proto);
+                    BodyCall body;
 
-                    libblock::Block *inner = block();
+                    // analysis AST with a new Pass object
+                    Pass<PASS_ANALYSIS> pass(inner);
+                    pass.go(node);
 
-                    inner->setProto(proto);
+                    body();
 
                     inner->finish();
 
