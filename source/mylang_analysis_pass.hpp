@@ -357,6 +357,7 @@ public:
     }
 
     MYLANG_ANALYSIS_LIST("argument", 8) {
+        // no delayed call
         IdCall id;
         go(node);
 
@@ -1097,10 +1098,10 @@ public:
                     libblock::Code *arg = nullptr;
                     const std::string data = value();
 
-                    for (auto iter = data.rbegin(); iter != data.rend(); ++iter) {
+                    for (auto i = data.rbegin(); i != data.rend(); ++i) {
                         libblock::Code *prev =
                             new libblock::CodeLiteral<mylang::LangSpec::byte>(
-                                mylang::LangSpec::byte(*iter)
+                                mylang::LangSpec::byte(*i)
                             );
 
                         arg = makeChain(prev, arg);
