@@ -27,12 +27,12 @@ class:
 
 end program:
 
-    end program <id>
+    end program <id> ;
     end
 
 end function:
 
-    end function <id>
+    end function <id> ;
     end
 
 Block
@@ -93,7 +93,7 @@ definition list:
 definition:
 
     <field definition>
-    <function> ;
+    <function>
     ;
 
 field definition:

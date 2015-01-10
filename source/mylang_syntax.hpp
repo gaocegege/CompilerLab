@@ -69,7 +69,9 @@ public RuleList<MP_STR("end program", 11),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("program", 7)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("id", 2)>
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("end", 3)>
@@ -84,7 +86,9 @@ public RuleList<MP_STR("end function", 12),
         RuleItemSpace<>,
         RuleItemKeyword<MP_STR("function", 8)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("id", 2)>
+        RuleItemRef<MP_STR("id", 2)>,
+        RuleItemSpace<>,
+        RuleItemKeyword<MP_STR(";", 1)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR("end", 3)>
@@ -228,9 +232,7 @@ public RuleList<MP_STR("definition", 10),
         RuleItemRef<MP_STR("field definition", 16)>
     >,
     RuleLine<
-        RuleItemRef<MP_STR("function", 8)>,
-        RuleItemSpace<>,
-        RuleItemKeyword<MP_STR(";", 1)>
+        RuleItemRef<MP_STR("function", 8)>
     >,
     RuleLine<
         RuleItemKeyword<MP_STR(";", 1)>
