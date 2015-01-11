@@ -404,7 +404,7 @@ public:
         }
     }
 
-    MYLANG_ANALYSIS_LIST("field definition", 16) {
+    MYLANG_ANALYSIS_LIST("field", 5) {
         DefinitionCall::put([=](bool hidden) {
             FieldCall info;
             ExpressionCall body;
@@ -412,14 +412,13 @@ public:
 
             std::pair<libblock::name_t, bool> infopair = info();
 
-            // assert I < 6
+            // assert I < 5
             libblock::field_t::Mode mode[] = {
                 libblock::field_t::M_TYPE,
                 libblock::field_t::M_EXPR,
                 libblock::field_t::M_VAR,
                 libblock::field_t::M_STATIC,
-                libblock::field_t::M_FAST,
-                libblock::field_t::M_VAR
+                libblock::field_t::M_FAST
             };
 
             nowenv->addField(libblock::field_t(

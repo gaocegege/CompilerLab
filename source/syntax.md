@@ -96,14 +96,13 @@ definition:
     <function>
     ;
 
-field definition:
+field:
 
     type <field name> <expression>
     expr <field name> <expression>
     var <field name> <expression>
     static <field name> <expression>
     fast <field name> <expression>
-    <field name> <expression>
 
 field name:
 
