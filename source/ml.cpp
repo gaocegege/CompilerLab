@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     PassReprFull<> rf(std::cout);
     PassHighlight<> hl(std::cout);
 
-    auto parsed = Parser<>::parse(input, false);
+    auto parsed = Parser<>::parse(input);
 
     parsed->runPass(&hl);
     std::cout << std::endl << std::endl;
