@@ -363,7 +363,6 @@ public:
 
         // assert I < 4
         libblock::argument_t::Mode mode[] = {
-            libblock::argument_t::M_TYPE,
             libblock::argument_t::M_IN,
             libblock::argument_t::M_OUT,
             libblock::argument_t::M_VAR,

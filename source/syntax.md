@@ -76,7 +76,6 @@ argument list:
 
 argument:
 
-    type <id>
     in <id>
     out <id>
     var <id>
@@ -92,7 +91,7 @@ definition list:
 
 definition:
 
-    <field definition>
+    <field>
     <function>
     ;
 

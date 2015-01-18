@@ -188,11 +188,6 @@ template<>
 class RuleDef<MP_STR("argument", 8)>:
 public RuleList<MP_STR("argument", 8),
     RuleLine<
-        RuleItemKeyword<MP_STR("type", 4)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("id", 2)>
-    >,
-    RuleLine<
         RuleItemKeyword<MP_STR("in", 2)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("id", 2)>
@@ -229,7 +224,7 @@ template<>
 class RuleDef<MP_STR("definition", 10)>:
 public RuleList<MP_STR("definition", 10),
     RuleLine<
-        RuleItemRef<MP_STR("field definition", 16)>
+        RuleItemRef<MP_STR("field", 5)>
     >,
     RuleLine<
         RuleItemRef<MP_STR("function", 8)>
@@ -240,8 +235,8 @@ public RuleList<MP_STR("definition", 10),
 > {};
 
 template<>
-class RuleDef<MP_STR("field definition", 16)>:
-public RuleList<MP_STR("field definition", 16),
+class RuleDef<MP_STR("field", 5)>:
+public RuleList<MP_STR("field", 5),
     RuleLine<
         RuleItemKeyword<MP_STR("type", 4)>,
         RuleItemSpace<>,
@@ -273,11 +268,6 @@ public RuleList<MP_STR("field definition", 16),
     RuleLine<
         RuleItemKeyword<MP_STR("fast", 4)>,
         RuleItemSpace<>,
-        RuleItemRef<MP_STR("field name", 10)>,
-        RuleItemSpace<>,
-        RuleItemRef<MP_STR("expression", 10)>
-    >,
-    RuleLine<
         RuleItemRef<MP_STR("field name", 10)>,
         RuleItemSpace<>,
         RuleItemRef<MP_STR("expression", 10)>
