@@ -1,5 +1,7 @@
 # A Toy Compiler
 
+[![Join the chat at https://gitter.im/gaocegege/CompilerLab](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gaocegege/CompilerLab?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## 项目地址
 
 本项目所有内容在Github上可获得，地址为[https://github.com/gaocegege/CompilerLab](https://github.com/gaocegege/CompilerLab)
